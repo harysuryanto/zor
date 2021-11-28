@@ -33,6 +33,8 @@ class HomeScreen extends StatelessWidget {
 
               /// List of Exercise
               const ExerciseList(),
+
+              const SizedBox(height: 60),
             ],
           ),
         ),
