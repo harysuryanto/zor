@@ -71,6 +71,7 @@ class AddExerciseListTile extends StatelessWidget {
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
 
@@ -96,6 +97,7 @@ class AddExerciseListTile extends StatelessWidget {
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
                           ),
+                          textInputAction: TextInputAction.next,
                         ),
                       ),
                       const Icon(Icons.timer_rounded),
@@ -126,6 +128,7 @@ class AddExerciseListTile extends StatelessWidget {
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
               ),
+              textInputAction: TextInputAction.next,
             ),
           ),
         ],
