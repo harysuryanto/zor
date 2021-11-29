@@ -25,11 +25,11 @@ class ExerciseList extends StatelessWidget {
                   title: workouts[index].title,
                   subtitle: workouts[index].subtitle,
                   onTap: () {
-                    Navigator.pushNamed(context, '/add-exercise-plan');
+                    Navigator.pushNamed(context, '/add-plan');
                   },
                 );
               },
-              separatorBuilder: (context, index) => const SizedBox(height: 20),
+              separatorBuilder: (_, __) => const SizedBox(height: 20),
               itemCount: workouts.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
