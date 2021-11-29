@@ -83,7 +83,10 @@ class AddPlanScreen extends StatelessWidget {
                         '20 menit',
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text('Estimasi waktu total'),
+                      Text(
+                        'Estimasi waktu total',
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ],
                   ),
                   InkWell(
@@ -94,7 +97,10 @@ class AddPlanScreen extends StatelessWidget {
                     },
                     child: Row(
                       children: const [
-                        Text('Mulai olahraga'),
+                        Text(
+                          'Mulai olahraga',
+                          style: TextStyle(fontSize: 14),
+                        ),
                         SizedBox(width: 10),
                         Icon(Icons.run_circle_rounded),
                       ],
