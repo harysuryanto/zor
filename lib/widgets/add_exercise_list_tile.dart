@@ -64,9 +64,9 @@ class AddExerciseListTile extends StatelessWidget {
                   ),
                   child: TextField(
                     controller: _nameTextEditingController,
+                    style: const TextStyle(fontSize: 12),
                     decoration: const InputDecoration(
                       hintText: 'Nama gerakan',
-                      hintStyle: TextStyle(fontSize: 12),
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
@@ -89,9 +89,9 @@ class AddExerciseListTile extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: _restTimeTextEditingController,
+                          style: const TextStyle(fontSize: 12),
                           decoration: const InputDecoration(
                             hintText: 'Repetisi',
-                            hintStyle: TextStyle(fontSize: 12),
                             border: InputBorder.none,
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
@@ -119,9 +119,9 @@ class AddExerciseListTile extends StatelessWidget {
             alignment: Alignment.center,
             child: TextField(
               controller: _repsTextEditingController,
+              style: const TextStyle(fontSize: 12),
               decoration: const InputDecoration(
                 hintText: 'Repetisi',
-                hintStyle: TextStyle(fontSize: 12),
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
