@@ -40,7 +40,7 @@ class AddPlanScreen extends StatelessWidget {
                   controller: _nameTextEditingController,
                   decoration: const InputDecoration(
                     hintText: 'Nama agenda. Contoh: Workout Minggu',
-                    hintStyle: TextStyle(fontSize: 14),
+                    hintStyle: TextStyle(fontSize: 12),
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.zero,

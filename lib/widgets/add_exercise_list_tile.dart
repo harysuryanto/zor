@@ -66,7 +66,7 @@ class AddExerciseListTile extends StatelessWidget {
                     controller: _nameTextEditingController,
                     decoration: const InputDecoration(
                       hintText: 'Nama gerakan',
-                      hintStyle: TextStyle(fontSize: 14),
+                      hintStyle: TextStyle(fontSize: 12),
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
@@ -91,7 +91,7 @@ class AddExerciseListTile extends StatelessWidget {
                           controller: _restTimeTextEditingController,
                           decoration: const InputDecoration(
                             hintText: 'Repetisi',
-                            hintStyle: TextStyle(fontSize: 14),
+                            hintStyle: TextStyle(fontSize: 12),
                             border: InputBorder.none,
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
