@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zor/screens/add_exercise_plan_screen.dart';
+import 'package:zor/screens/add_plan_screen.dart';
 import 'package:zor/screens/home_screen.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const HomeScreen(),
-        '/add-exercise-plan': (context) => const AddExercisePlanScreen(),
+        '/add-plan': (context) => AddPlanScreen(),
       },
     );
   }
