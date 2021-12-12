@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ExerciseListTile extends StatelessWidget {
+class CustomListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final void Function()? onTap;
 
-  const ExerciseListTile({
+  const CustomListTile({
     Key? key,
     this.title = 'Workout Senin',
     this.subtitle = '20 menit • Jumping Jack, Plank, ...',

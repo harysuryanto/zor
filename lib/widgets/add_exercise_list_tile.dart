@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AddExerciseListTile extends StatelessWidget {
+class AddExerciseListTile extends StatefulWidget {
   final int index;
   final String name;
   final String reps;
   final String restTime;
-
-  TextEditingController? _nameTextEditingController;
-  TextEditingController? _repsTextEditingController;
-  TextEditingController? _restTimeTextEditingController;
 
   AddExerciseListTile({
     Key? key,
@@ -19,10 +15,33 @@ class AddExerciseListTile extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AddExerciseListTile> createState() => _AddExerciseListTileState();
+}
+
+class _AddExerciseListTileState extends State<AddExerciseListTile> {
+  TextEditingController? _nameTextEditingController;
+
+  TextEditingController? _repsTextEditingController;
+
+  TextEditingController? _restTimeTextEditingController;
+
+  @override
+  void dispose() {
+    _nameTextEditingController!.dispose();
+    _repsTextEditingController!.dispose();
+    _restTimeTextEditingController!.dispose();
+
+    print('data ${widget.index} disposed');
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _nameTextEditingController = TextEditingController(text: name);
-    _repsTextEditingController = TextEditingController(text: reps);
-    _restTimeTextEditingController = TextEditingController(text: restTime);
+    _nameTextEditingController = TextEditingController(text: widget.name);
+    _repsTextEditingController = TextEditingController(text: widget.reps);
+    _restTimeTextEditingController =
+        TextEditingController(text: widget.restTime);
 
     return Padding(
       padding: const EdgeInsets.only(right: 30),
@@ -33,7 +52,7 @@ class AddExerciseListTile extends StatelessWidget {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             onTap: () {
-              print('Item $index pressed');
+              print('Deleting item ${widget.index}');
 
               /// TODO: uncomment this below after state manager implemented
               // newExercises.removeAt(index);

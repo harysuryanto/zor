@@ -13,19 +13,49 @@ class ExerciseList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Latihanmu',
-              style: TextStyle(fontSize: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Latihanmu',
+                  style: TextStyle(fontSize: 18),
+                ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/add-plan');
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      children: const [
+                        Text(
+                          'Buat baru',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        Icon(Icons.chevron_right_rounded),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             ListView.separated(
               itemBuilder: (context, index) {
-                return ExerciseListTile(
+                return CustomListTile(
                   key: UniqueKey(),
                   title: workouts[index].title,
                   subtitle: workouts[index].subtitle,
                   onTap: () {
-                    Navigator.pushNamed(context, '/add-plan');
+                    Navigator.pushNamed(context, '/detail-plan');
                   },
                 );
               },

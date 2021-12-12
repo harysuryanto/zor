@@ -68,45 +68,30 @@ class AddPlanScreen extends StatelessWidget {
             ),
 
             /// Bottom section
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 20,
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                right: 30,
+                bottom: 30,
+                left: 30,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        '20 menit',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        'Estimasi waktu total',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  InkWell(
-                    onTap: () {
-                      print('Mulai olahraga 🏃‍♂️');
-
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: const [
-                        Text(
-                          'Mulai olahraga',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.run_circle_rounded),
-                      ],
-                    ),
+                  child: const Text(
+                    'Simpan',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14),
                   ),
-                ],
+                ),
               ),
             ),
           ],

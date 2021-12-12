@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
                   left: 30,
                 ),
                 child: Text(
-                  'Senang melihatmu kembali!',
+                  'Hai Hary 👋',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
