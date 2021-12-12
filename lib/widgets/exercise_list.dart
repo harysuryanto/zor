@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zor/providers/workouts.dart';
-import 'package:zor/widgets/exercise_list_tile.dart';
+import 'package:zor/widgets/custom_list_tile.dart';
 
 class ExerciseList extends StatelessWidget {
   const ExerciseList({Key? key}) : super(key: key);
