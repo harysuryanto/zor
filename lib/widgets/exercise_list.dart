@@ -55,7 +55,11 @@ class ExerciseList extends StatelessWidget {
                   title: workouts[index].title,
                   subtitle: workouts[index].subtitle,
                   onTap: () {
-                    Navigator.pushNamed(context, '/detail-plan');
+                    Navigator.pushNamed(
+                      context,
+                      '/detail-plan',
+                      arguments: {'data_index': index},
+                    );
                   },
                 );
               },
@@ -63,6 +67,11 @@ class ExerciseList extends StatelessWidget {
               itemCount: workouts.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
+
+              /// The children which are not visible will be disposed
+              /// and garbage collected automatically
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: false,
             ),
           ],
         ),

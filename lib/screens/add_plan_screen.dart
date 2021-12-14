@@ -63,6 +63,11 @@ class AddPlanScreen extends StatelessWidget {
                   ),
                   separatorBuilder: (_, __) => const SizedBox(height: 20),
                   itemCount: newExercises.length,
+
+                  /// The children which are not visible will be disposed
+                  /// and garbage collected automatically
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
                 ),
               ),
             ),
