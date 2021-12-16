@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zor/widgets/small/custom_button.dart';
 
 class ExercisingScreen extends StatelessWidget {
   const ExercisingScreen({Key? key}) : super(key: key);
@@ -25,9 +26,7 @@ class ExercisingScreen extends StatelessWidget {
 
             /// List of exercises
             /// TODO: finish it
-            Expanded(
-              child: Container(),
-            ),
+            const Spacer(),
 
             /// Bottom section
             Padding(
@@ -37,27 +36,15 @@ class ExercisingScreen extends StatelessWidget {
                 bottom: 30,
                 left: 30,
               ),
-              child: InkWell(
-                onTap: () {
+              child: CustomButton(
+                title: 'Selesai',
+                onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     '/',
                     (Route<dynamic> route) => false,
                   );
                 },
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Selesai',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
               ),
             ),
           ],

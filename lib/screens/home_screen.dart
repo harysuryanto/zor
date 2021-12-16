@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zor/widgets/exercise_list.dart';
-import 'package:zor/widgets/news_carousel.dart';
+import 'package:zor/widgets/big/exercise_list.dart';
+import 'package:zor/widgets/big/news_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

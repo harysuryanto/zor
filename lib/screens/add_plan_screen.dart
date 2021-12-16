@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zor/models/new_exercises.dart';
-import 'package:zor/widgets/add_exercise_list_tile.dart';
+import 'package:zor/widgets/small/add_exercise_list_tile.dart';
 
 class AddPlanScreen extends StatelessWidget {
   final _nameTextEditingController = TextEditingController();

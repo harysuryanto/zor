@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../providers/workouts.dart';
-import '../widgets/custom_list_tile.dart';
+import '../widgets/small/custom_list_tile.dart';
 
 class DetailPlanScreen extends StatelessWidget {
   const DetailPlanScreen({Key? key}) : super(key: key);
