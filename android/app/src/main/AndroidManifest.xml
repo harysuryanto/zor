@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.zor">
+    package="id.harysuryanto.zor">
    <application
         android:label="Zor"
         android:icon="@mipmap/ic_launcher">
