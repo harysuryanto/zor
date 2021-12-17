@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timelines/timelines.dart';
 
 import '../providers/workouts.dart';
 import '../widgets/small/custom_list_tile.dart';
@@ -18,49 +19,57 @@ class DetailPlanScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 60,
-                        right: 30,
-                        bottom: 20,
-                        left: 30,
-                      ),
-                      child: Text(
-                        'Workout Senin (detail screen)',
-                        style: TextStyle(fontSize: 18),
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: 60,
+                      right: 30,
+                      bottom: 20,
+                      left: 30,
                     ),
+                    child: Text(
+                      'Workout Senin (detail screen)',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
 
-                    /// TODO: Change the list to timeline style
-                    /// List of exercises
-                    ListView.separated(
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: CustomListTile(
-                            key: UniqueKey(),
-                            title: workouts[index].title,
-                            subtitle: workouts[index].subtitle,
-                            onTap: () {},
+                  /// List of exercises
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Timeline.tileBuilder(
+                        theme: TimelineThemeData(
+                          connectorTheme: const ConnectorThemeData(
+                            color: Colors.black12,
                           ),
-                        );
-                      },
-                      separatorBuilder: (_, __) => const SizedBox(height: 20),
-                      itemCount: workouts.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-
-                      /// The children which are not visible will be disposed
-                      /// and garbage collected automatically
-                      addAutomaticKeepAlives: false,
-                      addRepaintBoundaries: false,
+                          indicatorTheme: const IndicatorThemeData(
+                            color: Colors.red,
+                          ),
+                        ),
+                        builder: TimelineTileBuilder.fromStyle(
+                          contentsAlign: ContentsAlign.basic,
+                          nodePositionBuilder: (_, __) => 0,
+                          connectorStyle: ConnectorStyle.dashedLine,
+                          contentsBuilder: (context, index) => Padding(
+                            key: UniqueKey(),
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              bottom: 10,
+                            ),
+                            child: CustomListTile(
+                              title: workouts[index].title,
+                              subtitle: workouts[index].subtitle,
+                              onTap: () {},
+                            ),
+                          ),
+                          itemCount: workouts.length,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
