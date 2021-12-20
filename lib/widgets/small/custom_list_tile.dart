@@ -7,8 +7,8 @@ class CustomListTile extends StatelessWidget {
 
   const CustomListTile({
     Key? key,
-    this.title = 'Workout Senin',
-    this.subtitle = '20 menit • Jumping Jack, Plank, ...',
+    this.title = 'Title here',
+    this.subtitle = 'Subtitle here',
     this.onTap,
   }) : super(key: key);
 
