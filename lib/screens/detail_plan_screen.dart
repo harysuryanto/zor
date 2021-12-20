@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
-import '../providers/workouts.dart';
 import '../widgets/small/custom_list_tile.dart';
 
 class DetailPlanScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class DetailPlanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Get arguments
     final arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    print(arguments['data_index']);
+    final List myExercises = arguments['myExercises'];
 
     return Scaffold(
       body: SafeArea(
@@ -30,7 +29,7 @@ class DetailPlanScreen extends StatelessWidget {
                       left: 30,
                     ),
                     child: Text(
-                      'Workout Senin (detail screen)',
+                      'Workout Senin (Detail Plan Screen)',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -59,12 +58,13 @@ class DetailPlanScreen extends StatelessWidget {
                               bottom: 10,
                             ),
                             child: CustomListTile(
-                              title: workouts[index].title,
-                              subtitle: workouts[index].subtitle,
+                              title: myExercises[index].name,
+                              subtitle:
+                                  "${myExercises[index].duration} ${myExercises[index].repetitions} ${myExercises[index].sets} ${myExercises[index].restTime}",
                               onTap: () {},
                             ),
                           ),
-                          itemCount: workouts.length,
+                          itemCount: myExercises.length,
                         ),
                       ),
                     ),
@@ -99,7 +99,13 @@ class DetailPlanScreen extends StatelessWidget {
                     onTap: () {
                       print('Mulai olahraga 🏃‍♂️');
 
-                      Navigator.pushNamed(context, '/exercising');
+                      Navigator.pushNamed(
+                        context,
+                        '/exercising',
+                        arguments: {
+                          'myExercises': myExercises,
+                        },
+                      );
                     },
                     child: Row(
                       children: const [
