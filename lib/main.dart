@@ -17,17 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Zor',
-      // The Mandy red, light theme.
       theme: FlexThemeData.light(scheme: FlexScheme.deepBlue),
-      // The Mandy red, dark theme.
       darkTheme: FlexThemeData.dark(scheme: FlexScheme.deepBlue),
-      // Use dark or light theme based on system setting.
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       routes: {
         '/': (context) => const HomeScreen(),
         '/detail-plan': (context) => const DetailPlanScreen(),
         '/add-plan': (context) => AddPlanScreen(),
-        '/exercising': (context) => ExercisingScreen(),
+        '/exercising': (context) => const ExercisingScreen(),
       },
     );
   }
