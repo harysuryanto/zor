@@ -7,7 +7,8 @@ Design from [here](https://www.figma.com/file/vww4U00zfjtoUEpk6Ftdwi/Zor-(Perenc
 
 ## App Flow
 
-![Zor-App-Flow-MindMeister-Mind-Map](https://user-images.githubusercontent.com/17674038/148361969-0a5b91a4-a684-49d5-814b-f0bdadff032b.png)
+![image](https://user-images.githubusercontent.com/17674038/148396920-6d4d1f17-253e-41be-92c1-22be019a70ec.png)
+
 
 
 
