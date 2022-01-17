@@ -5,48 +5,44 @@ import '../providers/auth.dart';
 import '../utils/colors.dart';
 import '../widgets/small/navigator_wrapper.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<RegisterScreen> {
   final auth = Auth();
   final _formKey = GlobalKey<FormState>();
 
+  String _name = '';
   String _email = '';
   String _password = '';
-  bool _isLoggingIn = false;
-  bool _isLoggingInAnonimously = false;
+  bool _isRegistering = false;
 
-  void _login() async {
+  void _register() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoggingIn = true);
+      setState(() => _isRegistering = true);
 
-      bool login = await auth.login(email: _email, password: _password);
-      if (login) {
-        context.go('/');
+      bool register = await auth.register(
+        email: _email,
+        password: _password,
+        name: _name,
+      );
+      if (register) {
+        context.go('/login');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Berhasil register.')),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email atau password salah.')),
+          const SnackBar(content: Text('Mohon gunakan email lain.')),
         );
       }
 
-      setState(() => _isLoggingIn = false);
+      setState(() => _isRegistering = false);
     }
-  }
-
-  void _loginAnonimously() async {
-    setState(() => _isLoggingInAnonimously = true);
-
-    bool login = await auth.loginAnonymously();
-    if (login) {
-      context.go('/');
-    }
-
-    setState(() => _isLoggingInAnonimously = false);
   }
 
   @override
@@ -84,6 +80,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           TextFormField(
+                            onChanged: (value) => setState(() => _name = value),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mohon isi nama.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Nama',
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
                             onChanged: (value) =>
                                 setState(() => _email = value),
                             validator: (value) {
@@ -113,25 +122,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
-                            child: _isLoggingIn
+                            child: _isRegistering
                                 ? const CircularProgressIndicator()
-                                : const Text('Login'),
+                                : const Text('Register'),
                             onPressed: () {
-                              _login();
+                              _register();
                             },
                           ),
                           TextButton(
-                            child: _isLoggingInAnonimously
-                                ? const CircularProgressIndicator()
-                                : const Text('Lanjutkan secara anonim'),
+                            child: const Text('Sudah memiliki akun? Login.'),
                             onPressed: () {
-                              _loginAnonimously();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Belum memiliki akun? Register.'),
-                            onPressed: () {
-                              context.push('/register');
+                              context.pop();
                             },
                           ),
                         ],
