@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -9,28 +7,76 @@ class Auth {
     return auth.authStateChanges();
   }
 
-  bool isLoggedIn = false;
-
-  void loginAnonymously() async {
-    isLoggedIn = true;
-    // print('📥 Logged in');
+  Future<bool> loginAnonymously() async {
+    print('📥 Logged in');
 
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInAnonymously();
+      await auth.signInAnonymously();
+      return true;
     } catch (e) {
       print('Exception: $e');
     }
 
-    // notifyListeners();
+    return false;
+  }
+
+  Future<bool> login({required String email, required String password}) async {
+    try {
+      await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    } catch (e) {
+      print('Something went wrong:\n$e');
+    }
+
+    return false;
+  }
+
+  Future<bool> register({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      /// TODO: Add a document containing user's [name]
+
+      /// Send email verification
+      await userCredential.user!.sendEmailVerification();
+
+      /// Tell the user that we have sent verification email
+      print('Verification email has been sent. Please verify your email.');
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print('Something went wrong:\n$e');
+    }
+
+    return false;
   }
 
   void logout() async {
-    isLoggedIn = false;
-    // print('📤 Logged out');
+    print('📤 Logged out');
 
-    await FirebaseAuth.instance.signOut();
-
-    // notifyListeners();
+    await auth.signOut();
   }
 }
