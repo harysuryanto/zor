@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zor/models/new_exercises.dart';
-import 'package:zor/widgets/small/add_exercise_list_tile.dart';
+import 'package:go_router/go_router.dart';
+
+import '../models/new_exercises.dart';
+import '../widgets/small/add_exercise_list_tile.dart';
 
 class AddPlanScreen extends StatelessWidget {
   final _nameTextEditingController = TextEditingController();
@@ -82,7 +84,7 @@ class AddPlanScreen extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 borderRadius: BorderRadius.circular(8),
                 child: Container(

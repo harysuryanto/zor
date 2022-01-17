@@ -1,15 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:zor/providers/auth.dart';
-import 'package:zor/widgets/big/exercise_list.dart';
-import 'package:zor/widgets/big/news_carousel.dart';
+import 'package:go_router/go_router.dart';
+
+import '../providers/auth.dart';
+import '../widgets/big/exercise_list.dart';
+import '../widgets/big/news_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   String get _displayName {
     final currentUser = FirebaseAuth.instance.currentUser!;
-    return currentUser.displayName ?? currentUser.uid;
+    return currentUser.displayName ?? currentUser.email ?? currentUser.uid;
   }
 
   @override
@@ -40,6 +42,8 @@ class HomeScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     auth.logout();
+
+                    context.go('/login');
                   },
                   child: const Text('Logout'),
                 ),

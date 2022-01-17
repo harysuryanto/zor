@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ExercisingScreen extends StatefulWidget {
   const ExercisingScreen({Key? key}) : super(key: key);
@@ -139,11 +140,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                       onPressed: () {
                         if (_isEndOfExercise) {
                           /// Go back to Home Screen
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/',
-                            (Route<dynamic> route) => false,
-                          );
+                          context.go('/');
                         } else {
                           /// Show next exercise
                           handleNextExercise();
