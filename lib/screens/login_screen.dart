@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,34 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password = '';
   bool _isLoggingIn = false;
   bool _isLoggingInAnonimously = false;
-
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoggingIn = true);
-
-      bool login = await auth.login(email: _email, password: _password);
-      if (login) {
-        context.go('/');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email atau password salah.')),
-        );
-      }
-
-      setState(() => _isLoggingIn = false);
-    }
-  }
-
-  void _loginAnonimously() async {
-    setState(() => _isLoggingInAnonimously = true);
-
-    bool login = await auth.loginAnonymously();
-    if (login) {
-      context.go('/');
-    }
-
-    setState(() => _isLoggingInAnonimously = false);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,5 +118,45 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoggingIn = true);
+
+      try {
+        await auth.login(email: _email, password: _password);
+        context.go('/');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          _showSnackbar('Tidak tersedia akun dengan email tersebut.');
+        } else if (e.code == 'wrong-password') {
+          _showSnackbar('Password salah.');
+        }
+      } catch (e) {
+        _showSnackbar('Terjadi kesalahan:\n$e');
+      }
+
+      setState(() => _isLoggingIn = false);
+    }
+  }
+
+  void _loginAnonimously() async {
+    setState(() => _isLoggingInAnonimously = true);
+
+    try {
+      await auth.loginAnonymously();
+      context.go('/');
+    } catch (e) {
+      _showSnackbar('Terjadi kesalahan:\n$e');
+    }
+
+    setState(() => _isLoggingInAnonimously = false);
   }
 }

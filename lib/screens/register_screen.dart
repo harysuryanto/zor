@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,30 +21,6 @@ class _LoginScreenState extends State<RegisterScreen> {
   String _email = '';
   String _password = '';
   bool _isRegistering = false;
-
-  void _register() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isRegistering = true);
-
-      bool register = await auth.register(
-        email: _email,
-        password: _password,
-        name: _name,
-      );
-      if (register) {
-        context.go('/login');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Berhasil register.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Mohon gunakan email lain.')),
-        );
-      }
-
-      setState(() => _isRegistering = false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,5 +123,40 @@ class _LoginScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _register() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isRegistering = true);
+
+      try {
+        UserCredential userCredential =
+            await auth.instance.createUserWithEmailAndPassword(
+          email: _email.trim(),
+          password: _password,
+        );
+
+        /// Update user's name
+        await userCredential.user!.updateDisplayName(_name);
+
+        context.go('/home');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          _showSnackbar('Password terlalu lemah');
+        } else if (e.code == 'email-already-in-use') {
+          _showSnackbar('Email sudah digunakan oleh akun lain.');
+        }
+      } catch (e) {
+        _showSnackbar('Terjadi kesalahan:\n$e');
+      }
+
+      setState(() => _isRegistering = false);
+    }
   }
 }
