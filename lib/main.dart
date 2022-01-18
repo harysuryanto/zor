@@ -63,17 +63,17 @@ class MyApp extends StatelessWidget {
       /// Check wheter the user has logged in or not
       final loggedIn = auth.isLoggedIn;
 
-      /// Check wheter the user in in login screen
-      final loggingIn = state.subloc == '/login';
+      /// Check wheter the user in in login screen or register screen
+      final loggingIn = state.subloc == '/login' || state.subloc == '/register';
 
       /// Will redirect to login screen if the user is not logged in
-      /// and is not in login screen
+      /// and is not in login screen or register screen
       if (!loggedIn && !loggingIn) {
         return '/login';
       }
 
       /// Will redirect to home screen if the user has logged in
-      /// and is in login screen
+      /// and is in login screen or register screen
       if (loggedIn && loggingIn) {
         return '/';
       }
