@@ -145,7 +145,7 @@ class _LoginScreenState extends State<RegisterScreen> {
         /// Update user's name
         await userCredential.user!.updateDisplayName(_name);
 
-        context.go('/home');
+        context.go('/');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           _showSnackbar('Password terlalu lemah');
