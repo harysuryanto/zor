@@ -12,9 +12,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   String get _displayName {
-    // final currentUser = FirebaseAuth.instance.currentUser!;
-    return 'Hary';
-    // return currentUser.displayName ?? currentUser.email ?? currentUser.uid;
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    return currentUser.displayName ?? currentUser.email ?? currentUser.uid;
   }
 
   @override
@@ -25,8 +24,8 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: primaryColor,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Logout',
-        onPressed: () {
-          auth.logout();
+        onPressed: () async {
+          await auth.logout();
           context.go('/login');
         },
         child: const Icon(Icons.logout_rounded),
