@@ -54,7 +54,6 @@ class _AddExerciseListTileState extends State<AddExerciseListTile> {
             onTap: () {
               print('Deleting item ${widget.index}');
 
-              /// TODO: uncomment this below after state manager implemented
               // newExercises.removeAt(index);
             },
             child: Container(
