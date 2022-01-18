@@ -29,10 +29,10 @@ class ArticleListTile extends StatelessWidget {
           children: [
             CachedNetworkImage(
               imageUrl: imageUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Center(
-                child: Icon(Icons.error),
-              ),
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) =>
+                  const Center(child: Icon(Icons.error)),
             ),
             const SizedBox(height: 6),
             Padding(
