@@ -13,7 +13,9 @@ class HomeScreen extends StatelessWidget {
 
   String get _displayName {
     final currentUser = FirebaseAuth.instance.currentUser!;
-    return currentUser.displayName ?? currentUser.email ?? currentUser.uid;
+    return currentUser.displayName?.split(' ')[0] ??
+        currentUser.email ??
+        currentUser.uid;
   }
 
   @override
