@@ -56,19 +56,30 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => const ExercisingScreen(),
       ),
     ],
-    initialLocation: '/login',
+    initialLocation: '/',
+    redirect: (state) {
+      final auth = Auth();
 
-    /// TODO: Fix this authorization
-    /* navigatorBuilder: (context, state, child) {
-      final currentUser = FirebaseAuth.instance.currentUser;
+      /// Check wheter the user has logged in or not
+      final loggedIn = auth.isLoggedIn;
 
-      // Tell the user to log in if has not
-      if (currentUser == null) {
-        return const LoginScreen();
+      /// Check wheter the user in in login screen
+      final loggingIn = state.subloc == '/login';
+
+      /// Will redirect to login screen if the user is not logged in
+      /// and is not in login screen
+      if (!loggedIn && !loggingIn) {
+        return '/login';
       }
 
-      return const HomeScreen();
-    }, */
+      /// Will redirect to home screen if the user has logged in
+      /// and is in login screen
+      if (loggedIn && loggingIn) {
+        return '/';
+      }
+
+      return null;
+    },
   );
 
   @override
@@ -94,6 +105,7 @@ class MyApp extends StatelessWidget {
             )),
             darkTheme: FlexThemeData.dark(scheme: FlexScheme.deepBlue),
             themeMode: ThemeMode.light,
+            debugShowCheckedModeBanner: false,
           );
         }
 
