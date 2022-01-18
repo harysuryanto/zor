@@ -23,7 +23,7 @@ class Auth {
   Future<bool> login({required String email, required String password}) async {
     try {
       await auth.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
 
@@ -48,7 +48,7 @@ class Auth {
   }) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
 
