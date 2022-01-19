@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../providers/auth.dart';
+import '../models/auth.dart';
 import '../utils/colors.dart';
 import '../widgets/small/navigator_wrapper.dart';
 

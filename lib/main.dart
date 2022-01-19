@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
-import 'providers/auth.dart';
+import 'models/auth.dart';
 import 'screens/add_plan_screen.dart';
 import 'screens/detail_plan_screen.dart';
 import 'screens/exercising_screen.dart';

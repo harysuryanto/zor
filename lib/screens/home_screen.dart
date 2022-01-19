@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zor/utils/colors.dart';
 import 'package:zor/widgets/big/plan_reminder_list.dart';
 
-import '../providers/auth.dart';
+import '../models/auth.dart';
 import '../widgets/big/exercise_list.dart';
 import '../widgets/big/article_list.dart';
 
