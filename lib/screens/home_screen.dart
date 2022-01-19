@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
     final currentUser = FirebaseAuth.instance.currentUser!;
     return currentUser.displayName?.split(' ')[0] ??
         currentUser.email ??
-        currentUser.uid;
+        'anonim';
   }
 
   @override
@@ -47,8 +47,9 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '👋 Hai, $_displayName',
+                    'Hai, $_displayName 👋',
                     style: const TextStyle(fontSize: 24),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
                   const Text(
