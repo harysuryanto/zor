@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zor/screens/all_plans_screen.dart';
 
 import 'firebase_options.dart';
 import 'models/auth.dart';
@@ -41,10 +42,16 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
+        path: '/all-plans',
+        builder: (context, state) {
+          return const AllPlansScreen();
+        },
+      ),
+      GoRoute(
         path: '/detail-plan',
         builder: (context, state) {
-          final String myExercises = state.queryParams['myExercises']!;
-          return DetailPlanScreen(myExercises: myExercises);
+          final String planIndex = state.queryParams['planIndex']!;
+          return DetailPlanScreen(planIndex: planIndex);
         },
       ),
       GoRoute(
