@@ -19,6 +19,11 @@ class _VerticalSliderState extends State<VerticalSlider> {
     int childrenCount = children.length;
     const Duration animationDuration = Duration(milliseconds: 100);
 
+    /// Do not show anything if no children
+    if (childrenCount == 0) {
+      return Container();
+    }
+
     return AnimatedOpacity(
       opacity: _isVisible ? 1.0 : 0.0,
       duration: animationDuration,
@@ -51,19 +56,21 @@ class _VerticalSliderState extends State<VerticalSlider> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int i = 0; i < childrenCount; i++)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Container(
-                      width: 4,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color:
-                            i == _currentIndex ? Colors.grey : Colors.black12,
+                /// Do not show indicator if there is only one child
+                if (childrenCount > 1)
+                  for (int i = 0; i < childrenCount; i++)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Container(
+                        width: 4,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color:
+                              i == _currentIndex ? Colors.grey : Colors.black12,
+                        ),
                       ),
                     ),
-                  ),
               ],
             ),
           ],
