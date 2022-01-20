@@ -19,7 +19,7 @@ class AllPlansScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => context.go('add-plan'),
+        onPressed: () => context.go('/add-plan'),
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(vertical: 30),
