@@ -5,7 +5,7 @@ import 'package:zor/utils/colors.dart';
 import 'package:zor/widgets/big/plan_reminder_list.dart';
 
 import '../models/auth.dart';
-import '../widgets/big/exercise_list.dart';
+import '../widgets/big/plan_list.dart';
 import '../widgets/big/article_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -124,13 +124,13 @@ class HomeScreen extends StatelessWidget {
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(30),
-                                      onTap: () => context.push('/add-plan'),
+                                      onTap: () => context.push('/all-plans'),
                                     ),
                                   ],
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              const ExerciseList(),
+                              const PlanList(isScrollable: false, limit: 3),
 
                               const SizedBox(height: 30),
 
