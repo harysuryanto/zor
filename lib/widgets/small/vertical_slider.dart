@@ -49,6 +49,7 @@ class _VerticalSliderState extends State<VerticalSlider> {
             children[_currentIndex],
             const SizedBox(width: 5),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (int i = 0; i < childrenCount; i++)
                   Padding(
