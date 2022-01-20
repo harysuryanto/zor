@@ -103,14 +103,14 @@ class MyApp extends StatelessWidget {
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
             title: 'Zor',
-            theme: FlexThemeData.light(scheme: FlexScheme.deepBlue).copyWith(
+            theme: FlexThemeData.light(scheme: FlexScheme.redWine).copyWith(
                 inputDecorationTheme: const InputDecorationTheme(
               border: OutlineInputBorder(
                 borderSide: BorderSide(),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             )),
-            darkTheme: FlexThemeData.dark(scheme: FlexScheme.deepBlue),
+            darkTheme: FlexThemeData.dark(scheme: FlexScheme.redWine),
             themeMode: ThemeMode.light,
             debugShowCheckedModeBanner: false,
           );
