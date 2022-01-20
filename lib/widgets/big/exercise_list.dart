@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../models/plans.dart';
+import '../../models/database.dart';
 import '../../utils/colors.dart';
 import '../small/plan_list_tile.dart';
 
@@ -12,7 +12,7 @@ class ExerciseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final exercises = Plans().exercises(planId: planId);
+    final exercises = Database().exercises(planId: planId);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),

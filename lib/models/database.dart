@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Plans {
+class Database {
   FirebaseFirestore instance = FirebaseFirestore.instance;
 
   DocumentReference get currentUser {

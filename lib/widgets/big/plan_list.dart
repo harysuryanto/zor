@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../models/plans.dart';
+import '../../models/database.dart';
 import '../small/plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
@@ -17,7 +17,7 @@ class PlanList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plans = Plans().plans;
+    final plans = Database().plans;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
