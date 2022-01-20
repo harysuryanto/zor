@@ -36,7 +36,8 @@ class PlanList extends StatelessWidget {
                 return PlanListTile(
                   key: UniqueKey(),
                   title: data[index]['name'],
-                  onTap: () => context.go('/detail-plan?planIndex=$index'),
+                  onTap: () =>
+                      context.push('/detail-plan?planId=${data[index].id}'),
                 );
               },
               separatorBuilder: (_, __) => const SizedBox(height: 20),

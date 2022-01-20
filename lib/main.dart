@@ -3,16 +3,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zor/screens/all_plans_screen.dart';
 
 import 'firebase_options.dart';
 import 'models/auth.dart';
 import 'screens/add_plan_screen.dart';
+import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
 import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
+import 'utils/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,8 +51,8 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/detail-plan',
         builder: (context, state) {
-          final String planIndex = state.queryParams['planIndex']!;
-          return DetailPlanScreen(planIndex: planIndex);
+          final String planId = state.queryParams['planId']!;
+          return DetailPlanScreen(planId: planId);
         },
       ),
       GoRoute(
@@ -103,15 +104,23 @@ class MyApp extends StatelessWidget {
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
             title: 'Zor',
-            theme: FlexThemeData.light(scheme: FlexScheme.redWine).copyWith(
-                inputDecorationTheme: const InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-            )),
-            darkTheme: FlexThemeData.dark(scheme: FlexScheme.redWine),
             themeMode: ThemeMode.light,
+            theme: FlexThemeData.light(scheme: FlexScheme.redWine).copyWith(
+              appBarTheme: const AppBarTheme(
+                centerTitle: true,
+                backgroundColor: primaryColor,
+                titleTextStyle: TextStyle(fontSize: 14),
+                iconTheme: IconThemeData(color: blackColor),
+              ),
+              inputDecorationTheme: const InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+              floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                  backgroundColor: primaryColor),
+            ),
             debugShowCheckedModeBanner: false,
           );
         }

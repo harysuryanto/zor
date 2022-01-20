@@ -8,15 +8,7 @@ class AllPlansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 300),
-          child: Center(
-            child:
-                Text('📆 Rencana Olahragamu', style: TextStyle(fontSize: 14)),
-          ),
-        ),
-      ),
+      appBar: AppBar(title: const Text('📆 Rencana Olahragamu')),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => context.go('/add-plan'),
