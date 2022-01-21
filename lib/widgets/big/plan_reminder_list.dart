@@ -14,22 +14,27 @@ class PlanReminderList extends StatelessWidget {
         child: Row(
           children: const [
             PlanReminderListTile(
+              key: ValueKey('remider1'),
               title: 'Workout Upper Body',
               subTitle: '6 latihan | 30 rep total',
             ),
             PlanReminderListTile(
+              key: ValueKey('remider2'),
               title: 'Workout Upper Body',
               subTitle: '6 latihan | 30 rep total',
             ),
             PlanReminderListTile(
+              key: ValueKey('remider3'),
               title: 'Workout Lower Body',
               subTitle: '12 latihan | 48 rep total',
             ),
             PlanReminderListTile(
+              key: ValueKey('remider4'),
               title: 'Workout Upper Body',
               subTitle: '6 latihan | 30 rep total',
             ),
             PlanReminderListTile(
+              key: ValueKey('remider5'),
               title: 'Workout Lower Body',
               subTitle: '12 latihan | 48 rep total',
             ),

@@ -34,7 +34,7 @@ class PlanList extends StatelessWidget {
             return ListView.separated(
               itemBuilder: (context, index) {
                 return PlanListTile(
-                  key: UniqueKey(),
+                  key: ValueKey(data[index].id),
                   title: data[index]['name'],
                   onTap: () =>
                       context.push('/detail-plan?planId=${data[index].id}'),

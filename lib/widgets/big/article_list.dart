@@ -13,10 +13,10 @@ class ArticleList extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Row(
           children: const [
-            ArticleListTile(),
-            ArticleListTile(),
-            ArticleListTile(),
-            ArticleListTile(),
+            ArticleListTile(key: ValueKey('article1')),
+            ArticleListTile(key: ValueKey('article2')),
+            ArticleListTile(key: ValueKey('article3')),
+            ArticleListTile(key: ValueKey('article4')),
           ],
         ),
       ),

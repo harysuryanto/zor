@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              PlanReminderList(key: UniqueKey()),
+                              const PlanReminderList(),
 
                               const SizedBox(height: 30),
 
@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              ArticleList(key: UniqueKey()),
+                              const ArticleList(),
 
                               const SizedBox(height: 30),
                             ],
