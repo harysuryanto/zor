@@ -2,8 +2,8 @@
 
 [ID] Aplikasi untuk membuat rencana olahraga.  
 [EN] An app to make exercise plans.  
-This is a mobile app, but you can try the web version [here](https://zor-workout.netlify.app).  
-Design from [here](https://www.figma.com/file/vww4U00zfjtoUEpk6Ftdwi/Zor-(Perencana-Olahraga)?node-id=1%3A3).
+This is a mobile app, but I also compile it to web and You can try it [here](https://zor-workout.netlify.app).  
+Design from [here](https://www.figma.com/file/IwcLtKSnTyDLRFML6qSfTx/Zor-v2?node-id=0%3A1).
 
 ## App Flow
 
