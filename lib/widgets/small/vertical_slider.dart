@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class VerticalSlider extends StatefulWidget {
   final List<Widget> children;
@@ -29,7 +30,7 @@ class _VerticalSliderState extends State<VerticalSlider> {
       duration: animationDuration,
       child: InkWell(
         onTap: () async {
-          Feedback.forLongPress(context);
+          HapticFeedback.lightImpact();
 
           setState(() {
             _isVisible = !_isVisible;
