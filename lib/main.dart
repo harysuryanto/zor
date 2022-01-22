@@ -64,7 +64,6 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => const ExercisingScreen(),
       ),
     ],
-    initialLocation: '/',
     redirect: (state) {
       final auth = Auth();
 
@@ -110,7 +109,6 @@ class MyApp extends StatelessWidget {
                 centerTitle: true,
                 backgroundColor: primaryColor,
                 titleTextStyle: TextStyle(fontSize: 14),
-                iconTheme: IconThemeData(color: blackColor),
               ),
               inputDecorationTheme: const InputDecorationTheme(
                 border: OutlineInputBorder(
