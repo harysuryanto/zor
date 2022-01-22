@@ -52,7 +52,15 @@ class _VerticalSliderState extends State<VerticalSlider> {
         },
         child: Row(
           children: [
-            children[_currentIndex],
+            Container(
+              padding: const EdgeInsets.all(15),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: children[_currentIndex],
+            ),
             const SizedBox(width: 5),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
