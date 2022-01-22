@@ -8,7 +8,7 @@ class ArticleListTile extends StatelessWidget {
 
   const ArticleListTile({
     this.imageUrl = 'https://picsum.photos/250',
-    this.title = 'Tetap FIt dan Bugar di Usia 40-an',
+    this.title = 'Tetap Fit dan Bugar di Usia 40-an',
     Key? key,
   }) : super(key: key);
 
