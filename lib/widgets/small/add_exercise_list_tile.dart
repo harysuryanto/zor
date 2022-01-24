@@ -6,7 +6,7 @@ class AddExerciseListTile extends StatefulWidget {
   final String reps;
   final String restTime;
 
-  AddExerciseListTile({
+  const AddExerciseListTile({
     Key? key,
     required this.index,
     required this.name,
@@ -49,8 +49,6 @@ class _AddExerciseListTileState extends State<AddExerciseListTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
             onTap: () {
               print('Deleting item ${widget.index}');
 
