@@ -61,7 +61,10 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/exercising',
-        builder: (context, state) => const ExercisingScreen(),
+        builder: (context, state) {
+          final String planId = state.queryParams['planId']!;
+          return ExercisingScreen(planId: planId);
+        },
       ),
     ],
     redirect: (state) {

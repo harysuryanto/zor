@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ExercisingScreen extends StatefulWidget {
-  const ExercisingScreen({Key? key}) : super(key: key);
+  final String planId;
+  const ExercisingScreen({
+    required this.planId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ExercisingScreen> createState() => _ExercisingScreenState();
