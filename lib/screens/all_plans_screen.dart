@@ -8,7 +8,13 @@ class AllPlansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('📆 Rencana Olahragamu')),
+      appBar: AppBar(
+        title: const Text('📆 Rencana Olahragamu'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.pop(),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => context.go('/add-plan'),

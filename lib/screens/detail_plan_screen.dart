@@ -16,7 +16,13 @@ class DetailPlanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pratinjau Olahraga')),
+      appBar: AppBar(
+        title: const Text('Pratinjau Olahraga'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.pop(),
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -43,10 +49,12 @@ class DetailPlanScreen extends StatelessWidget {
                   outerColor: whiteColor,
                   borderRadius: 10,
                   elevation: 0,
-                  submittedIcon: const Center(child: Text('🚀')),
+                  submittedIcon: const Text(
+                    '🚀',
+                    style: TextStyle(fontSize: 36),
+                  ),
                   onSubmit: () {
-                    context.go('/exercising?planId=$planId');
-
+                    context.push('/exercising2?planId=$planId');
                     Future.delayed(const Duration(seconds: 1),
                         () => _key.currentState!.reset());
                   },
