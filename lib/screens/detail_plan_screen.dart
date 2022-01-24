@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 
+import '../utils/colors.dart';
 import '../widgets/big/exercise_list.dart';
 
 class DetailPlanScreen extends StatelessWidget {
@@ -27,44 +30,28 @@ class DetailPlanScreen extends StatelessWidget {
 
           /// Bottom section
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 30,
-              vertical: 20,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      '20 menit',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Text(
-                      'Estimasi waktu total',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    print('Mulai olahraga 🏃‍♂️');
+            color: primaryColor,
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Builder(
+              builder: (context) {
+                final GlobalKey<SlideActionState> _key = GlobalKey();
+                return SlideAction(
+                  key: _key,
+                  text: 'Geser untuk mulai',
+                  textStyle: Theme.of(context).textTheme.bodyText1,
+                  innerColor: primaryColor,
+                  outerColor: whiteColor,
+                  borderRadius: 10,
+                  elevation: 0,
+                  submittedIcon: const Center(child: Text('🚀')),
+                  onSubmit: () {
+                    context.go('/exercising?planId=$planId');
 
-                    // context.push('/exercising?myExercises=$myExercises');
+                    Future.delayed(const Duration(seconds: 1),
+                        () => _key.currentState!.reset());
                   },
-                  child: Row(
-                    children: const [
-                      Text(
-                        'Mulai olahraga',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(Icons.run_circle_rounded),
-                    ],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
