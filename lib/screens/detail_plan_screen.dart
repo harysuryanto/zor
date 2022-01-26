@@ -53,11 +53,7 @@ class DetailPlanScreen extends StatelessWidget {
                     '🚀',
                     style: TextStyle(fontSize: 36),
                   ),
-                  onSubmit: () {
-                    context.push('/exercising2?planId=$planId');
-                    Future.delayed(const Duration(seconds: 1),
-                        () => _key.currentState!.reset());
-                  },
+                  onSubmit: () => context.push('/exercising2?planId=$planId'),
                 );
               },
             ),
