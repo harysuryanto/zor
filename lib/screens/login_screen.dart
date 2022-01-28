@@ -32,24 +32,22 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         backgroundColor: primaryColor,
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Flexible(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    'Zor',
-                    style: TextStyle(
-                      fontSize: 96,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 80, bottom: 30),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Center(
+                    child: Text(
+                      'Zor',
+                      style: TextStyle(
+                        fontSize: 96,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Center(
-                  child: Padding(
+                  const SizedBox(height: 80),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Form(
                       key: _formKey,
@@ -111,9 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
