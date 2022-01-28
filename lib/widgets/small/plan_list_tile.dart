@@ -8,7 +8,7 @@ class PlanListTile extends StatelessWidget {
   final String? subtitle;
   final String? schedule;
   final int totalReps;
-  final int totalSets;
+  final int? totalSets;
   final void Function()? onTap;
 
   const PlanListTile({
@@ -17,7 +17,7 @@ class PlanListTile extends StatelessWidget {
     this.subtitle,
     this.schedule,
     this.totalReps = 30,
-    this.totalSets = 8,
+    this.totalSets,
     this.onTap,
   }) : super(key: key);
 
@@ -46,7 +46,7 @@ class PlanListTile extends StatelessWidget {
                 ),
 
                 /// Subtitle
-                if (schedule != null) ...[
+                if (subtitle != null) ...[
                   const SizedBox(height: 8),
                   Text(
                     subtitle!,
@@ -80,20 +80,21 @@ class PlanListTile extends StatelessWidget {
                 ),
 
                 /// Sets
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'set total',
-                      style: TextStyle(fontSize: 9),
-                    ),
-                    Text(
-                      '$totalSets',
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  ],
-                ),
+                if (totalSets != null)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'set total',
+                        style: TextStyle(fontSize: 9),
+                      ),
+                      Text(
+                        '$totalSets',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ],
