@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onChanged: (value) =>
                                 setState(() => _email = value),
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value == null || value.trim().isEmpty) {
                                 return 'Mohon isi email yang valid.';
                               }
                               return null;
