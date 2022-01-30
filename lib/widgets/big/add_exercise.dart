@@ -131,38 +131,46 @@ class _AddExerciseState extends State<AddExercise> {
                           children: [
                             /// Repetitions
                             Expanded(
-                              child: ScrollSnapList(
-                                key: sslRepetitionKey,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        _buildRepetitionListItemTile(
-                                            context: context, index: index),
-                                onItemFocus: (index) =>
-                                    _onRepetitionFocus(index),
-                                itemSize:
-                                    40, // Size of widget [_buildRepetitionListItemTile]
-                                itemCount: _repetitionNumbers.length,
-                                dynamicItemOpacity: 0.3,
-                                scrollDirection: Axis.vertical,
-                                scrollPhysics: const BouncingScrollPhysics(),
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context)
+                                    .copyWith(scrollbars: false),
+                                child: ScrollSnapList(
+                                  key: sslRepetitionKey,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          _buildRepetitionListItemTile(
+                                              context: context, index: index),
+                                  onItemFocus: (index) =>
+                                      _onRepetitionFocus(index),
+                                  itemSize:
+                                      40, // Size of widget [_buildRepetitionListItemTile]
+                                  itemCount: _repetitionNumbers.length,
+                                  dynamicItemOpacity: 0.3,
+                                  scrollDirection: Axis.vertical,
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                ),
                               ),
                             ),
 
                             /// Sets
                             Expanded(
-                              child: ScrollSnapList(
-                                key: sslSetKey,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        _buildSetListItemTile(
-                                            context: context, index: index),
-                                onItemFocus: (index) => _onSetFocus(index),
-                                itemSize:
-                                    40, // Size of widget [_buildSetListItemTile]
-                                itemCount: _setNumbers.length,
-                                dynamicItemOpacity: 0.3,
-                                scrollDirection: Axis.vertical,
-                                scrollPhysics: const BouncingScrollPhysics(),
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context)
+                                    .copyWith(scrollbars: false),
+                                child: ScrollSnapList(
+                                  key: sslSetKey,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          _buildSetListItemTile(
+                                              context: context, index: index),
+                                  onItemFocus: (index) => _onSetFocus(index),
+                                  itemSize:
+                                      40, // Size of widget [_buildSetListItemTile]
+                                  itemCount: _setNumbers.length,
+                                  dynamicItemOpacity: 0.3,
+                                  scrollDirection: Axis.vertical,
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                ),
                               ),
                             ),
                           ],
