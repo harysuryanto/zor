@@ -27,10 +27,15 @@ class _AddExerciseState extends State<AddExercise> {
   void initState() {
     super.initState();
 
-    /// Set default values to set and repetition options
-    for (int i = 1; i <= 30; i++) {
-      _setNumbers.add(i);
+    const int maxRepetitions = 50;
+    const int maxSets = 10;
+
+    /// Give set and repetition default values
+    for (int i = 1; i <= maxRepetitions; i++) {
       _repetitionNumbers.add(i);
+    }
+    for (int i = 1; i <= maxSets; i++) {
+      _setNumbers.add(i);
     }
   }
 
@@ -55,11 +60,11 @@ class _AddExerciseState extends State<AddExercise> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('👟', style: TextStyle(fontSize: 96)),
-          const SizedBox(height: 30),
+          const Text('👟', style: TextStyle(fontSize: 72)),
+          const SizedBox(height: 20),
           const Text(
-            'Berapa banyak waktu yang akan digunakan untuk latihan ini?',
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
+            'Berapa banyak waktu yang akan digunakan?',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -106,22 +111,22 @@ class _AddExerciseState extends State<AddExercise> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const [
-                      Text('Rep', style: TextStyle(fontSize: 24)),
-                      Text('Set', style: TextStyle(fontSize: 24)),
+                      Text('Rep', style: TextStyle(fontSize: 18)),
+                      Text('Set', style: TextStyle(fontSize: 18)),
                     ],
                   ),
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: 50,
+                        height: 40,
                         decoration: const BoxDecoration(
                           color: Colors.white54,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                       ),
                       SizedBox(
-                        height: 270,
+                        height: 200,
                         child: Row(
                           children: [
                             /// Repetitions
@@ -135,10 +140,11 @@ class _AddExerciseState extends State<AddExercise> {
                                 onItemFocus: (index) =>
                                     _onRepetitionFocus(index),
                                 itemSize:
-                                    50, // Size of widget [_buildRepetitionListItemTile]
+                                    40, // Size of widget [_buildRepetitionListItemTile]
                                 itemCount: _repetitionNumbers.length,
                                 dynamicItemOpacity: 0.3,
                                 scrollDirection: Axis.vertical,
+                                scrollPhysics: const BouncingScrollPhysics(),
                               ),
                             ),
 
@@ -152,10 +158,11 @@ class _AddExerciseState extends State<AddExercise> {
                                             context: context, index: index),
                                 onItemFocus: (index) => _onSetFocus(index),
                                 itemSize:
-                                    50, // Size of widget [_buildSetListItemTile]
+                                    40, // Size of widget [_buildSetListItemTile]
                                 itemCount: _setNumbers.length,
                                 dynamicItemOpacity: 0.3,
                                 scrollDirection: Axis.vertical,
+                                scrollPhysics: const BouncingScrollPhysics(),
                               ),
                             ),
                           ],
@@ -200,7 +207,7 @@ class _AddExerciseState extends State<AddExercise> {
     required int index,
   }) {
     return Container(
-      height: 50,
+      height: 40,
       alignment: Alignment.center,
       child: Text(
         '${_setNumbers[index]}',
@@ -217,7 +224,7 @@ class _AddExerciseState extends State<AddExercise> {
     required int index,
   }) {
     return Container(
-      height: 50,
+      height: 40,
       alignment: Alignment.center,
       child: Text(
         '${_repetitionNumbers[index]}',
