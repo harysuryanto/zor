@@ -53,7 +53,7 @@ class _AddExerciseState extends State<AddExercise> {
     return Padding(
       padding: const EdgeInsets.all(30),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('👟', style: TextStyle(fontSize: 96)),
           const SizedBox(height: 30),
@@ -98,66 +98,95 @@ class _AddExerciseState extends State<AddExercise> {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              Text('Rep', style: TextStyle(fontSize: 24)),
-              Text('Set', style: TextStyle(fontSize: 24)),
-            ],
-          ),
-          SizedBox(
-            height: 270,
-            child: Row(
-              children: [
-                /// Repetitions
-                Expanded(
-                  child: ScrollSnapList(
-                    key: sslRepetitionKey,
-                    itemBuilder: (BuildContext context, int index) =>
-                        _buildRepetitionListItemTile(
-                            context: context, index: index),
-                    onItemFocus: (index) => _onRepetitionFocus(index),
-                    itemSize:
-                        50, // Size of widget [_buildRepetitionListItemTile]
-                    itemCount: _repetitionNumbers.length,
-                    dynamicItemOpacity: 0.3,
-                    scrollDirection: Axis.vertical,
+          Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      Text('Rep', style: TextStyle(fontSize: 24)),
+                      Text('Set', style: TextStyle(fontSize: 24)),
+                    ],
                   ),
-                ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 270,
+                        child: Row(
+                          children: [
+                            /// Repetitions
+                            Expanded(
+                              child: ScrollSnapList(
+                                key: sslRepetitionKey,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        _buildRepetitionListItemTile(
+                                            context: context, index: index),
+                                onItemFocus: (index) =>
+                                    _onRepetitionFocus(index),
+                                itemSize:
+                                    50, // Size of widget [_buildRepetitionListItemTile]
+                                itemCount: _repetitionNumbers.length,
+                                dynamicItemOpacity: 0.3,
+                                scrollDirection: Axis.vertical,
+                              ),
+                            ),
 
-                /// Sets
-                Expanded(
-                  child: ScrollSnapList(
-                    key: sslSetKey,
-                    itemBuilder: (BuildContext context, int index) =>
-                        _buildSetListItemTile(context: context, index: index),
-                    onItemFocus: (index) => _onSetFocus(index),
-                    itemSize: 50, // Size of widget [_buildSetListItemTile]
-                    itemCount: _setNumbers.length,
-                    dynamicItemOpacity: 0.3,
-                    scrollDirection: Axis.vertical,
+                            /// Sets
+                            Expanded(
+                              child: ScrollSnapList(
+                                key: sslSetKey,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        _buildSetListItemTile(
+                                            context: context, index: index),
+                                onItemFocus: (index) => _onSetFocus(index),
+                                itemSize:
+                                    50, // Size of widget [_buildSetListItemTile]
+                                itemCount: _setNumbers.length,
+                                dynamicItemOpacity: 0.3,
+                                scrollDirection: Axis.vertical,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          OutlinedButton(
-            child: const Text('Simpan', style: TextStyle(color: whiteColor)),
-            onPressed: () {
-              if (_formKeyExerciseName.currentState!.validate()) {
-                print('Siap disimpan ke database');
-                Navigator.of(context).pop();
-              }
-            },
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(width: 1, color: whiteColor),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 15,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          SizedBox(
+            width: double.maxFinite,
+            child: OutlinedButton(
+              child: const Text('Simpan', style: TextStyle(color: whiteColor)),
+              onPressed: () {
+                if (_formKeyExerciseName.currentState!.validate()) {
+                  print('Siap disimpan ke database');
+                  Navigator.of(context).pop();
+                }
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(width: 1, color: whiteColor),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ),
@@ -180,13 +209,6 @@ class _AddExerciseState extends State<AddExercise> {
           fontWeight: _focusedSetIndex == index ? FontWeight.bold : null,
         ),
       ),
-      decoration: BoxDecoration(
-        color: _focusedSetIndex == index ? Colors.white54 : Colors.transparent,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-      ),
     );
   }
 
@@ -202,15 +224,6 @@ class _AddExerciseState extends State<AddExercise> {
         style: TextStyle(
           fontSize: 18,
           fontWeight: _focusedRepetitionIndex == index ? FontWeight.bold : null,
-        ),
-      ),
-      decoration: BoxDecoration(
-        color: _focusedRepetitionIndex == index
-            ? Colors.white54
-            : Colors.transparent,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
         ),
       ),
     );
