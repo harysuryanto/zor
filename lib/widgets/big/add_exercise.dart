@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../utils/colors.dart';
 
@@ -11,7 +12,41 @@ class AddExercise extends StatefulWidget {
 
 class _AddExerciseState extends State<AddExercise> {
   final _formKeyExerciseName = GlobalKey<FormState>();
+  final sslSetKey = GlobalKey<ScrollSnapListState>();
+  final sslRepetitionKey = GlobalKey<ScrollSnapListState>();
+
+  /// Assigned in [initState()]
+  final List<int> _repetitionNumbers = [];
+  final List<int> _setNumbers = [];
+
   String _exerciseName = '';
+  int _focusedRepetitionIndex = 0;
+  int _focusedSetIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// Set default values to set and repetition options
+    for (int i = 1; i <= 30; i++) {
+      _setNumbers.add(i);
+      _repetitionNumbers.add(i);
+    }
+  }
+
+  void _onSetFocus(int index) {
+    setState(() {
+      _focusedSetIndex = index;
+    });
+    print(_focusedSetIndex);
+  }
+
+  void _onRepetitionFocus(int index) {
+    setState(() {
+      _focusedRepetitionIndex = index;
+    });
+    print(_focusedRepetitionIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +58,12 @@ class _AddExerciseState extends State<AddExercise> {
           const Text('👟', style: TextStyle(fontSize: 96)),
           const SizedBox(height: 30),
           const Text(
-            'How much time are you ready to spend on workout?',
+            'Berapa banyak waktu yang akan digunakan untuk latihan ini?',
             style: TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
           ),
           const SizedBox(height: 20),
           const Text(
-            'Make sure it\'s based on science!',
+            'Sebaiknya berdasarkan sains!',
             style: TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 20),
@@ -63,15 +98,47 @@ class _AddExerciseState extends State<AddExercise> {
             ),
           ),
           const SizedBox(height: 20),
-          Center(
-            child: Container(
-              height: 50,
-              width: 200,
-              child: Text('Lanjutkan ini'),
-              decoration: const BoxDecoration(
-                color: Colors.white54,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Text('Rep', style: TextStyle(fontSize: 24)),
+              Text('Set', style: TextStyle(fontSize: 24)),
+            ],
+          ),
+          SizedBox(
+            height: 270,
+            child: Row(
+              children: [
+                /// Repetitions
+                Expanded(
+                  child: ScrollSnapList(
+                    key: sslRepetitionKey,
+                    itemBuilder: (BuildContext context, int index) =>
+                        _buildRepetitionListItemTile(
+                            context: context, index: index),
+                    onItemFocus: (index) => _onRepetitionFocus(index),
+                    itemSize:
+                        50, // Size of widget [_buildRepetitionListItemTile]
+                    itemCount: _repetitionNumbers.length,
+                    dynamicItemOpacity: 0.3,
+                    scrollDirection: Axis.vertical,
+                  ),
+                ),
+
+                /// Sets
+                Expanded(
+                  child: ScrollSnapList(
+                    key: sslSetKey,
+                    itemBuilder: (BuildContext context, int index) =>
+                        _buildSetListItemTile(context: context, index: index),
+                    onItemFocus: (index) => _onSetFocus(index),
+                    itemSize: 50, // Size of widget [_buildSetListItemTile]
+                    itemCount: _setNumbers.length,
+                    dynamicItemOpacity: 0.3,
+                    scrollDirection: Axis.vertical,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -95,6 +162,56 @@ class _AddExerciseState extends State<AddExercise> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSetListItemTile({
+    required BuildContext context,
+    required int index,
+  }) {
+    return Container(
+      height: 50,
+      alignment: Alignment.center,
+      child: Text(
+        '${_setNumbers[index]}',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: _focusedSetIndex == index ? FontWeight.bold : null,
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: _focusedSetIndex == index ? Colors.white54 : Colors.transparent,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRepetitionListItemTile({
+    required BuildContext context,
+    required int index,
+  }) {
+    return Container(
+      height: 50,
+      alignment: Alignment.center,
+      child: Text(
+        '${_repetitionNumbers[index]}',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: _focusedRepetitionIndex == index ? FontWeight.bold : null,
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: _focusedRepetitionIndex == index
+            ? Colors.white54
+            : Colors.transparent,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+        ),
       ),
     );
   }
