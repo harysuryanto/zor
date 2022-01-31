@@ -30,7 +30,7 @@ class _AddExerciseState extends State<AddExercise> {
     const int maxRepetitions = 50;
     const int maxSets = 10;
 
-    /// Give set and repetition default values
+    /// Give repetition and set default values
     for (int i = 1; i <= maxRepetitions; i++) {
       _repetitionNumbers.add(i);
     }
@@ -210,35 +210,39 @@ class _AddExerciseState extends State<AddExercise> {
     );
   }
 
-  Widget _buildSetListItemTile({
-    required BuildContext context,
-    required int index,
-  }) {
-    return Container(
-      height: 40,
-      alignment: Alignment.center,
-      child: Text(
-        '${_setNumbers[index]}',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: _focusedSetIndex == index ? FontWeight.bold : null,
-        ),
-      ),
-    );
-  }
-
   Widget _buildRepetitionListItemTile({
     required BuildContext context,
     required int index,
   }) {
     return Container(
+      key: ValueKey('repetition option index $index'),
       height: 40,
       alignment: Alignment.center,
+      color: Colors.transparent,
       child: Text(
         '${_repetitionNumbers[index]}',
         style: TextStyle(
           fontSize: 18,
           fontWeight: _focusedRepetitionIndex == index ? FontWeight.bold : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSetListItemTile({
+    required BuildContext context,
+    required int index,
+  }) {
+    return Container(
+      key: ValueKey('set option index $index'),
+      height: 40,
+      alignment: Alignment.center,
+      color: Colors.transparent,
+      child: Text(
+        '${_setNumbers[index]}',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: _focusedSetIndex == index ? FontWeight.bold : null,
         ),
       ),
     );
