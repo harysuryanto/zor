@@ -49,7 +49,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
               child: Form(
                 key: _formKeyPlanName,
                 child: TextFormField(
-                  autofocus: true,
                   initialValue: 'Workout Senin',
                   onChanged: (value) => setState(() => _planName = value),
                   validator: (value) {
@@ -72,6 +71,7 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                 children: [
                   for (var i = 0; i < _scheduleOptions.length; i++) ...[
                     Padding(
+                      key: ValueKey('Schedule options item $i'),
                       padding: const EdgeInsets.all(5),
                       child: _buildInteractiveChip(
                         text: _scheduleOptions[i]['day'] as String,
