@@ -107,17 +107,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(primaryColor),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -157,13 +146,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                       onPressed: null,
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1, color: Colors.grey),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 15,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                       ),
                     )
                   : OutlinedButton(
@@ -172,16 +154,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                         style: TextStyle(color: primaryColor),
                       ),
                       onPressed: details.onStepCancel,
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(width: 1, color: primaryColor),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 15,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                     ),
             ),
             const SizedBox(width: 10),
@@ -247,8 +219,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
     TextStyle? textStyle = isSelected
         ? const TextStyle(color: whiteColor, fontSize: 12)
         : const TextStyle(color: primaryColor, fontSize: 12);
-    BorderSide? borderSide =
-        isSelected ? null : const BorderSide(width: 1, color: primaryColor);
     Color? backgroundColor = isSelected ? primaryColor : null;
 
     return OutlinedButton(
@@ -256,13 +226,12 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         backgroundColor: backgroundColor,
-        side: borderSide,
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 6,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
     );
