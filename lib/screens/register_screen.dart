@@ -14,7 +14,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<RegisterScreen> {
-  final auth = Auth();
+  final _auth = Auth();
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
@@ -24,10 +24,6 @@ class _LoginScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// This NavigatorWrapper widget was made to solve an error
-    /// where a TextField needs to be inside of MaterialApp() and not
-    /// MaterialApp.router() or any other MaterialApp-like widget.
-    /// I use MaterialApp.router() because go_router forced us to use it.
     return NavigatorWrapper(
       child: Scaffold(
         backgroundColor: primaryColor,
@@ -41,9 +37,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                   const Center(
                     child: Text(
                       'Zor',
-                      style: TextStyle(
-                        fontSize: 96,
-                      ),
+                      style: TextStyle(fontSize: 96),
                     ),
                   ),
                   const SizedBox(height: 80),
@@ -65,6 +59,8 @@ class _LoginScreenState extends State<RegisterScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Nama',
                             ),
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
@@ -79,6 +75,8 @@ class _LoginScreenState extends State<RegisterScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Email',
                             ),
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
@@ -93,22 +91,20 @@ class _LoginScreenState extends State<RegisterScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Password',
                             ),
+                            keyboardType: TextInputType.visiblePassword,
                             obscureText: true,
+                            textInputAction: TextInputAction.done,
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
                             child: _isRegistering
                                 ? const CircularProgressIndicator()
                                 : const Text('Register'),
-                            onPressed: () {
-                              _register();
-                            },
+                            onPressed: () => _register(),
                           ),
                           TextButton(
                             child: const Text('Sudah memiliki akun? Login.'),
-                            onPressed: () {
-                              context.pop();
-                            },
+                            onPressed: () => context.pop(),
                           ),
                         ],
                       ),
@@ -135,7 +131,7 @@ class _LoginScreenState extends State<RegisterScreen> {
 
       try {
         UserCredential userCredential =
-            await auth.instance.createUserWithEmailAndPassword(
+            await _auth.instance.createUserWithEmailAndPassword(
           email: _email.trim(),
           password: _password,
         );

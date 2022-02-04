@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final auth = Auth();
+  final _auth = Auth();
   final _formKey = GlobalKey<FormState>();
 
   String _email = '';
@@ -24,10 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// This NavigatorWrapper widget was made to solve an error
-    /// where a TextField needs to be inside of MaterialApp() and not
-    /// MaterialApp.router() or any other MaterialApp-like widget.
-    /// I use MaterialApp.router() because go_router forced us to use it.
     return NavigatorWrapper(
       child: Scaffold(
         backgroundColor: primaryColor,
@@ -41,9 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Center(
                     child: Text(
                       'Zor',
-                      style: TextStyle(
-                        fontSize: 96,
-                      ),
+                      style: TextStyle(fontSize: 96),
                     ),
                   ),
                   const SizedBox(height: 80),
@@ -66,6 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Email',
                             ),
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
@@ -80,30 +76,26 @@ class _LoginScreenState extends State<LoginScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Password',
                             ),
+                            keyboardType: TextInputType.visiblePassword,
                             obscureText: true,
+                            textInputAction: TextInputAction.done,
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
                             child: _isLoggingIn
                                 ? const CircularProgressIndicator()
                                 : const Text('Login'),
-                            onPressed: () {
-                              _login();
-                            },
+                            onPressed: () => _login(),
                           ),
                           TextButton(
                             child: _isLoggingInAnonimously
                                 ? const CircularProgressIndicator()
                                 : const Text('Lanjutkan secara anonim'),
-                            onPressed: () {
-                              _loginAnonimously();
-                            },
+                            onPressed: () => _loginAnonimously(),
                           ),
                           TextButton(
                             child: const Text('Belum memiliki akun? Register.'),
-                            onPressed: () {
-                              context.push('/register');
-                            },
+                            onPressed: () => context.push('/register'),
                           ),
                         ],
                       ),
@@ -129,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _isLoggingIn = true);
 
       try {
-        await auth.login(email: _email, password: _password);
+        await _auth.login(email: _email, password: _password);
         context.go('/');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
@@ -149,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoggingInAnonimously = true);
 
     try {
-      await auth.loginAnonymously();
+      await _auth.loginAnonymously();
       context.go('/');
     } catch (e) {
       _showSnackbar('Terjadi kesalahan:\n$e');
