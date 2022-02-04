@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,17 +8,21 @@ import 'models/auth.dart';
 import 'screens/add_plan_screen.dart';
 import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
+import 'screens/exercising2_screen.dart';
 import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
-import 'utils/colors.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Firebase configurations from FlutterFire CLI,
+  /// visit https://firebase.flutter.dev/docs/cli
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // turn off the # in the URLs on the web
+  /// Turn off the # in the URLs on the web
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
 
   runApp(MyApp());
@@ -57,13 +60,20 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/add-plan',
-        builder: (context, state) => AddPlanScreen(),
+        builder: (context, state) => const AddPlanScreen(),
       ),
       GoRoute(
         path: '/exercising',
         builder: (context, state) {
+          // final String planId = state.queryParams['planId']!;
+          return const ExercisingScreen();
+        },
+      ),
+      GoRoute(
+        path: '/exercising2',
+        builder: (context, state) {
           final String planId = state.queryParams['planId']!;
-          return ExercisingScreen(planId: planId);
+          return Exercising2Screen(planId: planId);
         },
       ),
     ],
@@ -106,22 +116,8 @@ class MyApp extends StatelessWidget {
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
             title: 'Zor',
-            themeMode: ThemeMode.light,
-            theme: FlexThemeData.light(scheme: FlexScheme.redWine).copyWith(
-              appBarTheme: const AppBarTheme(
-                centerTitle: true,
-                backgroundColor: primaryColor,
-                titleTextStyle: TextStyle(fontSize: 14),
-              ),
-              inputDecorationTheme: const InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-              ),
-              floatingActionButtonTheme: const FloatingActionButtonThemeData(
-                  backgroundColor: primaryColor),
-            ),
+            themeMode: MyTheme.themeMode,
+            theme: MyTheme.theme,
             debugShowCheckedModeBanner: false,
           );
         }
