@@ -54,6 +54,7 @@ class DetailPlanScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 36),
                   ),
                   onSubmit: () => context.push('/exercising2?planId=$planId'),
+                  // onSubmit: () => context.push('/exercising?planId=$planId'),
                 );
               },
             ),
