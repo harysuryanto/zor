@@ -74,9 +74,11 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                       key: ValueKey('Schedule options item $i'),
                       padding: const EdgeInsets.all(5),
                       child: _buildInteractiveChip(
+                        key: ValueKey(
+                            'Chip ${_scheduleOptions[i]['day'] as String}'),
                         text: _scheduleOptions[i]['day'] as String,
                         isSelected: _scheduleOptions[i]['isSelected'] as bool,
-                        onPressed: () {
+                        onTap: () {
                           setState(() {
                             _scheduleOptions[i].update(
                               'isSelected',
@@ -212,28 +214,33 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
   }
 
   Widget _buildInteractiveChip({
+    Key? key,
     required String text,
     bool isSelected = false,
-    required Function() onPressed,
+    required Function() onTap,
   }) {
     TextStyle? textStyle = isSelected
         ? const TextStyle(color: whiteColor, fontSize: 12)
         : const TextStyle(color: primaryColor, fontSize: 12);
     Color? backgroundColor = isSelected ? primaryColor : null;
 
-    return OutlinedButton(
-      child: Text(text, style: textStyle),
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: backgroundColor,
+    return InkWell(
+      key: key,
+      onTap: onTap,
+      child: AnimatedContainer(
+        child: Text(text, style: textStyle),
+        duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
+          horizontal: 15,
           vertical: 6,
         ),
-        shape: RoundedRectangleBorder(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(width: 1, color: primaryColor),
           borderRadius: BorderRadius.circular(20),
         ),
       ),
+      borderRadius: BorderRadius.circular(20),
     );
   }
 
