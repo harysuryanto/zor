@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zor/utils/colors.dart';
-import 'package:zor/widgets/big/plan_reminder_list.dart';
 
 import '../models/auth.dart';
-import '../widgets/big/plan_list.dart';
+import '../utils/colors.dart';
 import '../widgets/big/article_list.dart';
+import '../widgets/big/plan_list.dart';
+import '../widgets/big/plan_reminder_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
