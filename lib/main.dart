@@ -11,6 +11,7 @@ import 'screens/detail_plan_screen.dart';
 import 'screens/exercising2_screen.dart';
 import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/loading_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
@@ -110,8 +111,6 @@ class MyApp extends StatelessWidget {
       stream: auth.streamAuthStatus,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          // print(snapshot.data);
-
           return MaterialApp.router(
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
@@ -122,27 +121,8 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const LoadingScreen();
-        }
-
         return const LoadingScreen();
       },
-    );
-  }
-}
-
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
     );
   }
 }
