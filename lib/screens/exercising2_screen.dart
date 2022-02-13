@@ -55,8 +55,8 @@ class _Exercising2ScreenState extends State<Exercising2Screen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   /// Illustration
-                  Lottie.network(
-                    'https://assets3.lottiefiles.com/private_files/lf30_i5o0xxk6.json',
+                  Lottie.asset(
+                    'assets/illustrations/seated_dumble_bicep_curl.json',
                     height: 200,
                     key: const ValueKey('Exercising illustration'),
                   ),
