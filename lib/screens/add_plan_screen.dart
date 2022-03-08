@@ -276,7 +276,7 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             ),
 
             /// Padding bottom to prevent content blocked by keyboard
-            Container(height: MediaQuery.of(context).viewInsets.bottom),
+            SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
           ],
         ),
       ),
