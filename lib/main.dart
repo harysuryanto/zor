@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/user_auth.dart';
@@ -10,7 +11,6 @@ import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
 import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/loading_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
@@ -97,24 +97,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = UserAuth();
-
-    return StreamBuilder<User?>(
-      stream: auth.streamAuthStatus,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          return MaterialApp.router(
-            routeInformationParser: _router.routeInformationParser,
-            routerDelegate: _router.routerDelegate,
-            title: 'Zor',
-            themeMode: MyTheme.themeMode,
-            theme: MyTheme.theme,
-            debugShowCheckedModeBanner: false,
-          );
-        }
-
-        return const LoadingScreen();
-      },
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(
+          value: FirebaseAuth.instance.authStateChanges(),
+          initialData: null,
+        ),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Zor',
+        themeMode: MyTheme.themeMode,
+        theme: MyTheme.theme,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+      ),
     );
   }
 }

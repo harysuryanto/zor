@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../databases/database.dart';
+import '../models/plan.dart';
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
@@ -21,6 +24,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = UserAuth();
+    final db = DatabaseService();
+
+    final user = Provider.of<User?>(context);
 
     return Scaffold(
       backgroundColor: primaryColor,
@@ -100,7 +106,7 @@ class HomeScreen extends StatelessWidget {
 
                           const SizedBox(height: 30),
 
-                          /// Exercise List
+                          /// Plan List
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Row(
@@ -124,7 +130,12 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const PlanList(isScrollable: false, limit: 3),
+                          StreamProvider<List<Plan>>.value(
+                            value: db.streamPlans(user!),
+                            initialData: const [],
+                            child:
+                                const PlanList(isScrollable: false, limit: 3),
+                          ),
 
                           const SizedBox(height: 30),
 
