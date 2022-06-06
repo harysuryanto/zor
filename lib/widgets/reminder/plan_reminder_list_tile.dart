@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zor/utils/colors.dart';
+import '../../utils/colors.dart';
 
 class PlanReminderListTile extends StatelessWidget {
   final String title;
