@@ -4,7 +4,7 @@ import 'package:timelines/timelines.dart';
 
 import '../../models/database.dart';
 import '../../utils/colors.dart';
-import '../small/plan_list_tile.dart';
+import '../plan/plan_list_tile.dart';
 
 class ExerciseList extends StatelessWidget {
   final String planId;

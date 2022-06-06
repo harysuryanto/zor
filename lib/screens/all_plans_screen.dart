@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zor/widgets/big/plan_list.dart';
+
+import '../widgets/plan/plan_list.dart';
 
 class AllPlansScreen extends StatelessWidget {
   const AllPlansScreen({Key? key}) : super(key: key);

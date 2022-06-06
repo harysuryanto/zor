@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/database.dart';
-import '../small/plan_list_tile.dart';
+import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
   final bool isScrollable;

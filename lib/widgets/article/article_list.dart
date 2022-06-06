@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zor/widgets/small/article_list_tile.dart';
+
+import 'article_list_tile.dart';
 
 class ArticleList extends StatelessWidget {
   const ArticleList({Key? key}) : super(key: key);

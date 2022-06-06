@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../small/plan_reminder_list_tile.dart';
+import 'plan_reminder_list_tile.dart';
 
 class PlanReminderList extends StatelessWidget {
   const PlanReminderList({Key? key}) : super(key: key);

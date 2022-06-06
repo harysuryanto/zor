@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/colors.dart';
-import '../widgets/big/exercise_list.dart';
+import '../widgets/exercise/exercise_list.dart';
 
 class DetailPlanScreen extends StatelessWidget {
   final String planId;

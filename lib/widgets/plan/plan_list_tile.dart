@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
-import 'vertical_slider.dart';
+import '../global/vertical_slider.dart';
 
 class PlanListTile extends StatelessWidget {
   final String title;

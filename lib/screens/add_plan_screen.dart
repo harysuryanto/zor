@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../utils/colors.dart';
-import '../widgets/big/add_exercise.dart';
-import '../widgets/small/plan_list_tile.dart';
+import '../widgets/exercise/add_exercise.dart';
+import '../widgets/plan/plan_list_tile.dart';
 
 class AddPlanScreen extends StatefulWidget {
   const AddPlanScreen({Key? key}) : super(key: key);
@@ -80,13 +80,10 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                         isSelected: _scheduleOptions[i]['isSelected'] as bool,
                         onTap: () {
                           setState(() {
-                            _scheduleOptions[i].update(
-                              'isSelected',
-                              (value) {
-                                final _value = value as bool;
-                                return !_value;
-                              },
-                            );
+                            _scheduleOptions[i].update('isSelected', (value) {
+                              final invertedValue = value as bool;
+                              return !invertedValue;
+                            });
                           });
                         },
                       ),
@@ -141,29 +138,26 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             Expanded(
               child: details.currentStep == 0
                   ? OutlinedButton(
-                      child: const Text(
-                        'Sebelumnya',
-                        style: TextStyle(color: Colors.grey),
-                      ),
                       onPressed: null,
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(width: 1, color: Colors.grey),
                       ),
+                      child: const Text(
+                        'Sebelumnya',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     )
                   : OutlinedButton(
+                      onPressed: details.onStepCancel,
                       child: const Text(
                         'Sebelumnya',
                         style: TextStyle(color: primaryColor),
                       ),
-                      onPressed: details.onStepCancel,
                     ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                child: details.currentStep == steps.length - 1
-                    ? const Text('Simpan')
-                    : const Text('Selanjutnya'),
                 onPressed: details.onStepContinue,
                 style: ButtonStyle(
                   backgroundColor:
@@ -180,6 +174,9 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                     ),
                   ),
                 ),
+                child: details.currentStep == steps.length - 1
+                    ? const Text('Simpan')
+                    : const Text('Selanjutnya'),
               ),
             ),
           ],
@@ -227,8 +224,8 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
     return InkWell(
       key: key,
       onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
       child: AnimatedContainer(
-        child: Text(text, style: textStyle),
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
           horizontal: 15,
@@ -239,8 +236,8 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
           border: Border.all(width: 1, color: primaryColor),
           borderRadius: BorderRadius.circular(20),
         ),
+        child: Text(text, style: textStyle),
       ),
-      borderRadius: BorderRadius.circular(20),
     );
   }
 

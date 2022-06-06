@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../models/auth.dart';
 import '../utils/colors.dart';
-import '../widgets/big/article_list.dart';
-import '../widgets/big/plan_list.dart';
-import '../widgets/big/plan_reminder_list.dart';
+import '../widgets/article/article_list.dart';
+import '../widgets/plan/plan_list.dart';
+import '../widgets/reminder/plan_reminder_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -117,14 +117,14 @@ class HomeScreen extends StatelessWidget {
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     InkWell(
+                                      borderRadius: BorderRadius.circular(30),
+                                      onTap: () => context.push('/all-plans'),
                                       child: Row(
                                         children: const [
                                           Text('Lihat semua'),
                                           Icon(Icons.chevron_right_rounded),
                                         ],
                                       ),
-                                      borderRadius: BorderRadius.circular(30),
-                                      onTap: () => context.push('/all-plans'),
                                     ),
                                   ],
                                 ),

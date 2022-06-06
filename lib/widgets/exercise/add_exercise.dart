@@ -186,7 +186,6 @@ class _AddExerciseState extends State<AddExercise> {
           SizedBox(
             width: double.maxFinite,
             child: OutlinedButton(
-              child: const Text('Simpan', style: TextStyle(color: whiteColor)),
               onPressed: () {
                 if (_formKeyExerciseName.currentState!.validate()) {
                   print('Siap disimpan ke database');
@@ -203,6 +202,7 @@ class _AddExerciseState extends State<AddExercise> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              child: const Text('Simpan', style: TextStyle(color: whiteColor)),
             ),
           ),
         ],

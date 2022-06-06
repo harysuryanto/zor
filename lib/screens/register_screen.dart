@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../models/auth.dart';
 import '../utils/colors.dart';
-import '../widgets/small/navigator_wrapper.dart';
+import '../widgets/global/navigator_wrapper.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
