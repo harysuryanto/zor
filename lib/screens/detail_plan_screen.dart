@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slide_to_act/slide_to_act.dart';
 
 import '../utils/colors.dart';
 import '../widgets/big/exercise_list.dart';
@@ -35,30 +34,43 @@ class DetailPlanScreen extends StatelessWidget {
           ),
 
           /// Bottom section
-          Container(
-            color: primaryColor,
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Builder(
-              builder: (context) {
-                final GlobalKey<SlideActionState> _key = GlobalKey();
-                return SlideAction(
-                  key: _key,
-                  text: 'Geser untuk mulai',
-                  textStyle: Theme.of(context).textTheme.bodyText1,
-                  innerColor: primaryColor,
-                  outerColor: whiteColor,
-                  borderRadius: 10,
-                  elevation: 0,
-                  submittedIcon: const Text(
-                    '🚀',
-                    style: TextStyle(fontSize: 36),
-                  ),
-                  onSubmit: () => context.push('/exercising2?planId=$planId'),
-                  // onSubmit: () => context.push('/exercising?planId=$planId'),
-                );
-              },
+            child: ElevatedButton(
+              onPressed: () => context.push('/exercising2?planId=$planId'),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(primaryColor)),
+              child: const Text('Mulai sekarang'),
             ),
           ),
+
+          /// Error: Operand of null-aware operation '!' has type 'WidgetsBinding' which excludes null.
+          /// TODO: Look for alternatives.
+          // Container(
+          //   color: primaryColor,
+          //   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          //   child: Builder(
+          //     builder: (context) {
+          //       final GlobalKey<SlideActionState> _key = GlobalKey();
+          //       return SlideAction(
+          //         key: _key,
+          //         text: 'Geser untuk mulai',
+          //         textStyle: Theme.of(context).textTheme.bodyText1,
+          //         innerColor: primaryColor,
+          //         outerColor: whiteColor,
+          //         borderRadius: 10,
+          //         elevation: 0,
+          //         submittedIcon: const Text(
+          //           '🚀',
+          //           style: TextStyle(fontSize: 36),
+          //         ),
+          //         onSubmit: () => context.push('/exercising2?planId=$planId'),
+          //         // onSubmit: () => context.push('/exercising?planId=$planId'),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
