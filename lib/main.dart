@@ -9,7 +9,6 @@ import 'screens/add_plan_screen.dart';
 import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
 import 'screens/exercising2_screen.dart';
-import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/loading_screen.dart';
 import 'screens/login_screen.dart';
@@ -62,13 +61,6 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/add-plan',
         builder: (context, state) => const AddPlanScreen(),
-      ),
-      GoRoute(
-        path: '/exercising',
-        builder: (context, state) {
-          final String planId = state.queryParams['planId']!;
-          return ExercisingScreen(planId: planId);
-        },
       ),
       GoRoute(
         path: '/exercising2',
