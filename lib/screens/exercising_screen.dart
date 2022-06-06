@@ -4,15 +4,15 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../utils/colors.dart';
 
-class Exercising2Screen extends StatefulWidget {
+class ExercisingScreen extends StatefulWidget {
   final String planId;
-  const Exercising2Screen({required this.planId, Key? key}) : super(key: key);
+  const ExercisingScreen({required this.planId, Key? key}) : super(key: key);
 
   @override
-  _Exercising2ScreenState createState() => _Exercising2ScreenState();
+  _ExercisingScreenState createState() => _ExercisingScreenState();
 }
 
-class _Exercising2ScreenState extends State<Exercising2Screen> {
+class _ExercisingScreenState extends State<ExercisingScreen> {
   int _currentSetProgress = 33; // Range of 0 to 100
 
   void setCurrentSetProgressTo(int newValue) async {
@@ -169,6 +169,13 @@ class _Exercising2ScreenState extends State<Exercising2Screen> {
                   const SizedBox(width: 20),
                   Expanded(
                     child: ElevatedButton(
+                      onPressed: () {
+                        setCurrentSetProgressTo(66);
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(primaryColor),
+                      ),
                       child: const Text(
                         'Selanjutnya',
                         style: TextStyle(
@@ -176,13 +183,6 @@ class _Exercising2ScreenState extends State<Exercising2Screen> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      onPressed: () {
-                        setCurrentSetProgressTo(66);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(primaryColor),
                       ),
                     ),
                   ),

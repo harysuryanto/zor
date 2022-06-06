@@ -8,7 +8,7 @@ import 'models/auth.dart';
 import 'screens/add_plan_screen.dart';
 import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
-import 'screens/exercising2_screen.dart';
+import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/loading_screen.dart';
 import 'screens/login_screen.dart';
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         path: '/exercising2',
         builder: (context, state) {
           final String planId = state.queryParams['planId']!;
-          return Exercising2Screen(planId: planId);
+          return ExercisingScreen(planId: planId);
         },
       ),
     ],
