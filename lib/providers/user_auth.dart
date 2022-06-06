@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Auth {
+class UserAuth {
   FirebaseAuth instance = FirebaseAuth.instance;
 
   Stream<User?> get streamAuthStatus {

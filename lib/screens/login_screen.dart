@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/auth.dart';
+import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/global/navigator_wrapper.dart';
 
@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _auth = Auth();
+  final _auth = UserAuth();
   final _formKey = GlobalKey<FormState>();
 
   String _email = '';

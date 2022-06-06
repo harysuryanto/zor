@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/auth.dart';
+import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
 import '../widgets/plan/plan_list.dart';
@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Auth();
+    final auth = UserAuth();
 
     return Scaffold(
       backgroundColor: primaryColor,

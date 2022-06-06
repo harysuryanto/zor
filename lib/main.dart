@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
-import 'models/auth.dart';
+import 'providers/user_auth.dart';
 import 'screens/add_plan_screen.dart';
 import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
       ),
     ],
     redirect: (state) {
-      final auth = Auth();
+      final auth = UserAuth();
 
       /// Check wheter the user has logged in or not
       final loggedIn = auth.isLoggedIn;
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Auth();
+    final auth = UserAuth();
 
     return StreamBuilder<User?>(
       stream: auth.streamAuthStatus,
