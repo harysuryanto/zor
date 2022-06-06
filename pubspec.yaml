@@ -38,9 +38,11 @@ dependencies:
   lottie: ^1.2.1
   modal_bottom_sheet: ^2.0.1
   scroll_snap_list: ^0.9.1
-  slide_to_act: ^2.0.1
   step_progress_indicator: ^1.0.2
   timelines: ^0.1.0
+
+  # TODO: change with alternative packages
+  # slide_to_act: ^2.0.1 # error due to Flutter updated to 3.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -55,7 +57,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
