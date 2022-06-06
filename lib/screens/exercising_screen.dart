@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+class Exercise {
+  final int exerciseId;
+  final String name;
+  final int repetitions;
+  final int sets;
+
+  const Exercise({
+    required this.exerciseId,
+    required this.name,
+    required this.repetitions,
+    required this.sets,
+  });
+}
+
 class ExercisingScreen extends StatefulWidget {
   final String planId;
   const ExercisingScreen({
@@ -16,13 +30,42 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   int _currentExerciseIndex = 0;
   bool _isResting = false;
   bool _isEndOfExercise = false;
+  List _refactorredExercises = [];
 
-  List? _exercises;
+  final List<Exercise> _orignalExercises = const [
+    Exercise(
+      exerciseId: 1,
+      name: 'Pull Up',
+      repetitions: 5,
+      sets: 3,
+    ),
+    Exercise(
+      exerciseId: 2,
+      name: 'Dumble Curl',
+      repetitions: 12,
+      sets: 4,
+    ),
+  ];
+
+  List convertToNewList(List<Exercise> exercises) {
+    List newList = [];
+
+    /// Assign [totalSets] with overall reps
+    for (var i = 0; i < exercises.length; i++) {
+      // totalSets += exercises[i].sets;
+      for (var j = 0; j < exercises[i].sets; j++) {
+        newList.add(exercises[i].name);
+        print('adding ${exercises[i].name} to new list');
+      }
+    }
+
+    return newList;
+  }
 
   void handleNextExercise() {
     setState(() {
       /// Change current exercise to the next one if exists
-      if (_currentExerciseIndex < _exercises!.length - 1) {
+      if (_currentExerciseIndex < _refactorredExercises.length - 1) {
         /// But rest first before go to the next exercise
         if (!_isResting) {
           setState(() {
@@ -38,7 +81,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         }
 
         /// Set [_isEndOfExercise] to true if next exercise does not exist
-        if (_currentExerciseIndex == _exercises!.length - 1) {
+        if (_currentExerciseIndex == _refactorredExercises.length - 1) {
           setState(() {
             _isEndOfExercise = true;
           });
@@ -59,7 +102,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
         });
 
         /// Set [_isEndOfExercise] to false if next exercise exists
-        if (_currentExerciseIndex != _exercises!.length - 1) {
+        if (_currentExerciseIndex != _refactorredExercises.length - 1) {
           setState(() {
             _isEndOfExercise = false;
           });
@@ -71,13 +114,16 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      _refactorredExercises = convertToNewList(_orignalExercises);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    /// Get arguments
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final myExercises = arguments['myExercises'];
-
-    _exercises = myExercises;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -97,19 +143,17 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
             ),
 
             /// List of exercises
+            ..._refactorredExercises.map((e) => Text(e)).toList(),
+
+            const SizedBox(height: 30),
+
+            /// Current exercise
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: _isResting
-                    ? Text(
-                        '😴 Istirahat ${_exercises![_currentExerciseIndex].restTime} detik.')
-                    : _buildCurrentExerciseView(
-                        name: _exercises![_currentExerciseIndex].name,
-                        duration: _exercises![_currentExerciseIndex].duration,
-                        repetitions:
-                            _exercises![_currentExerciseIndex].repetitions,
-                        sets: _exercises![_currentExerciseIndex].sets,
-                      ),
+                    ? const Text('😴 Istirahat.')
+                    : Text('▶ ${_refactorredExercises[_currentExerciseIndex]}'),
               ),
             ),
 
@@ -124,8 +168,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      child: const Text('◀ Sebelumnya'),
+                    child: OutlinedButton(
                       onPressed: _currentExerciseIndex == 0
                           ? null
                           : () {
@@ -134,6 +177,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                                 handlePreviousExercise();
                               });
                             },
+                      child: const Text('◀ Sebelumnya'),
                     ),
                   ),
                   const SizedBox(width: 20),
