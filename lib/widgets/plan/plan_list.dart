@@ -17,10 +17,12 @@ class PlanList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plans = Provider.of<List<Plan>>(context);
+    var plans = Provider.of<List<Plan>>(context);
 
     if (limit != null) {
-      plans.removeRange(limit!, plans.length);
+      if (plans.length > limit!) {
+        plans.removeRange(limit!, plans.length);
+      }
     }
 
     return Padding(
