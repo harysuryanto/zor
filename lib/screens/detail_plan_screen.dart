@@ -37,7 +37,7 @@ class DetailPlanScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: ElevatedButton(
-              onPressed: () => context.push('/exercising2?planId=$planId'),
+              onPressed: () => context.push('/exercising?planId=$planId'),
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(primaryColor)),
