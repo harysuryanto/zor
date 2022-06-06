@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-import '../../models/database.dart';
+import '../../models/plan.dart';
 import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
@@ -17,31 +17,27 @@ class PlanList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plans = Database().plans;
+    final plans = Provider.of<List<Plan>>(context);
+
+    if (limit != null) {
+      plans.removeRange(limit!, plans.length);
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: FutureBuilder<QuerySnapshot>(
-        future: limit != null ? plans.limit(limit!).get() : plans.get(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Terjadi kesalahan.');
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            dynamic data = (snapshot.data! as dynamic).docs;
-
-            return ListView.separated(
+      child: plans.isEmpty
+          ? const Text('No plans.')
+          : ListView.separated(
               itemBuilder: (context, index) {
                 return PlanListTile(
-                  key: ValueKey(data[index].id),
-                  title: data[index]['name'],
+                  key: ValueKey(plans[index].id),
+                  title: plans[index].name,
                   onTap: () =>
-                      context.push('/detail-plan?planId=${data[index].id}'),
+                      context.push('/detail-plan?planId=${plans[index].id}'),
                 );
               },
               separatorBuilder: (_, __) => const SizedBox(height: 20),
-              itemCount: data.length,
+              itemCount: plans.length,
               shrinkWrap: !isScrollable,
               physics: isScrollable
                   ? const AlwaysScrollableScrollPhysics()
@@ -51,12 +47,7 @@ class PlanList extends StatelessWidget {
               /// and garbage collected automatically
               addAutomaticKeepAlives: false,
               addRepaintBoundaries: false,
-            );
-          }
-
-          return const Text("loading");
-        },
-      ),
+            ),
     );
   }
 }

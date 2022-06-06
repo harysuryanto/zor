@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../models/database.dart';
+import '../../models/exercise.dart';
 import '../../utils/colors.dart';
 import '../plan/plan_list_tile.dart';
 
@@ -12,31 +12,18 @@ class ExerciseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final exercises = Database().exercises(planId: planId);
+    final exercises = Provider.of<List<Exercise>>(context);
 
-    return FutureBuilder<QuerySnapshot>(
-      future: exercises.get(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Terjadi kesalahan.');
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          dynamic data = (snapshot.data! as dynamic).docs;
-
-          return _buildTimeline(data);
-        }
-
-        return const Text("loading");
-      },
-    );
+    return exercises.isEmpty
+        ? const Text('No exercises.')
+        : _buildTimeline(exercises);
   }
 
-  Widget _buildTimeline(dynamic data) {
+  Widget _buildTimeline(List<Exercise> exercises) {
     return Timeline.tileBuilder(
       builder: TimelineTileBuilder(
         indicatorBuilder: (_, index) => Indicator.outlined(
-          key: ValueKey('timeline indicator ${data[index].id}'),
+          key: ValueKey('timeline indicator ${exercises[index].id}'),
           position: 0,
           borderWidth: 1,
           color: primaryColor,
@@ -45,26 +32,26 @@ class ExerciseList extends StatelessWidget {
             child: Text('${index + 1}'),
           ),
         ),
-        endConnectorBuilder: (_, index) => index == data.length - 1
+        endConnectorBuilder: (_, index) => index == exercises.length - 1
             ? null
             : Padding(
-                key: ValueKey('timeline connector ${data[index].id}'),
+                key: ValueKey('timeline connector ${exercises[index].id}'),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Connector.solidLine(thickness: 1, color: Colors.grey),
               ),
         contentsBuilder: (_, index) {
           return Padding(
-            key: ValueKey('timeline content ${data[index].id}'),
+            key: ValueKey('timeline content ${exercises[index].id}'),
             padding: const EdgeInsets.only(
               left: 20,
               bottom: 10,
             ),
             child: PlanListTile(
-              title: data[index]['name'],
+              title: exercises[index].name,
             ),
           );
         },
-        itemCount: data.length,
+        itemCount: exercises.length,
         contentsAlign: ContentsAlign.basic,
         nodePositionBuilder: (_, __) => 0,
       ),

@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../databases/database.dart';
+import '../models/plan.dart';
 import '../widgets/plan/plan_list.dart';
 
 class AllPlansScreen extends StatelessWidget {
@@ -8,6 +12,9 @@ class AllPlansScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final db = DatabaseService();
+    final user = Provider.of<User?>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('📆 Rencana Olahragamu'),
@@ -20,9 +27,13 @@ class AllPlansScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () => context.push('/add-plan'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 30),
-        child: PlanList(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        child: StreamProvider<List<Plan>>.value(
+          value: db.streamPlans(user!),
+          initialData: const [],
+          child: const PlanList(),
+        ),
       ),
     );
   }
