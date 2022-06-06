@@ -1,13 +1,10 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
 class MyTheme {
   static const ThemeMode themeMode = ThemeMode.light;
-  static final ThemeData theme = FlexThemeData.light(
-    scheme: FlexScheme.redWine,
-  ).copyWith(
+  static final ThemeData theme = ThemeData.light().copyWith(
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       backgroundColor: primaryColor,
