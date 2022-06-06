@@ -14,13 +14,6 @@ import '../widgets/reminder/plan_reminder_list.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  String get _displayName {
-    final currentUser = FirebaseAuth.instance.currentUser!;
-    return currentUser.displayName?.split(' ')[0] ??
-        currentUser.email ??
-        'anonim';
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = UserAuth();
@@ -28,8 +21,13 @@ class HomeScreen extends StatelessWidget {
 
     final user = Provider.of<User?>(context);
 
+    if (user == null) {
+      return const Text('loading ya');
+    }
+
+    final displayName = user.displayName ?? user.email ?? 'anonim';
+
     return Scaffold(
-      backgroundColor: primaryColor,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Logout',
         onPressed: () async {
@@ -45,13 +43,14 @@ class HomeScreen extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 60),
+              color: primaryColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hai, $_displayName 👋',
+                    'Hai, ${displayName.split(' ')[0]} 👋',
                     style: const TextStyle(fontSize: 24),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -71,9 +70,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 150),
                 Container(
-                  decoration: const BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.vertical(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(30),
                     ),
                   ),
@@ -131,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           StreamProvider<List<Plan>>.value(
-                            value: db.streamPlans(user!),
+                            value: db.streamPlans(user),
                             initialData: const [],
                             child:
                                 const PlanList(isScrollable: false, limit: 3),
