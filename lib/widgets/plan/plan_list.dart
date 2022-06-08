@@ -10,25 +10,17 @@ import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
   final bool isScrollable;
-  final int? limit;
 
   const PlanList({
-    this.isScrollable = true,
-    this.limit,
     Key? key,
+    this.isScrollable = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final db = DatabaseService();
     final user = Provider.of<User?>(context, listen: false);
-    var plans = Provider.of<List<Plan>>(context);
-
-    if (limit != null) {
-      if (plans.length > limit!) {
-        plans.removeRange(limit!, plans.length);
-      }
-    }
+    final plans = Provider.of<List<Plan>>(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
