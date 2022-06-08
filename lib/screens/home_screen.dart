@@ -28,6 +28,7 @@ class HomeScreen extends StatelessWidget {
     final displayName = user.displayName ?? user.email ?? 'anonim';
 
     return Scaffold(
+      backgroundColor: primaryColor,
       floatingActionButton: FloatingActionButton(
         tooltip: 'Logout',
         onPressed: () async {
@@ -43,23 +44,26 @@ class HomeScreen extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 60),
-              color: primaryColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hai, ${displayName.split(' ')[0]} 👋',
-                    style: const TextStyle(fontSize: 24),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Senang melihatmu kembali!',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
+            child: SafeArea(
+              bottom: false,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 60),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hai, ${displayName.split(' ')[0]} 👋',
+                      style: const TextStyle(fontSize: 24),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Senang melihatmu kembali!',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -68,7 +72,7 @@ class HomeScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 150),
+                const SafeArea(bottom: false, child: SizedBox(height: 160)),
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
@@ -111,12 +115,16 @@ class HomeScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                const Text(
+                                  '📆 ',
+                                  style: TextStyle(fontSize: 18),
+                                ),
                                 const Expanded(
                                   child: Text(
-                                    '📆 Rencana olahragamu',
+                                    'Rencana olahragamu',
                                     softWrap: false,
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       overflow: TextOverflow.fade,
                                     ),
                                   ),
@@ -126,8 +134,16 @@ class HomeScreen extends StatelessWidget {
                                   onTap: () => context.push('/all-plans'),
                                   child: Row(
                                     children: const [
-                                      Text('Lihat semua'),
-                                      Icon(Icons.chevron_right_rounded),
+                                      Text(
+                                        'Lihat semua',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 16,
+                                      ),
                                     ],
                                   ),
                                 ),
