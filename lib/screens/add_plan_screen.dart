@@ -125,7 +125,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
 
   Widget _buildStepper({required List<Step> steps}) {
     return Stepper(
-      physics: const BouncingScrollPhysics(),
       controlsBuilder: (context, details) => Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Row(
