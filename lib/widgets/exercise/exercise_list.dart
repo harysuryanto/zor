@@ -7,7 +7,12 @@ import '../../utils/colors.dart';
 import '../plan/plan_list_tile.dart';
 
 class ExerciseList extends StatelessWidget {
-  const ExerciseList({Key? key}) : super(key: key);
+  final EdgeInsetsGeometry? padding;
+
+  const ExerciseList({
+    Key? key,
+    this.padding = const EdgeInsets.all(30),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +25,7 @@ class ExerciseList extends StatelessWidget {
 
   Widget _buildTimeline(List<Exercise> exercises) {
     return Timeline.tileBuilder(
+      padding: padding,
       builder: TimelineTileBuilder(
         indicatorBuilder: (_, index) => Indicator.outlined(
           key: ValueKey('timeline indicator ${exercises[index].id}'),
@@ -56,7 +62,6 @@ class ExerciseList extends StatelessWidget {
         contentsAlign: ContentsAlign.basic,
         nodePositionBuilder: (_, __) => 0,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 30),
     );
   }
 }

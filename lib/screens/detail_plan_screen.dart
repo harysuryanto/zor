@@ -12,8 +12,8 @@ class DetailPlanScreen extends StatelessWidget {
   final String planId;
 
   const DetailPlanScreen({
-    required this.planId,
     Key? key,
+    required this.planId,
   }) : super(key: key);
 
   @override
@@ -29,30 +29,36 @@ class DetailPlanScreen extends StatelessWidget {
           onPressed: () => context.pop(),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(
         children: [
           /// Body section
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: StreamProvider<List<Exercise>>.value(
-                value: db.streamExercises(user!, planId),
-                initialData: const [],
-                child: const ExerciseList(),
+          StreamProvider<List<Exercise>>.value(
+            value: db.streamExercises(user!, planId),
+            initialData: const [],
+            child: const ExerciseList(
+              padding: EdgeInsets.only(
+                top: 30,
+                left: 30,
+                right: 30,
+                bottom: 90,
               ),
             ),
           ),
 
           /// Bottom section
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: ElevatedButton(
-              onPressed: () => context.push('/exercising?planId=$planId'),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(primaryColor)),
-              child: const Text('Mulai sekarang'),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: ElevatedButton(
+                onPressed: () => context.push('/exercising?planId=$planId'),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(primaryColor)),
+                child: const Text('Mulai sekarang'),
+              ),
             ),
           ),
 

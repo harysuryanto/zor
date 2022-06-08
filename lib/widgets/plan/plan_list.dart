@@ -15,7 +15,7 @@ class PlanList extends StatelessWidget {
   const PlanList({
     Key? key,
     this.isScrollable = true,
-    this.padding = const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+    this.padding = const EdgeInsets.all(30),
   }) : super(key: key);
 
   @override
