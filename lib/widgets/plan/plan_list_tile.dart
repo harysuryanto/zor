@@ -6,8 +6,8 @@ import '../global/vertical_slider.dart';
 class PlanListTile extends StatelessWidget {
   final String title;
   final String? subtitle;
-  final String? schedule;
-  final int totalReps;
+  final List<String>? schedules;
+  final int? totalReps;
   final int? totalSets;
   final void Function()? onTap;
 
@@ -15,7 +15,7 @@ class PlanListTile extends StatelessWidget {
     Key? key,
     this.title = 'Title here',
     this.subtitle,
-    this.schedule,
+    this.schedules,
     this.totalReps = 30,
     this.totalSets,
     this.onTap,
@@ -35,49 +35,68 @@ class PlanListTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// Title
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 14),
-                ),
-
-                /// Subtitle
-                if (subtitle != null) ...[
-                  const SizedBox(height: 8),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title
                   Text(
-                    subtitle!,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 12,
-                    ),
+                    title,
+                    style: const TextStyle(fontSize: 14),
                   ),
-                ],
 
-                /// Schedule
-                if (schedule != null) _buildChip(text: schedule!),
-              ],
+                  /// Subtitle
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      subtitle!,
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+
+                  /// Schedule
+                  if (schedules != null)
+                    Wrap(
+                      children: schedules!
+                          .map(
+                            (schedule) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _buildChip(
+                                    text: schedule[0].toUpperCase() +
+                                        schedule.substring(1).toLowerCase()),
+                                const SizedBox(width: 5),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    )
+                ],
+              ),
             ),
+            const SizedBox(width: 20),
             VerticalSlider(
               children: [
                 /// Repetitions
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'repetisi total',
-                      style: TextStyle(fontSize: 9),
-                    ),
-                    Text(
-                      '$totalReps',
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  ],
-                ),
+                if (totalReps != null)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'repetisi total',
+                        style: TextStyle(fontSize: 9),
+                      ),
+                      Text(
+                        '$totalReps',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  ),
 
                 /// Sets
                 if (totalSets != null)
