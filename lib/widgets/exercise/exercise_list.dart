@@ -7,8 +7,7 @@ import '../../utils/colors.dart';
 import '../plan/plan_list_tile.dart';
 
 class ExerciseList extends StatelessWidget {
-  final String planId;
-  const ExerciseList({required this.planId, Key? key}) : super(key: key);
+  const ExerciseList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

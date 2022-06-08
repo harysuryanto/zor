@@ -39,7 +39,7 @@ class DetailPlanScreen extends StatelessWidget {
               child: StreamProvider<List<Exercise>>.value(
                 value: db.streamExercises(user!, planId),
                 initialData: const [],
-                child: ExerciseList(planId: planId),
+                child: const ExerciseList(),
               ),
             ),
           ),
