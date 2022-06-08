@@ -27,13 +27,10 @@ class AllPlansScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () => context.push('/add-plan'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: StreamProvider<List<Plan>>.value(
-          value: db.streamPlans(user!),
-          initialData: const [],
-          child: const PlanList(),
-        ),
+      body: StreamProvider<List<Plan>>.value(
+        value: db.streamPlans(user!),
+        initialData: const [],
+        child: const PlanList(),
       ),
     );
   }
