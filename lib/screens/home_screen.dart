@@ -109,11 +109,17 @@ class HomeScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Text(
-                                  '📆 Rencana olahragamu',
-                                  style: TextStyle(fontSize: 18),
+                                const Expanded(
+                                  child: Text(
+                                    '📆 Rencana olahragamu',
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
                                 ),
                                 InkWell(
                                   borderRadius: BorderRadius.circular(30),
