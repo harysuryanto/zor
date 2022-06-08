@@ -111,13 +111,13 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                 const SizedBox(height: 10),
                 const PlanListTile(
                   title: 'Push Up',
-                  schedule: 'Rep: 20, Set: 4',
+                  subtitle: 'Rep: 20, Set: 4',
                   totalReps: 80,
                 ),
                 const SizedBox(height: 10),
                 const PlanListTile(
                   title: 'Pull Up',
-                  schedule: 'Rep: 6, Set: 6',
+                  subtitle: 'Rep: 6, Set: 6',
                   totalReps: 36,
                 ),
               ],
