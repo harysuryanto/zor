@@ -41,12 +41,14 @@ class ExerciseList extends StatelessWidget {
         contentsBuilder: (_, index) {
           return Padding(
             key: ValueKey('timeline content ${exercises[index].id}'),
-            padding: const EdgeInsets.only(
-              left: 20,
-              bottom: 10,
-            ),
+            padding: const EdgeInsets.only(left: 20, bottom: 10),
             child: PlanListTile(
               title: exercises[index].name,
+              schedules: [
+                'Rep: ${exercises[index].repetitions}',
+                'Set: ${exercises[index].sets}',
+              ],
+              totalReps: exercises[index].repetitions * exercises[index].sets,
             ),
           );
         },
