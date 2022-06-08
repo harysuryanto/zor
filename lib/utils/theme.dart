@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
 class MyTheme {
   static const ThemeMode themeMode = ThemeMode.light;
   static final ThemeData theme = ThemeData.light().copyWith(
+    textTheme: GoogleFonts.poppinsTextTheme(),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       backgroundColor: primaryColor,
