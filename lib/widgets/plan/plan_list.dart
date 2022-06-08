@@ -41,7 +41,8 @@ class PlanList extends StatelessWidget {
                         : null;
                     final totalReps = exercisesProvider.isNotEmpty
                         ? exercisesProvider
-                            .map((exercise) => exercise.repetitions)
+                            .map((exercise) =>
+                                exercise.repetitions * exercise.sets)
                             .reduce((a, b) => a + b)
                         : null;
                     final totalSets = exercisesProvider.isNotEmpty
