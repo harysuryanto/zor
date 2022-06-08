@@ -10,14 +10,14 @@ class DatabaseService {
 
   /// User
   Future<MyProfile> getMyProfile(String id) async {
-    var snap = await _db.collection('users').doc(id).get().catchError(
+    final snap = await _db.collection('users').doc(id).get().catchError(
         (error) => print("Failed to get current profile document: $error"));
 
     return MyProfile.fromMap(snap.data as Map<String, dynamic>);
   }
 
   Stream<MyProfile> streamMyProfile(String uid) {
-    var ref = _db.collection('users').doc(uid);
+    final ref = _db.collection('users').doc(uid);
 
     return ref.snapshots().map((snap) {
       var data = snap.data() as Map<String, dynamic>;
@@ -69,7 +69,7 @@ class DatabaseService {
 
   /// Exercise
   Stream<List<Exercise>> streamExercises(User user, String planId) {
-    var ref = _db
+    final ref = _db
         .collection('users')
         .doc(user.uid)
         .collection('plans')
