@@ -152,10 +152,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           StreamProvider<List<Plan>>.value(
-                            value: db.streamPlans(user),
+                            value: db.streamPlans(user, limit: 3),
                             initialData: const [],
-                            child:
-                                const PlanList(isScrollable: false, limit: 3),
+                            child: const PlanList(isScrollable: false),
                           ),
 
                           const SizedBox(height: 30),
