@@ -26,8 +26,18 @@ class DatabaseService {
   }
 
   /// Plan
-  Stream<List<Plan>> streamPlans(User user) {
-    var ref = _db.collection('users').doc(user.uid).collection('plans');
+  Stream<List<Plan>> streamPlans(User user, {int? limit}) {
+    final Query<Map<String, dynamic>> ref;
+
+    if (limit == null) {
+      ref = _db.collection('users').doc(user.uid).collection('plans');
+    } else {
+      ref = _db
+          .collection('users')
+          .doc(user.uid)
+          .collection('plans')
+          .limit(limit);
+    }
 
     return ref.snapshots().map((list) {
       return list.docs.map((doc) {
