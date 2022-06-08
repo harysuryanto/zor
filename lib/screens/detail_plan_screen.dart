@@ -24,10 +24,6 @@ class DetailPlanScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
-        ),
       ),
       body: Stack(
         children: [

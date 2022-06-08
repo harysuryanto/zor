@@ -18,10 +18,6 @@ class AllPlansScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('📆 Rencana Olahragamu'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

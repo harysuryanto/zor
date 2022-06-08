@@ -88,7 +88,7 @@ class PlanListTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'repetisi total',
+                        'total repetisi',
                         style: TextStyle(fontSize: 9),
                       ),
                       Text(
@@ -105,7 +105,7 @@ class PlanListTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'set total',
+                        'total set',
                         style: TextStyle(fontSize: 9),
                       ),
                       Text(
