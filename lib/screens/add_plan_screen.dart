@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../databases/database.dart';
 import '../models/exercise.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/add_exercise.dart';
@@ -16,13 +20,13 @@ class AddPlanScreen extends StatefulWidget {
 
 class _AddPlanScreenState extends State<AddPlanScreen> {
   final List<Map<String, Object>> scheduleOptions = [
-    {'day': 'Minggu', 'isSelected': false},
-    {'day': 'Senin', 'isSelected': true},
-    {'day': 'Selasa', 'isSelected': false},
-    {'day': 'Rabu', 'isSelected': false},
-    {'day': 'Kamis', 'isSelected': true},
-    {'day': 'Jumat', 'isSelected': false},
-    {'day': 'Sabtu', 'isSelected': false},
+    {'day': 'sunday', 'dayInId': 'minggu', 'isSelected': false},
+    {'day': 'monday', 'dayInId': 'senin', 'isSelected': true},
+    {'day': 'tuesday', 'dayInId': 'selasa', 'isSelected': false},
+    {'day': 'wednesday', 'dayInId': 'rabu', 'isSelected': false},
+    {'day': 'thursday', 'dayInId': 'kamis', 'isSelected': true},
+    {'day': 'friday', 'dayInId': 'jumat', 'isSelected': false},
+    {'day': 'saturday', 'dayInId': 'sabtu', 'isSelected': false},
   ];
 
   List<Exercise> tempExercises = [];
@@ -106,8 +110,8 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                         onTap: () {
                           setState(() {
                             scheduleOptions[i].update('isSelected', (value) {
-                              final invertedValue = value as bool;
-                              return !invertedValue;
+                              final newValue = value as bool;
+                              return !newValue;
                             });
                           });
                         },
@@ -161,6 +165,9 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
   }
 
   Widget _buildStepper({required List<Step> steps}) {
+    final db = DatabaseService();
+    final user = Provider.of<User?>(context, listen: false);
+
     return Stepper(
       controlsBuilder: (context, details) => Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -190,7 +197,10 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             Expanded(
               child: ElevatedButton(
                 onPressed: details.currentStep == steps.length - 1
-                    ? () => onSubmit()
+                    ? () async {
+                        await onSubmit(db, user!);
+                        context.go('/');
+                      }
                     : details.onStepContinue,
                 style: ButtonStyle(
                   backgroundColor:
@@ -321,11 +331,25 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
     );
   }
 
-  void onSubmit() {
-    print('planName           : $planName');
-    print(
-        'selected schedules : ${scheduleOptions.map((e) => e['isSelected']).toList()}');
-    print('exercises          : ${tempExercises.map((e) => e.name).toList()}');
+  Future<void> onSubmit(DatabaseService db, User? user) async {
+    List<String> schedules = [];
+    for (var scheduleOption in scheduleOptions) {
+      if (scheduleOption['isSelected'].toString() == 'true') {
+        schedules.add(scheduleOption['day'].toString());
+      }
+    }
+
+    // TODO: Save exercises to Firestore 👇
+    // List exercises = tempExercises.map((exercise) => exercise).toList();
+    // print('exercises          : $exercises');
+
+    await db.addPlan(
+      user!,
+      {
+        'name': planName.trim(),
+        'schedules': schedules,
+      },
+    );
   }
 }
 
