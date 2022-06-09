@@ -21,10 +21,10 @@ class AddPlanScreen extends StatefulWidget {
 class _AddPlanScreenState extends State<AddPlanScreen> {
   final List<Map<String, Object>> scheduleOptions = [
     {'day': 'sunday', 'dayInId': 'minggu', 'isSelected': false},
-    {'day': 'monday', 'dayInId': 'senin', 'isSelected': true},
+    {'day': 'monday', 'dayInId': 'senin', 'isSelected': false},
     {'day': 'tuesday', 'dayInId': 'selasa', 'isSelected': false},
     {'day': 'wednesday', 'dayInId': 'rabu', 'isSelected': false},
-    {'day': 'thursday', 'dayInId': 'kamis', 'isSelected': true},
+    {'day': 'thursday', 'dayInId': 'kamis', 'isSelected': false},
     {'day': 'friday', 'dayInId': 'jumat', 'isSelected': false},
     {'day': 'saturday', 'dayInId': 'sabtu', 'isSelected': false},
   ];
@@ -77,7 +77,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
               child: Form(
                 key: formKeyPlanName,
                 child: TextFormField(
-                  initialValue: 'Workout Senin',
                   onChanged: (value) => setState(() => planName = value),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -145,14 +144,33 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                       const SizedBox(height: 10),
                   itemCount: tempExercises.length,
                   itemBuilder: (context, index) {
-                    return PlanListTile(
-                      title: tempExercises[index].name,
-                      schedules: [
-                        'Rep: ${tempExercises[index].repetitions}',
-                        'Set: ${tempExercises[index].sets}'
-                      ],
-                      totalReps: tempExercises[index].repetitions *
-                          tempExercises[index].sets,
+                    return Dismissible(
+                      key: ValueKey(
+                          'Dismissible Plan ${tempExercises[index].id}'),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: primaryColor,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 40),
+                        child: const Icon(Icons.delete),
+                      ),
+                      onDismissed: (dismissDirection) {
+                        setState(() => tempExercises.removeAt(index));
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Dihapus')),
+                        );
+                      },
+                      child: PlanListTile(
+                        key: ValueKey('Plan ${tempExercises[index].id}'),
+                        title: tempExercises[index].name,
+                        schedules: [
+                          'Rep: ${tempExercises[index].repetitions}',
+                          'Set: ${tempExercises[index].sets}'
+                        ],
+                        totalReps: tempExercises[index].repetitions *
+                            tempExercises[index].sets,
+                      ),
                     );
                   },
                 ),
