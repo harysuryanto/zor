@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:uuid/uuid.dart';
 
+import '../models/exercise.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/add_exercise.dart';
 import '../widgets/plan/plan_list_tile.dart';
@@ -13,12 +15,7 @@ class AddPlanScreen extends StatefulWidget {
 }
 
 class _AddPlanScreenState extends State<AddPlanScreen> {
-  final _formKeyPlanName = GlobalKey<FormState>();
-
-  int _currentStep = 0;
-  String _planName = '';
-
-  final List<Map<String, Object>> _scheduleOptions = [
+  final List<Map<String, Object>> scheduleOptions = [
     {'day': 'Minggu', 'isSelected': false},
     {'day': 'Senin', 'isSelected': true},
     {'day': 'Selasa', 'isSelected': false},
@@ -27,6 +24,38 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
     {'day': 'Jumat', 'isSelected': false},
     {'day': 'Sabtu', 'isSelected': false},
   ];
+
+  List<Exercise> tempExercises = [];
+
+  final formKeyPlanName = GlobalKey<FormState>();
+  final uuid = const Uuid();
+
+  int currentStep = 0;
+  String planName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      tempExercises.clear();
+      tempExercises.add(
+        Exercise(
+          id: uuid.v1(),
+          name: 'Push Up',
+          repetitions: 20,
+          sets: 4,
+        ),
+      );
+      tempExercises.add(
+        Exercise(
+          id: uuid.v1(),
+          name: 'Pull Up',
+          repetitions: 6,
+          sets: 6,
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +71,18 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
               /// Padding is used to fix overflow on label text
               padding: const EdgeInsets.only(top: 4),
               child: Form(
-                key: _formKeyPlanName,
+                key: formKeyPlanName,
                 child: TextFormField(
                   initialValue: 'Workout Senin',
-                  onChanged: (value) => setState(() => _planName = value),
+                  onChanged: (value) => setState(() => planName = value),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Mohon isi nama rencana.';
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(labelText: 'Nama rencana'),
+                  decoration:
+                      const InputDecoration(hintText: 'Contoh: Workout Senin'),
                 ),
               ),
             ),
@@ -64,18 +94,18 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
               alignment: Alignment.topLeft,
               child: Wrap(
                 children: [
-                  for (var i = 0; i < _scheduleOptions.length; i++) ...[
+                  for (var i = 0; i < scheduleOptions.length; i++) ...[
                     Padding(
                       key: ValueKey('Schedule options item $i'),
                       padding: const EdgeInsets.all(5),
                       child: _buildInteractiveChip(
                         key: ValueKey(
-                            'Chip ${_scheduleOptions[i]['day'] as String}'),
-                        text: _scheduleOptions[i]['day'] as String,
-                        isSelected: _scheduleOptions[i]['isSelected'] as bool,
+                            'Chip ${scheduleOptions[i]['day'] as String}'),
+                        text: scheduleOptions[i]['day'] as String,
+                        isSelected: scheduleOptions[i]['isSelected'] as bool,
                         onTap: () {
                           setState(() {
-                            _scheduleOptions[i].update('isSelected', (value) {
+                            scheduleOptions[i].update('isSelected', (value) {
                               final invertedValue = value as bool;
                               return !invertedValue;
                             });
@@ -104,16 +134,23 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const PlanListTile(
-                  title: 'Push Up',
-                  subtitle: 'Rep: 20, Set: 4',
-                  totalReps: 80,
-                ),
-                const SizedBox(height: 10),
-                const PlanListTile(
-                  title: 'Pull Up',
-                  subtitle: 'Rep: 6, Set: 6',
-                  totalReps: 36,
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: tempExercises.length,
+                  itemBuilder: (context, index) {
+                    return PlanListTile(
+                      title: tempExercises[index].name,
+                      schedules: [
+                        'Rep: ${tempExercises[index].repetitions}',
+                        'Set: ${tempExercises[index].sets}'
+                      ],
+                      totalReps: tempExercises[index].repetitions *
+                          tempExercises[index].sets,
+                    );
+                  },
                 ),
               ],
             ),
@@ -152,7 +189,9 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                onPressed: details.onStepContinue,
+                onPressed: details.currentStep == steps.length - 1
+                    ? () => onSubmit()
+                    : details.onStepContinue,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(primaryColor),
@@ -176,27 +215,27 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
           ],
         ),
       ),
-      currentStep: _currentStep,
+      currentStep: currentStep,
       onStepCancel: () {
-        if (_currentStep > 0) {
+        if (currentStep > 0) {
           setState(() {
-            _currentStep -= 1;
+            currentStep -= 1;
           });
         }
       },
       onStepContinue: () {
-        if (_currentStep < steps.length - 1) {
-          if (_formKeyPlanName.currentState!.validate()) {
+        if (currentStep < steps.length - 1) {
+          if (formKeyPlanName.currentState!.validate()) {
             setState(() {
-              _currentStep += 1;
+              currentStep += 1;
             });
           }
         }
       },
       onStepTapped: (int index) {
-        if (_formKeyPlanName.currentState!.validate()) {
+        if (formKeyPlanName.currentState!.validate()) {
           setState(() {
-            _currentStep = index;
+            currentStep = index;
           });
         }
       },
@@ -264,8 +303,12 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             Expanded(
               child: ScrollConfiguration(
                 behavior: _CustomScrollBehavior(),
-                child: const SingleChildScrollView(
-                  child: AddExercise(),
+                child: SingleChildScrollView(
+                  child: AddExercise(
+                    onSubmit: (exercise) {
+                      setState(() => tempExercises.add(exercise));
+                    },
+                  ),
                 ),
               ),
             ),
@@ -276,6 +319,13 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
         ),
       ),
     );
+  }
+
+  void onSubmit() {
+    print('planName           : $planName');
+    print(
+        'selected schedules : ${scheduleOptions.map((e) => e['isSelected']).toList()}');
+    print('exercises          : ${tempExercises.map((e) => e.name).toList()}');
   }
 }
 
