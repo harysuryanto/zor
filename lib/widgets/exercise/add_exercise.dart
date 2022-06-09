@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../models/exercise.dart';
 import '../../utils/colors.dart';
 
 class AddExercise extends StatefulWidget {
-  const AddExercise({Key? key}) : super(key: key);
+  final void Function(Exercise) onSubmit;
+
+  const AddExercise({
+    Key? key,
+    required this.onSubmit,
+  }) : super(key: key);
 
   @override
-  _AddExerciseState createState() => _AddExerciseState();
+  State<AddExercise> createState() => _AddExerciseState();
 }
 
 class _AddExerciseState extends State<AddExercise> {
-  final _formKeyExerciseName = GlobalKey<FormState>();
+  final formKeyExerciseName = GlobalKey<FormState>();
   final sslSetKey = GlobalKey<ScrollSnapListState>();
   final sslRepetitionKey = GlobalKey<ScrollSnapListState>();
+  final uuid = const Uuid();
 
-  /// Assigned in [initState()]
-  final List<int> _repetitionNumbers = [];
-  final List<int> _setNumbers = [];
+  /// These are assigned in initState()
+  final List<int> repetitionOptions = [];
+  final List<int> setOptions = [];
 
-  String _exerciseName = '';
-  int _focusedRepetitionIndex = 0;
-  int _focusedSetIndex = 0;
+  String exerciseName = '';
+  int focusedRepetitionIndex = 0;
+  int focusedSetIndex = 0;
 
   @override
   void initState() {
@@ -32,25 +40,11 @@ class _AddExerciseState extends State<AddExercise> {
 
     /// Give repetition and set default values
     for (int i = 1; i <= maxRepetitions; i++) {
-      _repetitionNumbers.add(i);
+      repetitionOptions.add(i);
     }
     for (int i = 1; i <= maxSets; i++) {
-      _setNumbers.add(i);
+      setOptions.add(i);
     }
-  }
-
-  void _onSetFocus(int index) {
-    setState(() {
-      _focusedSetIndex = index;
-    });
-    print(_focusedSetIndex);
-  }
-
-  void _onRepetitionFocus(int index) {
-    setState(() {
-      _focusedRepetitionIndex = index;
-    });
-    print(_focusedRepetitionIndex);
   }
 
   @override
@@ -73,9 +67,9 @@ class _AddExerciseState extends State<AddExercise> {
           ),
           const SizedBox(height: 20),
           Form(
-            key: _formKeyExerciseName,
+            key: formKeyExerciseName,
             child: TextFormField(
-              onChanged: (value) => setState(() => _exerciseName = value),
+              onChanged: (value) => setState(() => exerciseName = value),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return 'Mohon isi nama latihan.';
@@ -144,7 +138,7 @@ class _AddExerciseState extends State<AddExercise> {
                                       _onRepetitionFocus(index),
                                   itemSize:
                                       40, // Size of widget [_buildRepetitionListItemTile]
-                                  itemCount: _repetitionNumbers.length,
+                                  itemCount: repetitionOptions.length,
                                   dynamicItemOpacity: 0.3,
                                   scrollDirection: Axis.vertical,
                                   scrollPhysics: const BouncingScrollPhysics(),
@@ -166,7 +160,7 @@ class _AddExerciseState extends State<AddExercise> {
                                   onItemFocus: (index) => _onSetFocus(index),
                                   itemSize:
                                       40, // Size of widget [_buildSetListItemTile]
-                                  itemCount: _setNumbers.length,
+                                  itemCount: setOptions.length,
                                   dynamicItemOpacity: 0.3,
                                   scrollDirection: Axis.vertical,
                                   scrollPhysics: const BouncingScrollPhysics(),
@@ -187,8 +181,15 @@ class _AddExerciseState extends State<AddExercise> {
             width: double.maxFinite,
             child: OutlinedButton(
               onPressed: () {
-                if (_formKeyExerciseName.currentState!.validate()) {
-                  print('Siap disimpan ke database');
+                if (formKeyExerciseName.currentState!.validate()) {
+                  widget.onSubmit(
+                    Exercise(
+                      id: uuid.v1(),
+                      name: exerciseName,
+                      repetitions: repetitionOptions[focusedRepetitionIndex],
+                      sets: setOptions[focusedSetIndex],
+                    ),
+                  );
                   Navigator.of(context).pop();
                 }
               },
@@ -220,10 +221,10 @@ class _AddExerciseState extends State<AddExercise> {
       alignment: Alignment.center,
       color: Colors.transparent,
       child: Text(
-        '${_repetitionNumbers[index]}',
+        '${repetitionOptions[index]}',
         style: TextStyle(
           fontSize: 18,
-          fontWeight: _focusedRepetitionIndex == index ? FontWeight.bold : null,
+          fontWeight: focusedRepetitionIndex == index ? FontWeight.bold : null,
         ),
       ),
     );
@@ -239,12 +240,26 @@ class _AddExerciseState extends State<AddExercise> {
       alignment: Alignment.center,
       color: Colors.transparent,
       child: Text(
-        '${_setNumbers[index]}',
+        '${setOptions[index]}',
         style: TextStyle(
           fontSize: 18,
-          fontWeight: _focusedSetIndex == index ? FontWeight.bold : null,
+          fontWeight: focusedSetIndex == index ? FontWeight.bold : null,
         ),
       ),
     );
+  }
+
+  void _onRepetitionFocus(int index) {
+    setState(() {
+      focusedRepetitionIndex = index;
+    });
+    print(focusedRepetitionIndex);
+  }
+
+  void _onSetFocus(int index) {
+    setState(() {
+      focusedSetIndex = index;
+    });
+    print(focusedSetIndex);
   }
 }
