@@ -52,10 +52,26 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Hai, ${displayName.split(' ')[0]} 👋',
-                      style: const TextStyle(fontSize: 24),
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Hai, ${displayName.split(' ')[0]} 👋',
+                          style: const TextStyle(fontSize: 24),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 10),
+                        Tooltip(
+                          message: 'Logout',
+                          child: InkWell(
+                            onTap: () async {
+                              await auth.logout();
+                              context.go('/login');
+                            },
+                            child: const Icon(Icons.logout),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 10),
                     const Text(
@@ -100,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
-                              '👟 Jadwal hari ini',
+                              '👟 Jadwal hari ini (WIP)',
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
@@ -166,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
-                              '📰 Artikel untukmu',
+                              '📰 Artikel untukmu (WIP)',
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
@@ -174,6 +190,8 @@ class HomeScreen extends StatelessWidget {
                           const ArticleList(),
 
                           const SizedBox(height: 30),
+                          const Center(child: Text('v0.5.0')),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ],
