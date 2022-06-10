@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
+        // debugShowCheckedModeBanner: false,
         title: 'Zor',
         themeMode: MyTheme.themeMode,
         theme: MyTheme.theme,
