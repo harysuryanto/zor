@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -46,13 +48,17 @@ class DatabaseService {
     });
   }
 
-  Future<void> addPlan(User user, dynamic data) {
+  Future<void> addPlan(User user, dynamic data,
+      {FutureOr<void> Function(
+              DocumentReference<Map<String, dynamic>> documentReference)?
+          then}) async {
     return _db
         .collection('users')
         .doc(user.uid)
         .collection('plans')
         .add(data)
-        .then((value) => print("Plan added"))
+        .then(then ?? (_) {})
+        .then((_) => print("Plan added"))
         .catchError((error) => print("Failed to add plan: $error"));
   }
 
@@ -63,7 +69,7 @@ class DatabaseService {
         .collection('plans')
         .doc(planId)
         .delete()
-        .then((value) => print("Plan deleted"))
+        .then((_) => print("Plan deleted"))
         .catchError((error) => print("Failed to delete plan: $error"));
   }
 
@@ -91,7 +97,7 @@ class DatabaseService {
         .doc(planId)
         .collection('exercises')
         .add(data)
-        .then((value) => print("Exercise added"))
+        .then((_) => print("Exercise added"))
         .catchError((error) => print("Failed to add exercise: $error"));
   }
 
@@ -104,7 +110,7 @@ class DatabaseService {
         .collection('exercises')
         .doc(exerciseId)
         .delete()
-        .then((value) => print("Exercise deleted"))
+        .then((_) => print("Exercise deleted"))
         .catchError((error) => print("Failed to delete exercise: $error"));
   }
 }
