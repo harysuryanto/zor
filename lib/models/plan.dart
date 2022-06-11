@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Plan {
-  final String id;
+  final String? id;
   final String name;
   final List schedules;
   final List<Map<String, dynamic>> exercises;
 
   Plan({
-    required this.id,
+    this.id,
     required this.name,
     required this.schedules,
     required this.exercises,
