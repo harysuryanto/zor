@@ -250,16 +250,10 @@ class _AddExerciseState extends State<AddExercise> {
   }
 
   void _onRepetitionFocus(int index) {
-    setState(() {
-      focusedRepetitionIndex = index;
-    });
-    print(focusedRepetitionIndex);
+    setState(() => focusedRepetitionIndex = index);
   }
 
   void _onSetFocus(int index) {
-    setState(() {
-      focusedSetIndex = index;
-    });
-    print(focusedSetIndex);
+    setState(() => focusedSetIndex = index);
   }
 }
