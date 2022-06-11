@@ -41,7 +41,6 @@ dependencies:
   scroll_snap_list: ^0.9.1
   step_progress_indicator: ^1.0.2
   timelines: ^0.1.0
-  uuid: ^3.0.6
 
   # TODO: change with alternative packages
   # slide_to_act: ^2.0.1 # error due to Flutter updated to 3.0.0
