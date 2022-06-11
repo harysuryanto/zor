@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../models/exercise.dart';
 import '../../utils/colors.dart';
@@ -21,7 +20,6 @@ class _AddExerciseState extends State<AddExercise> {
   final formKeyExerciseName = GlobalKey<FormState>();
   final sslSetKey = GlobalKey<ScrollSnapListState>();
   final sslRepetitionKey = GlobalKey<ScrollSnapListState>();
-  final uuid = const Uuid();
 
   /// These are assigned in initState()
   final List<int> repetitionOptions = [];
@@ -184,7 +182,6 @@ class _AddExerciseState extends State<AddExercise> {
                 if (formKeyExerciseName.currentState!.validate()) {
                   widget.onSubmit(
                     Exercise(
-                      id: uuid.v1(),
                       name: exerciseName,
                       repetitions: repetitionOptions[focusedRepetitionIndex],
                       sets: setOptions[focusedSetIndex],
