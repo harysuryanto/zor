@@ -48,26 +48,10 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Hai, ${displayName.split(' ')[0]} 👋',
-                          style: const TextStyle(fontSize: 24),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(width: 10),
-                        Tooltip(
-                          message: 'Logout',
-                          child: InkWell(
-                            onTap: () async {
-                              await auth.logout();
-                              context.go('/login');
-                            },
-                            child: const Icon(Icons.logout),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Hai, ${displayName.split(' ')[0]} 👋',
+                      style: const TextStyle(fontSize: 24),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
                     const Text(
