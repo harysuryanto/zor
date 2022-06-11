@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../databases/database.dart';
-import '../models/plan.dart';
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
@@ -17,12 +15,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = UserAuth();
-    final db = DatabaseService();
-
     final user = Provider.of<User?>(context);
 
     if (user == null) {
-      return const Text('loading ya');
+      return const Text('Memuat...');
     }
 
     final displayName = user.displayName ?? user.email ?? 'anonim';
@@ -167,13 +163,10 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          StreamProvider<List<Plan>>.value(
-                            value: db.streamPlans(user, limit: 3),
-                            initialData: const [],
-                            child: const PlanList(
-                              isScrollable: false,
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                            ),
+                          const PlanList(
+                            limit: 3,
+                            isScrollable: false,
+                            padding: EdgeInsets.symmetric(horizontal: 30),
                           ),
 
                           const SizedBox(height: 30),
