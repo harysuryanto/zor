@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
+import '../databases/database.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/exercise_list.dart';
+import '../widgets/exercise/show_add_exercise_modal_bottom_sheet.dart';
 
 class DetailPlanScreen extends StatelessWidget {
   final String planId;
@@ -17,6 +21,26 @@ class DetailPlanScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showAddExerciseModalBottomSheet(
+          context: context,
+          onSubmit: (exercise) async {
+            final db = DatabaseService();
+            final user = Provider.of<User?>(context, listen: false);
+
+            await db.addExercise(
+              user!,
+              planId,
+              {
+                'name': exercise.name.trim(),
+                'repetitions': exercise.repetitions,
+                'sets': exercise.sets,
+              },
+            );
+          },
+        ),
+        child: const Icon(Icons.add),
       ),
       body: Stack(
         children: [
