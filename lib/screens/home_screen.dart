@@ -8,6 +8,7 @@ import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
 import '../widgets/plan/plan_list.dart';
 import '../widgets/reminder/plan_reminder_list.dart';
+import 'loading_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
     final user = Provider.of<User?>(context);
 
     if (user == null) {
-      return const Text('Memuat...');
+      return const LoadingScreen();
     }
 
     final displayName = user.displayName ?? user.email ?? 'anonim';
@@ -29,7 +30,8 @@ class HomeScreen extends StatelessWidget {
         tooltip: 'Logout',
         onPressed: () async {
           await auth.logout();
-          context.go('/login');
+          // ignore: use_build_context_synchronously
+          GoRouter.of(context).go('/login');
         },
         child: const Icon(Icons.logout_rounded),
       ),
@@ -127,7 +129,8 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   borderRadius: BorderRadius.circular(30),
-                                  onTap: () => context.push('/all-plans'),
+                                  onTap: () =>
+                                      GoRouter.of(context).push('/all-plans'),
                                   child: Row(
                                     children: const [
                                       Text(

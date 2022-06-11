@@ -39,7 +39,8 @@ class DetailPlanScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: ElevatedButton(
-                onPressed: () => context.push('/exercising?planId=$planId'),
+                onPressed: () =>
+                    GoRouter.of(context).push('/exercising?planId=$planId'),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(primaryColor)),
@@ -68,8 +69,8 @@ class DetailPlanScreen extends StatelessWidget {
           //           '🚀',
           //           style: TextStyle(fontSize: 36),
           //         ),
-          //         onSubmit: () => context.push('/exercising2?planId=$planId'),
-          //         // onSubmit: () => context.push('/exercising?planId=$planId'),
+          //         onSubmit: () => GoRouter.of(context).push('/exercising2?planId=$planId'),
+          //         // onSubmit: () => GoRouter.of(context).push('/exercising?planId=$planId'),
           //       );
           //     },
           //   ),

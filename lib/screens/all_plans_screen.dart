@@ -14,7 +14,7 @@ class AllPlansScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => context.push('/add-plan'),
+        onPressed: () => GoRouter.of(context).push('/add-plan'),
       ),
       body: const PlanList(),
     );

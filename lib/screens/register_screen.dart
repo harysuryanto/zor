@@ -104,7 +104,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                           ),
                           TextButton(
                             child: const Text('Sudah memiliki akun? Login.'),
-                            onPressed: () => context.pop(),
+                            onPressed: () => GoRouter.of(context).pop(),
                           ),
                         ],
                       ),
@@ -139,7 +139,8 @@ class _LoginScreenState extends State<RegisterScreen> {
         /// Update user's name
         await userCredential.user!.updateDisplayName(_name);
 
-        context.go('/');
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).go('/');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           _showSnackbar('Password terlalu lemah');

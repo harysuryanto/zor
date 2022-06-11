@@ -213,7 +213,8 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                 onPressed: details.currentStep == steps.length - 1
                     ? () async {
                         await onSubmit(db, user!);
-                        context.go('/');
+                        // ignore: use_build_context_synchronously
+                        GoRouter.of(context).go('/');
                       }
                     : details.onStepContinue,
                 style: ButtonStyle(

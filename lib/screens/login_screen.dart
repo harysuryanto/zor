@@ -95,7 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextButton(
                             child: const Text('Belum memiliki akun? Register.'),
-                            onPressed: () => context.push('/register'),
+                            onPressed: () =>
+                                GoRouter.of(context).push('/register'),
                           ),
                         ],
                       ),
@@ -122,7 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         await _auth.login(email: _email, password: _password);
-        context.go('/');
+        // ignore: use_build_context_synchronously
+        GoRouter.of(context).go('/');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           _showSnackbar('Tidak tersedia akun dengan email tersebut.');
@@ -142,7 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await _auth.loginAnonymously();
-      context.go('/');
+      // ignore: use_build_context_synchronously
+      GoRouter.of(context).go('/');
     } catch (e) {
       _showSnackbar('Terjadi kesalahan:\n$e');
     }
