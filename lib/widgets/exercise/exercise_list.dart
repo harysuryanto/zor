@@ -32,70 +32,64 @@ class ExerciseList extends StatelessWidget {
 
         return exercises.isEmpty
             ? const Text('No exercises.')
-            : _buildTimeline(context, db, user, exercises);
+            : _buildTimeline(db, user, exercises);
       },
     );
   }
 
   Widget _buildTimeline(
-    BuildContext context,
     DatabaseService db,
     User user,
     List<Exercise> exercises,
   ) {
-    return StreamProvider<List<Exercise>>.value(
-      value: db.streamExercises(user, planId),
-      initialData: const [],
-      child: Timeline.tileBuilder(
-        padding: padding,
-        builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) => Indicator.outlined(
-            key: ValueKey('timeline indicator ${exercises[index].id}'),
-            position: 0,
-            borderWidth: 1,
-            color: primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text('${index + 1}'),
-            ),
+    return Timeline.tileBuilder(
+      padding: padding,
+      builder: TimelineTileBuilder(
+        indicatorBuilder: (_, index) => Indicator.outlined(
+          key: ValueKey('timeline indicator ${exercises[index].id}'),
+          position: 0,
+          borderWidth: 1,
+          color: primaryColor,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text('${index + 1}'),
           ),
-          endConnectorBuilder: (context, index) => index == exercises.length - 1
-              ? null
-              : Padding(
-                  key: ValueKey('timeline connector ${exercises[index].id}'),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Connector.solidLine(thickness: 1, color: Colors.grey),
-                ),
-          contentsBuilder: (context, index) {
-            return Dismissible(
-              key: ValueKey('Dismissible Exercise ${exercises[index].id}'),
-              direction: DismissDirection.endToStart,
-              background: const DismissibleBackground(),
-              onDismissed: (dismissDirection) {
-                db.removeExercise(user, planId, exercises[index].id!);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Dihapus')),
-                );
-              },
-              child: Padding(
-                key: ValueKey('timeline content ${exercises[index].id}'),
-                padding: const EdgeInsets.only(left: 20, bottom: 10),
-                child: PlanListTile(
-                  title: exercises[index].name,
-                  schedules: [
-                    'Rep: ${exercises[index].repetitions}',
-                    'Set: ${exercises[index].sets}',
-                  ],
-                  totalReps:
-                      exercises[index].repetitions * exercises[index].sets,
-                ),
-              ),
-            );
-          },
-          itemCount: exercises.length,
-          contentsAlign: ContentsAlign.basic,
-          nodePositionBuilder: (_, __) => 0,
         ),
+        endConnectorBuilder: (context, index) => index == exercises.length - 1
+            ? null
+            : Padding(
+                key: ValueKey('timeline connector ${exercises[index].id}'),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Connector.solidLine(thickness: 1, color: Colors.grey),
+              ),
+        contentsBuilder: (context, index) {
+          return Dismissible(
+            key: ValueKey('Dismissible Exercise ${exercises[index].id}'),
+            direction: DismissDirection.endToStart,
+            background: const DismissibleBackground(),
+            onDismissed: (dismissDirection) {
+              db.removeExercise(user, planId, exercises[index].id!);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Dihapus')),
+              );
+            },
+            child: Padding(
+              key: ValueKey('timeline content ${exercises[index].id}'),
+              padding: const EdgeInsets.only(left: 20, bottom: 10),
+              child: PlanListTile(
+                title: exercises[index].name,
+                schedules: [
+                  'Rep: ${exercises[index].repetitions}',
+                  'Set: ${exercises[index].sets}',
+                ],
+                totalReps: exercises[index].repetitions * exercises[index].sets,
+              ),
+            ),
+          );
+        },
+        itemCount: exercises.length,
+        contentsAlign: ContentsAlign.basic,
+        nodePositionBuilder: (_, __) => 0,
       ),
     );
   }
