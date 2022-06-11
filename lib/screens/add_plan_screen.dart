@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../databases/database.dart';
 import '../models/exercise.dart';
 import '../utils/colors.dart';
-import '../widgets/exercise/add_exercise.dart';
-import '../widgets/global/custom_scroll_behavior.dart';
+import '../widgets/exercise/show_add_exercise_modal_bottom_sheet.dart';
 import '../widgets/global/dismissible_background.dart';
 import '../widgets/plan/plan_list_tile.dart';
 
@@ -105,7 +103,12 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.add),
                   label: const Text('Tambah latihan'),
-                  onPressed: () => _showModalBottomSheet(context: context),
+                  onPressed: () => showAddExerciseModalBottomSheet(
+                    context: context,
+                    onSubmit: (exercise) {
+                      setState(() => tempExercises.add(exercise));
+                    },
+                  ),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(primaryColor),
@@ -269,53 +272,6 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(text, style: textStyle),
-      ),
-    );
-  }
-
-  Future<dynamic> _showModalBottomSheet({
-    required BuildContext context,
-    bool expand = false,
-  }) {
-    return showCupertinoModalBottomSheet(
-      context: context,
-      expand: expand,
-      builder: (context) => Material(
-        color: primaryColor,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// Draggable indicator
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Container(
-                width: 50,
-                height: 5,
-                decoration: const BoxDecoration(
-                  color: lightColor,
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
-              ),
-            ),
-
-            /// Body
-            Expanded(
-              child: ScrollConfiguration(
-                behavior: CustomScrollBehavior(),
-                child: SingleChildScrollView(
-                  child: AddExercise(
-                    onSubmit: (exercise) {
-                      setState(() => tempExercises.add(exercise));
-                    },
-                  ),
-                ),
-              ),
-            ),
-
-            /// Padding bottom to prevent content blocked by keyboard
-            SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-          ],
-        ),
       ),
     );
   }
