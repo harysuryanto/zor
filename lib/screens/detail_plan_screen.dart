@@ -1,10 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import '../databases/database.dart';
-import '../models/exercise.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/exercise_list.dart';
 
@@ -18,9 +14,6 @@ class DetailPlanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
@@ -28,16 +21,13 @@ class DetailPlanScreen extends StatelessWidget {
       body: Stack(
         children: [
           /// Body section
-          StreamProvider<List<Exercise>>.value(
-            value: db.streamExercises(user!, planId),
-            initialData: const [],
-            child: const ExerciseList(
-              padding: EdgeInsets.only(
-                top: 30,
-                left: 30,
-                right: 30,
-                bottom: 90,
-              ),
+          ExerciseList(
+            planId: planId,
+            padding: const EdgeInsets.only(
+              top: 30,
+              left: 30,
+              right: 30,
+              bottom: 90,
             ),
           ),
 
