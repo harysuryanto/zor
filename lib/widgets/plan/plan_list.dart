@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
+import '../global/dismissible_background.dart';
 import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
@@ -61,15 +62,26 @@ class PlanList extends StatelessWidget {
                           .toList()
                       : null;
 
-                  return PlanListTile(
-                    key: ValueKey(plans[index].id),
-                    title: plans[index].name,
-                    subtitle: exercisesName,
-                    schedules: schedules,
-                    totalReps: totalReps,
-                    totalSets: totalSets,
-                    onTap: () =>
-                        context.push('/detail-plan?planId=${plans[index].id}'),
+                  return Dismissible(
+                    key: ValueKey('Dismissible Plan ${plans[index].id}'),
+                    direction: DismissDirection.endToStart,
+                    background: const DismissibleBackground(),
+                    onDismissed: (dismissDirection) {
+                      db.removePlan(user, plans[index].id);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Dihapus')),
+                      );
+                    },
+                    child: PlanListTile(
+                      key: ValueKey(plans[index].id),
+                      title: plans[index].name,
+                      subtitle: exercisesName,
+                      schedules: schedules,
+                      totalReps: totalReps,
+                      totalSets: totalSets,
+                      onTap: () => context
+                          .push('/detail-plan?planId=${plans[index].id}'),
+                    ),
                   );
                 },
               );
