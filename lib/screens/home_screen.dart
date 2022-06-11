@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -118,30 +119,23 @@ class HomeScreen extends StatelessWidget {
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 const Expanded(
-                                  child: Text(
+                                  child: AutoSizeText(
                                     'Rencana olahragamu',
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      overflow: TextOverflow.fade,
-                                    ),
+                                    style: TextStyle(fontSize: 18),
+                                    maxLines: 1,
                                   ),
                                 ),
+                                const SizedBox(width: 20),
                                 InkWell(
                                   borderRadius: BorderRadius.circular(30),
                                   onTap: () =>
                                       GoRouter.of(context).push('/all-plans'),
                                   child: Row(
                                     children: const [
-                                      Text(
-                                        'Lihat semua',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      ),
+                                      Text('Lihat semua'),
                                       Icon(
                                         Icons.chevron_right_rounded,
-                                        size: 16,
+                                        size: 18,
                                       ),
                                     ],
                                   ),
