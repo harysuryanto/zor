@@ -9,6 +9,7 @@ import '../databases/database.dart';
 import '../models/exercise.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/add_exercise.dart';
+import '../widgets/global/dismissible_background.dart';
 import '../widgets/plan/plan_list_tile.dart';
 
 class AddPlanScreen extends StatefulWidget {
@@ -148,12 +149,7 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
                       key: ValueKey(
                           'Dismissible Plan ${tempExercises[index].id}'),
                       direction: DismissDirection.endToStart,
-                      background: Container(
-                        color: primaryColor,
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 40),
-                        child: const Icon(Icons.delete),
-                      ),
+                      background: const DismissibleBackground(),
                       onDismissed: (dismissDirection) {
                         setState(() => tempExercises.removeAt(index));
 
