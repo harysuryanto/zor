@@ -8,6 +8,7 @@ import '../databases/database.dart';
 import '../models/exercise.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/add_exercise.dart';
+import '../widgets/global/custom_scroll_behavior.dart';
 import '../widgets/global/dismissible_background.dart';
 import '../widgets/plan/plan_list_tile.dart';
 
@@ -300,7 +301,7 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
             /// Body
             Expanded(
               child: ScrollConfiguration(
-                behavior: _CustomScrollBehavior(),
+                behavior: CustomScrollBehavior(),
                 child: SingleChildScrollView(
                   child: AddExercise(
                     onSubmit: (exercise) {
@@ -347,13 +348,5 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
         }
       },
     );
-  }
-}
-
-class _CustomScrollBehavior extends ScrollBehavior {
-  @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
   }
 }
