@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '../databases/database.dart';
 import '../models/exercise.dart';
@@ -20,6 +19,8 @@ class AddPlanScreen extends StatefulWidget {
 }
 
 class _AddPlanScreenState extends State<AddPlanScreen> {
+  final formKeyPlanName = GlobalKey<FormState>();
+
   final List<Map<String, Object>> scheduleOptions = [
     {'day': 'sunday', 'dayInId': 'minggu', 'isSelected': false},
     {'day': 'monday', 'dayInId': 'senin', 'isSelected': false},
@@ -31,36 +32,8 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
   ];
 
   List<Exercise> tempExercises = [];
-
-  final formKeyPlanName = GlobalKey<FormState>();
-  final uuid = const Uuid();
-
   int currentStep = 0;
   String planName = '';
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      tempExercises.clear();
-      tempExercises.add(
-        Exercise(
-          id: uuid.v1(),
-          name: 'Push Up',
-          repetitions: 20,
-          sets: 4,
-        ),
-      );
-      tempExercises.add(
-        Exercise(
-          id: uuid.v1(),
-          name: 'Pull Up',
-          repetitions: 6,
-          sets: 6,
-        ),
-      );
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
