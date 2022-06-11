@@ -354,15 +354,24 @@ class _AddPlanScreenState extends State<AddPlanScreen> {
       }
     }
 
-    // TODO: Save exercises to Firestore 👇
-    // List exercises = tempExercises.map((exercise) => exercise).toList();
-    // print('exercises          : $exercises');
-
     await db.addPlan(
       user!,
       {
         'name': planName.trim(),
         'schedules': schedules,
+      },
+      then: (document) async {
+        for (var exercise in tempExercises) {
+          await db.addExercise(
+            user,
+            document.id,
+            {
+              'name': exercise.name.trim(),
+              'repetitions': exercise.repetitions,
+              'sets': exercise.sets,
+            },
+          );
+        }
       },
     );
   }
