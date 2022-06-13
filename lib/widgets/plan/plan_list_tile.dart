@@ -10,15 +10,17 @@ class PlanListTile extends StatelessWidget {
   final int? totalReps;
   final int? totalSets;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   const PlanListTile({
     Key? key,
-    this.title = 'Title here',
+    required this.title,
     this.subtitle,
     this.schedules,
-    this.totalReps = 30,
+    this.totalReps,
     this.totalSets,
     this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class PlanListTile extends StatelessWidget {
     return InkWell(
       splashColor: Colors.red,
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
