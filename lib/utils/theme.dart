@@ -5,7 +5,8 @@ import 'colors.dart';
 
 class MyTheme {
   static const ThemeMode themeMode = ThemeMode.light;
-  static final ThemeData theme = ThemeData.light().copyWith(
+  static final ThemeData theme = ThemeData(
+    primarySwatch: Colors.red,
     textTheme: GoogleFonts.poppinsTextTheme(),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
