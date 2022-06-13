@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
-import '../global/dismissible_background.dart';
 import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
@@ -69,25 +68,20 @@ class PlanList extends StatelessWidget {
                               .toList()
                           : null;
 
-                      return Dismissible(
-                        key: ValueKey('Dismissible Plan ${plans[index].id}'),
-                        direction: DismissDirection.endToStart,
-                        background: const DismissibleBackground(),
-                        onDismissed: (dismissDirection) {
-                          db.removePlan(user, plans[index].id!);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Dihapus')),
-                          );
-                        },
-                        child: PlanListTile(
-                          key: ValueKey(plans[index].id),
-                          title: plans[index].name,
-                          subtitle: exercisesName,
-                          schedules: schedules,
-                          totalReps: totalReps,
-                          totalSets: totalSets,
-                          onTap: () => context
-                              .push('/detail-plan?planId=${plans[index].id}'),
+                      return PlanListTile(
+                        key: ValueKey(plans[index].id),
+                        title: plans[index].name,
+                        subtitle: exercisesName,
+                        schedules: schedules,
+                        totalReps: totalReps,
+                        totalSets: totalSets,
+                        onTap: () => context
+                            .push('/detail-plan?planId=${plans[index].id}'),
+                        onLongPress: () => onLongPress(
+                          context,
+                          db: db,
+                          user: user,
+                          plan: plans[index],
                         ),
                       );
                     },
@@ -105,6 +99,63 @@ class PlanList extends StatelessWidget {
                 addAutomaticKeepAlives: false,
                 addRepaintBoundaries: false,
               );
+      },
+    );
+  }
+
+  onLongPress(
+    BuildContext context, {
+    required DatabaseService db,
+    required User user,
+    required Plan plan,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextButton(
+                child: const Text('Ubah'),
+                onPressed: () => Navigator.pop(context),
+              ),
+              TextButton(
+                child: const Text('Hapus'),
+                onPressed: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: const Text('Yakin ingin menghapus rencana?'),
+                        actions: [
+                          TextButton(
+                            child: const Text('Hapus'),
+                            onPressed: () {
+                              db.removePlan(user, plan.id!);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Dihapus')),
+                              );
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ElevatedButton(
+                            child: const Text('Batal'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
       },
     );
   }
