@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
+import '../widgets/global/custom_stack.dart';
 import '../widgets/plan/plan_list.dart';
 import '../widgets/reminder/plan_reminder_list.dart';
 import 'loading_screen.dart';
@@ -16,6 +17,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topSafeArea = MediaQuery.of(context).padding.top;
+
     final auth = UserAuth();
     final user = Provider.of<User?>(context);
 
@@ -26,17 +29,7 @@ class HomeScreen extends StatelessWidget {
     final displayName = user.displayName ?? user.email ?? 'anonim';
 
     return Scaffold(
-      backgroundColor: primaryColor,
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Logout',
-        onPressed: () async {
-          await auth.logout();
-          // ignore: use_build_context_synchronously
-          GoRouter.of(context).go('/login');
-        },
-        child: const Icon(Icons.logout_rounded),
-      ),
-      body: Stack(
+      body: CustomStack(
         children: [
           /// Banner
           Positioned(
@@ -44,17 +37,37 @@ class HomeScreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: SafeArea(
+              top: false,
               bottom: false,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 60),
+                color: primaryColor,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 60 + topSafeArea,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Hai, ${displayName.split(' ')[0]} 👋',
-                      style: const TextStyle(fontSize: 24),
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Text(
+                          'Hai, ${displayName.split(' ')[0]} 👋',
+                          style: const TextStyle(fontSize: 24),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 10),
+                        Tooltip(
+                          message: 'Logout',
+                          child: InkWell(
+                            onTap: () async {
+                              await auth.logout();
+                              // ignore: use_build_context_synchronously
+                              GoRouter.of(context).go('/login');
+                            },
+                            child: const Icon(Icons.logout),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 10),
                     const Text(
@@ -71,7 +84,7 @@ class HomeScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                const SafeArea(bottom: false, child: SizedBox(height: 160)),
+                SizedBox(height: 160 + topSafeArea),
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
