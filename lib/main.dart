@@ -1,5 +1,7 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,12 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
 
+bool get isOnDesktopWeb =>
+    kIsWeb &&
+    (defaultTargetPlatform == TargetPlatform.linux ||
+        defaultTargetPlatform == TargetPlatform.macOS ||
+        defaultTargetPlatform == TargetPlatform.windows);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,7 +33,18 @@ void main() async {
   /// Turn off the # in the URLs on the web
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
 
-  runApp(MyApp());
+  if (isOnDesktopWeb) {
+    runApp(
+      DevicePreview(
+        defaultDevice: Devices.ios.iPhone13ProMax,
+        isToolbarVisible: false,
+        enabled: !kReleaseMode,
+        builder: (context) => MyApp(),
+      ),
+    );
+  } else {
+    runApp(MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -110,6 +129,11 @@ class MyApp extends StatelessWidget {
         theme: MyTheme.theme,
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
+
+        // For DevicePreview purpose
+        useInheritedMediaQuery: isOnDesktopWeb,
+        locale: isOnDesktopWeb ? DevicePreview.locale(context) : null,
+        builder: isOnDesktopWeb ? DevicePreview.appBuilder : null,
       ),
     );
   }
