@@ -43,6 +43,26 @@ class DetailPlanScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showAddExerciseModalBottomSheet(
+          context: context,
+          onSubmit: (exercise) async {
+            final db = DatabaseService();
+            final user = Provider.of<User?>(context, listen: false);
+
+            await db.addExercise(
+              user!,
+              planId,
+              {
+                'name': exercise.name.trim(),
+                'repetitions': exercise.repetitions,
+                'sets': exercise.sets,
+              },
+            );
+          },
+        ),
+        child: const Icon(Icons.add),
+      ),
       body: Stack(
         children: [
           /// Body section
