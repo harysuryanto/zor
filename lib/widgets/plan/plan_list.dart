@@ -33,7 +33,7 @@ class PlanList extends StatelessWidget {
         final plans = Provider.of<List<Plan>>(context);
 
         return plans.isEmpty
-            ? const Text('No plans.')
+            ? const Text('Tidak ada data.')
             : ListView.separated(
                 padding: padding,
                 itemBuilder: (context, index) {
