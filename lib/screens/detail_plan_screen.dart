@@ -71,7 +71,7 @@ class DetailPlanScreen extends StatelessWidget {
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(primaryColor)),
-                child: const Text('Mulai sekarang'),
+                child: const Text('Mulai sekarang (WIP 🚧)'),
               ),
             ),
           ),

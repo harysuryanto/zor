@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -54,6 +55,22 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    color: Colors.red,
+                    child: const Text(
+                      'This page is still work in progress 🚧',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: (() => GoRouter.of(context).go('/')),
+                    child: const Text('Click here to go back to home page'),
+                  ),
+                  const SizedBox(height: 20),
+
                   /// Illustration
                   Lottie.asset(
                     'assets/illustrations/seated_dumble_bicep_curl.json',
