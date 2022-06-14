@@ -17,8 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = UserAuth();
   final _formKey = GlobalKey<FormState>();
 
-  String _email = '';
-  String _password = '';
+  String? _email;
+  String? _password;
   bool _isLoggingIn = false;
   bool _isLoggingInAnonimously = false;
 
@@ -34,10 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Center(
-                    child: Text(
-                      'Zor',
-                      style: TextStyle(fontSize: 96),
+                  Center(
+                    child: Column(
+                      children: const [
+                        Text(
+                          'Zor',
+                          style: TextStyle(fontSize: 96),
+                        ),
+                        Text(
+                          'Rencanakan olahragamu',
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 80),
@@ -87,20 +95,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? const CircularProgressIndicator()
                                 : const Text('Login'),
                           ),
+                          const SizedBox(height: 10),
                           TextButton(
-                            onPressed: () => _loginAnonimously(),
-                            child: _isLoggingInAnonimously
+                            onPressed: () => _loginAsGuest(),
+                            child: _isLoggingIn
                                 ? const CircularProgressIndicator()
                                 : const Text(
-                                    'Lanjutkan secara anonim',
+                                    'Login dengan akun demo',
                                     style: TextStyle(color: Colors.black87),
                                   ),
                           ),
+                          const SizedBox(height: 10),
+                          // TextButton(
+                          //   onPressed: () => _loginAnonimously(),
+                          //   child: _isLoggingInAnonimously
+                          //       ? const CircularProgressIndicator()
+                          //       : const Text(
+                          //           'Lanjutkan secara anonim',
+                          //           style: TextStyle(color: Colors.black87),
+                          //         ),
+                          // ),
                           TextButton(
                             onPressed: () =>
                                 GoRouter.of(context).push('/register'),
                             child: const Text(
-                              'Belum memiliki akun? Register',
+                              'Belum memiliki akun? Register di sini',
                               style: TextStyle(color: Colors.black87),
                             ),
                           ),
@@ -123,12 +142,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() async {
+  void _login({String? email, String? password}) async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoggingIn = true);
 
       try {
-        await _auth.login(email: _email, password: _password);
+        await _auth.login(
+            email: _email ?? email!, password: _password ?? password!);
         // ignore: use_build_context_synchronously
         GoRouter.of(context).go('/');
       } on FirebaseAuthException catch (e) {
@@ -143,6 +163,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
       setState(() => _isLoggingIn = false);
     }
+  }
+
+  void _loginAsGuest() async {
+    setState(() => _isLoggingIn = true);
+
+    try {
+      await _auth.login(email: 'demo@email.com', password: '123456');
+      // ignore: use_build_context_synchronously
+      GoRouter.of(context).go('/');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        _showSnackbar('Tidak tersedia akun dengan email tersebut.');
+      } else if (e.code == 'wrong-password') {
+        _showSnackbar('Password salah.');
+      }
+    } catch (e) {
+      _showSnackbar('Terjadi kesalahan:\n$e');
+    }
+
+    setState(() => _isLoggingIn = false);
   }
 
   void _loginAnonimously() async {
