@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../databases/database.dart';
-import '../utils/colors.dart';
 import '../widgets/exercise/exercise_list.dart';
 import '../widgets/exercise/show_add_exercise_modal_bottom_sheet.dart';
 
@@ -58,23 +56,24 @@ class DetailPlanScreen extends StatelessWidget {
             ),
           ),
 
+          /// Exercising Screen is still in development, so we disable the access to it
           /// Bottom section
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: ElevatedButton(
-                onPressed: () =>
-                    GoRouter.of(context).push('/exercising?planId=$planId'),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(primaryColor)),
-                child: const Text('Mulai sekarang (WIP 🚧)'),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   left: 0,
+          //   right: 0,
+          //   bottom: 1,
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          //     child: ElevatedButton(
+          //       onPressed: () =>
+          //           GoRouter.of(context).push('/exercising?planId=$planId'),
+          //       style: ButtonStyle(
+          //           backgroundColor:
+          //               MaterialStateProperty.all<Color>(primaryColor)),
+          //       child: const Text('Mulai sekarang (WIP 🚧)'),
+          //     ),
+          //   ),
+          // ),
 
           /// Error: Operand of null-aware operation '!' has type 'WidgetsBinding' which excludes null.
           /// TODO: Look for alternatives.
