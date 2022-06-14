@@ -48,10 +48,13 @@ class DatabaseService {
     });
   }
 
-  Future<void> addPlan(User user, dynamic data,
-      {FutureOr<void> Function(
-              DocumentReference<Map<String, dynamic>> documentReference)?
-          then}) async {
+  Future<void> addPlan(
+    User user,
+    dynamic data, {
+    FutureOr<void> Function(
+            DocumentReference<Map<String, dynamic>> documentReference)?
+        then,
+  }) async {
     return _db
         .collection('users')
         .doc(user.uid)
@@ -60,6 +63,23 @@ class DatabaseService {
         .then(then ?? (_) {})
         .then((_) => print("Plan added"))
         .catchError((error) => print("Failed to add plan: $error"));
+  }
+
+  Future<void> updatePlan(
+    User user,
+    dynamic data,
+    String planId, {
+    FutureOr<void> Function(void)? then,
+  }) async {
+    return _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('plans')
+        .doc(planId)
+        .update(data)
+        .then(then ?? (_) {})
+        .then((_) => print("Plan updated"))
+        .catchError((error) => print("Failed to update plan: $error"));
   }
 
   Future<void> removePlan(User user, String planId) {
