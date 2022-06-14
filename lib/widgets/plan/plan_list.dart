@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
+import 'add_plan.dart';
 import 'plan_list_tile.dart';
 
 class PlanList extends StatelessWidget {
@@ -75,7 +76,7 @@ class PlanList extends StatelessWidget {
                         schedules: schedules,
                         totalReps: totalReps,
                         totalSets: totalSets,
-                        onTap: () => context
+                        onTap: () => GoRouter.of(context)
                             .push('/detail-plan?planId=${plans[index].id}'),
                         onLongPress: () => onLongPress(
                           context,
@@ -120,41 +121,71 @@ class PlanList extends StatelessWidget {
             children: [
               TextButton(
                 child: const Text('Ubah'),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  showEditPlanDialog(context, plan);
+                },
               ),
               TextButton(
                 child: const Text('Hapus'),
-                onPressed: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: const Text('Yakin ingin menghapus rencana?'),
-                        actions: [
-                          TextButton(
-                            child: const Text('Hapus'),
-                            onPressed: () {
-                              db.removePlan(user, plan.id!);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Dihapus')),
-                              );
-                              Navigator.pop(context);
-                            },
-                          ),
-                          ElevatedButton(
-                            child: const Text('Batal'),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                  // ignore: use_build_context_synchronously
+                onPressed: () {
                   Navigator.pop(context);
+                  showDeletePlanDialog(context, db, user, plan);
                 },
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> showEditPlanDialog(BuildContext context, Plan plan) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Ubah Rencana Olahraga'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: AddPlan(
+              plan: plan,
+              onFinish: () => Navigator.pop(context),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showDeletePlanDialog(
+    BuildContext context,
+    DatabaseService db,
+    User user,
+    Plan plan,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: const Text('Yakin ingin menghapus rencana?'),
+          actions: [
+            TextButton(
+              child: const Text('Hapus'),
+              onPressed: () {
+                db.removePlan(user, plan.id!);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Dihapus')),
+                );
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
         );
       },
     );
