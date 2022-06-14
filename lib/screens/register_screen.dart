@@ -102,6 +102,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                                 ? const CircularProgressIndicator()
                                 : const Text('Register'),
                           ),
+                          const SizedBox(height: 20),
                           TextButton(
                             onPressed: () => GoRouter.of(context).pop(),
                             child: const Text(

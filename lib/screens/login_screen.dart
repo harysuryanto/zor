@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? const CircularProgressIndicator()
                                 : const Text('Login'),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                           TextButton(
                             onPressed: () => _loginAsGuest(),
                             child: _isLoggingIn
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: TextStyle(color: Colors.black87),
                                   ),
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 10),
                           // TextButton(
                           //   onPressed: () => _loginAnonimously(),
                           //   child: _isLoggingInAnonimously
