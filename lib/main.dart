@@ -33,18 +33,15 @@ void main() async {
   /// Turn off the # in the URLs on the web
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
 
-  if (isOnDesktopWeb) {
-    runApp(
-      DevicePreview(
-        defaultDevice: Devices.ios.iPhone13ProMax,
-        isToolbarVisible: false,
-        enabled: !kReleaseMode,
-        builder: (context) => MyApp(),
-      ),
-    );
-  } else {
-    runApp(MyApp());
-  }
+  runApp(
+    DevicePreview(
+      defaultDevice: Devices.ios.iPhone13,
+      backgroundColor: Colors.black87,
+      isToolbarVisible: false,
+      enabled: isOnDesktopWeb,
+      builder: (context) => MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
