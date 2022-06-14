@@ -11,7 +11,10 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       backgroundColor: primaryColor,
-      titleTextStyle: TextStyle(fontSize: 14),
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+      ),
     ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
