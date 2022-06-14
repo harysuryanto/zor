@@ -97,14 +97,17 @@ class _LoginScreenState extends State<RegisterScreen> {
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
+                            onPressed: () => _register(),
                             child: _isRegistering
                                 ? const CircularProgressIndicator()
                                 : const Text('Register'),
-                            onPressed: () => _register(),
                           ),
                           TextButton(
-                            child: const Text('Sudah memiliki akun? Login.'),
                             onPressed: () => GoRouter.of(context).pop(),
+                            child: const Text(
+                              'Sudah memiliki akun? Login.',
+                              style: TextStyle(color: Colors.black87),
+                            ),
                           ),
                         ],
                       ),

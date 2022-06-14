@@ -82,21 +82,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(
+                            onPressed: () => _login(),
                             child: _isLoggingIn
                                 ? const CircularProgressIndicator()
                                 : const Text('Login'),
-                            onPressed: () => _login(),
                           ),
                           TextButton(
+                            onPressed: () => _loginAnonimously(),
                             child: _isLoggingInAnonimously
                                 ? const CircularProgressIndicator()
-                                : const Text('Lanjutkan secara anonim'),
-                            onPressed: () => _loginAnonimously(),
+                                : const Text(
+                                    'Lanjutkan secara anonim',
+                                    style: TextStyle(color: Colors.black87),
+                                  ),
                           ),
                           TextButton(
-                            child: const Text('Belum memiliki akun? Register.'),
                             onPressed: () =>
                                 GoRouter.of(context).push('/register'),
+                            child: const Text(
+                              'Belum memiliki akun? Register',
+                              style: TextStyle(color: Colors.black87),
+                            ),
                           ),
                         ],
                       ),
