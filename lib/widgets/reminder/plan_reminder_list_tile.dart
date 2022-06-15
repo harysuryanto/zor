@@ -4,11 +4,11 @@ import '../../utils/colors.dart';
 
 class PlanReminderListTile extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final String? subTitle;
 
   const PlanReminderListTile({
-    this.title = 'Title Here',
-    this.subTitle = 'Subtitle here',
+    required this.title,
+    this.subTitle,
     Key? key,
   }) : super(key: key);
 
@@ -17,25 +17,33 @@ class PlanReminderListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
-        // width: 200,
-        // height: 100,
         padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
           color: lightColor,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title),
-            const SizedBox(height: 6),
-            Text(
-              subTitle,
-              style: const TextStyle(
-                fontSize: 10,
+        child: LimitedBox(
+          maxWidth: 150,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+              if (subTitle != null) ...[
+                const SizedBox(height: 6),
+                Text(
+                  subTitle!,
+                  style: const TextStyle(
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
