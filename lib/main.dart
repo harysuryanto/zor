@@ -17,11 +17,12 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
 
-bool get isOnDesktopWeb =>
-    kIsWeb &&
-    (defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS ||
-        defaultTargetPlatform == TargetPlatform.windows);
+bool isOnDesktopWeb = kIsWeb &&
+    [
+      TargetPlatform.linux,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    ].contains(defaultTargetPlatform);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      defaultDevice: Devices.ios.iPhone13,
+      defaultDevice: Devices.android.samsungGalaxyS20,
       backgroundColor: Colors.black87,
       isToolbarVisible: false,
       enabled: isOnDesktopWeb,
