@@ -37,7 +37,7 @@ Future<dynamic> showAddExerciseModalBottomSheet({
           /// Body
           Expanded(
             child: ScrollConfiguration(
-              behavior: CustomScrollBehavior(),
+              behavior: CustomScrollBehavior().copyWith(scrollbars: false),
               child: SingleChildScrollView(
                 child: AddExercise(
                   onSubmit: (exercise) => onSubmit(exercise),
