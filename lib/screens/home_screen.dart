@@ -112,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
-                              '👟 Jadwal hari ini (WIP 🚧)',
+                              '👟 Jadwal hari ini',
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
