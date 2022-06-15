@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../global/custom_scroll_behavior.dart';
 import 'article_list_tile.dart';
 
 class ArticleList extends StatelessWidget {
@@ -9,16 +10,19 @@ class ArticleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        child: Row(
-          children: const [
-            ArticleListTile(key: ValueKey('article1')),
-            ArticleListTile(key: ValueKey('article2')),
-            ArticleListTile(key: ValueKey('article3')),
-            ArticleListTile(key: ValueKey('article4')),
-          ],
+      child: ScrollConfiguration(
+        behavior: CustomScrollBehavior().copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            children: const [
+              ArticleListTile(key: ValueKey('article1')),
+              ArticleListTile(key: ValueKey('article2')),
+              ArticleListTile(key: ValueKey('article3')),
+              ArticleListTile(key: ValueKey('article4')),
+            ],
+          ),
         ),
       ),
     );
