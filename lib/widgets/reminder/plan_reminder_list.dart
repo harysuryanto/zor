@@ -28,7 +28,7 @@ class PlanReminderList extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         final plans = Provider.of<List<Plan>>(context);
         return plans.isEmpty
-            ? const Text('Tidak ada data.')
+            ? const Center(child: Text('Tidak ada jadwal hari ini.'))
             : LimitedBox(
                 maxHeight: 82,
                 child: ScrollConfiguration(

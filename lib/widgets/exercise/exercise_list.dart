@@ -31,7 +31,8 @@ class ExerciseList extends StatelessWidget {
         final exercises = Provider.of<List<Exercise>>(context);
 
         return exercises.isEmpty
-            ? const Text('Tidak ada data. Tekan ➕ untuk menambahkan.')
+            ? const Center(
+                child: Text('Tidak ada data. Tekan ➕ untuk menambahkan.'))
             : _buildTimeline(db, user, exercises);
       },
     );
