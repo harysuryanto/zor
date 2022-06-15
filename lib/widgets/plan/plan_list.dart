@@ -70,7 +70,7 @@ class PlanList extends StatelessWidget {
                           : null;
 
                       return PlanListTile(
-                        key: ValueKey(plans[index].id),
+                        key: ValueKey('plan list item ${plans[index].id}'),
                         title: plans[index].name,
                         subtitle: exercisesName,
                         schedules: schedules,
