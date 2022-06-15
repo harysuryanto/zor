@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _email;
   String? _password;
   bool _isLoggingIn = false;
+  bool _isLoggingInAsGuest = false;
   bool _isLoggingInAnonimously = false;
 
   @override
@@ -98,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
                           TextButton(
                             onPressed: () => _loginAsGuest(),
-                            child: _isLoggingIn
+                            child: _isLoggingInAsGuest
                                 ? const CircularProgressIndicator()
                                 : const Text(
                                     'Login dengan akun demo',
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginAsGuest() async {
-    setState(() => _isLoggingIn = true);
+    setState(() => _isLoggingInAsGuest = true);
 
     try {
       await _auth.login(email: 'demo@email.com', password: '123456');
@@ -182,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showSnackbar('Terjadi kesalahan:\n$e');
     }
 
-    setState(() => _isLoggingIn = false);
+    setState(() => _isLoggingInAsGuest = false);
   }
 
   void _loginAnonimously() async {
