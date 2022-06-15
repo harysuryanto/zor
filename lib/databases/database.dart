@@ -28,8 +28,12 @@ class DatabaseService {
   }
 
   /// Plan
-  Stream<List<Plan>> streamPlans(User user, {int? limit}) {
-    final Query<Map<String, dynamic>> ref;
+  Stream<List<Plan>> streamPlans(
+    User user, {
+    int? limit,
+    String? whereScheduleIs,
+  }) {
+    Query<Map<String, dynamic>> ref;
 
     if (limit == null) {
       ref = _db.collection('users').doc(user.uid).collection('plans');
@@ -39,6 +43,10 @@ class DatabaseService {
           .doc(user.uid)
           .collection('plans')
           .limit(limit);
+    }
+
+    if (whereScheduleIs != null) {
+      ref = ref.where('schedules', arrayContains: whereScheduleIs);
     }
 
     return ref.snapshots().map((list) {
