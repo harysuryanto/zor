@@ -177,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                           const ArticleList(),
 
                           const SizedBox(height: 30),
-                          const Center(child: Text('v0.5.0')),
+                          const Center(child: Text('v0.6.0')),
                           const SizedBox(height: 20),
                         ],
                       ),
