@@ -41,9 +41,11 @@ class HomeScreen extends StatelessWidget {
               bottom: false,
               child: Container(
                 color: primaryColor,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 60 + topSafeArea,
+                padding: EdgeInsets.only(
+                  top: 60 + topSafeArea,
+                  bottom: MediaQuery.of(context).size.height * 0.4,
+                  left: 30,
+                  right: 30,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
