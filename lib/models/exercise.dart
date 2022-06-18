@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Exercise {
-  final String? id;
+  final String id;
   final String name;
   final int repetitions;
   final int sets;
 
   Exercise({
-    this.id,
+    required this.id,
     this.name = '',
     this.repetitions = 0,
     this.sets = 0,

@@ -69,7 +69,7 @@ class ExerciseList extends StatelessWidget {
             direction: DismissDirection.endToStart,
             background: const DismissibleBackground(),
             onDismissed: (dismissDirection) {
-              db.removeExercise(user, planId, exercises[index].id!);
+              db.removeExercise(user, planId, exercises[index].id);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Dihapus')),
               );
