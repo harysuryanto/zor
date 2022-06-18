@@ -8,9 +8,9 @@ class Plan {
 
   Plan({
     this.id,
-    required this.name,
-    required this.schedules,
-    required this.exercises,
+    this.name = '',
+    this.schedules = const [],
+    this.exercises = const [],
   });
 
   factory Plan.fromFirestore(DocumentSnapshot doc) {
@@ -18,8 +18,8 @@ class Plan {
 
     return Plan(
       id: doc.id,
-      name: data['name'] != '' ? data['name'] : '-',
-      schedules: data['schedules'] ?? [],
+      name: data['name'] as String,
+      schedules: data['schedules'] ?? [] as List<String>,
       exercises: data['exercises'] ?? [],
     );
   }
