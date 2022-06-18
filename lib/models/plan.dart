@@ -4,13 +4,11 @@ class Plan {
   final String? id;
   final String name;
   final List schedules;
-  final List<Map<String, dynamic>> exercises;
 
   Plan({
     this.id,
     this.name = '',
     this.schedules = const [],
-    this.exercises = const [],
   });
 
   factory Plan.fromFirestore(DocumentSnapshot doc) {
@@ -20,7 +18,6 @@ class Plan {
       id: doc.id,
       name: data['name'] as String,
       schedules: data['schedules'] ?? [] as List<String>,
-      exercises: data['exercises'] ?? [],
     );
   }
 }
