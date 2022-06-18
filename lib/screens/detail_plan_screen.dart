@@ -19,29 +19,6 @@ class DetailPlanScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
-        actions: [
-          IconButton(
-            tooltip: 'Tambah latihan',
-            onPressed: () => showAddExerciseModalBottomSheet(
-              context: context,
-              onSubmit: (exercise) async {
-                final db = DatabaseService();
-                final user = Provider.of<User?>(context, listen: false);
-
-                await db.addExercise(
-                  user!,
-                  planId,
-                  {
-                    'name': exercise.name.trim(),
-                    'repetitions': exercise.repetitions,
-                    'sets': exercise.sets,
-                  },
-                );
-              },
-            ),
-            icon: const Icon(Icons.add),
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddExerciseModalBottomSheet(
