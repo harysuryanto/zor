@@ -39,7 +39,7 @@ class PlanReminderList extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     itemBuilder: (context, index) {
                       return StreamProvider<List<Exercise>>.value(
-                        value: db.streamExercises(user, plans[index].id!),
+                        value: db.streamExercises(user, plans[index].id),
                         initialData: const [],
                         builder: (BuildContext context, Widget? child) {
                           final exercisesProvider =

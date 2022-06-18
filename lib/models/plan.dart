@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Plan {
-  final String? id;
+  final String id;
   final String name;
   final List schedules;
 
   Plan({
-    this.id,
+    required this.id,
     this.name = '',
     this.schedules = const [],
   });
