@@ -18,7 +18,8 @@ class AllPlansScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () => GoRouter.of(context).push('/add-plan'),
       ),
-      bottomNavigationBar: const AdBanner(),
+      bottomNavigationBar:
+          const AdBanner(adPlacement: AdPlacement.allPlansScreen),
     );
   }
 }

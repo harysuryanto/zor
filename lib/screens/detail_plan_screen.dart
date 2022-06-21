@@ -101,7 +101,8 @@ class DetailPlanScreen extends StatelessWidget {
         ),
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const AdBanner(),
+      bottomNavigationBar:
+          const AdBanner(adPlacement: AdPlacement.detailPlanScreen),
     );
   }
 }

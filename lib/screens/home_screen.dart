@@ -125,7 +125,10 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           /// Banner Ad
-                          const Center(child: AdBanner()),
+                          const Center(
+                            child:
+                                AdBanner(adPlacement: AdPlacement.homeScreen),
+                          ),
 
                           const SizedBox(height: 30),
 
