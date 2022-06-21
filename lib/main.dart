@@ -34,7 +34,7 @@ void main() async {
       defaultDevice: Devices.android.samsungGalaxyS20,
       backgroundColor: Colors.black87,
       isToolbarVisible: false,
-      enabled: isOnDesktopWeb,
+      enabled: _isOnDesktopWeb,
       builder: (context) => MultiProvider(
         providers: [
           StreamProvider<User?>.value(
@@ -61,9 +61,9 @@ class MyApp extends StatelessWidget {
       routerDelegate: _router.routerDelegate,
 
       // For DevicePreview purpose
-      useInheritedMediaQuery: isOnDesktopWeb,
-      locale: isOnDesktopWeb ? DevicePreview.locale(context) : null,
-      builder: isOnDesktopWeb ? DevicePreview.appBuilder : null,
+      useInheritedMediaQuery: _isOnDesktopWeb,
+      locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
+      builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
     );
   }
 
@@ -132,7 +132,7 @@ class MyApp extends StatelessWidget {
   );
 }
 
-final bool isOnDesktopWeb = kIsWeb &&
+final bool _isOnDesktopWeb = kIsWeb &&
     [
       TargetPlatform.linux,
       TargetPlatform.macOS,
@@ -140,13 +140,16 @@ final bool isOnDesktopWeb = kIsWeb &&
     ].contains(defaultTargetPlatform);
 
 Future<void> initializeMobileAds() async {
-  final List<String> testDeviceIds = ['0CFD7285B3AC7B81A091D495F8C5F586'];
+  final List<String> testDeviceIds = [
+    // My BlueStacks emulator
+    '0CFD7285B3AC7B81A091D495F8C5F586',
+  ];
 
   MobileAds.instance.initialize();
 
   // Remove in release mode. As Google said that:
   // "Be sure to remove the code that sets these test devices before you release your app."
-  if (kReleaseMode) {
+  if (!kReleaseMode) {
     MobileAds.instance.updateRequestConfiguration(
         RequestConfiguration(testDeviceIds: testDeviceIds));
   }
