@@ -40,13 +40,37 @@ void main() async {
       backgroundColor: Colors.black87,
       isToolbarVisible: false,
       enabled: isOnDesktopWeb,
-      builder: (context) => MyApp(),
+      builder: (context) => MultiProvider(
+        providers: [
+          StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(),
+            initialData: null,
+          ),
+        ],
+        child: MyApp(),
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Zor',
+      themeMode: MyTheme.themeMode,
+      theme: MyTheme.theme,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+
+      // For DevicePreview purpose
+      useInheritedMediaQuery: isOnDesktopWeb,
+      locale: isOnDesktopWeb ? DevicePreview.locale(context) : null,
+      builder: isOnDesktopWeb ? DevicePreview.appBuilder : null,
+    );
+  }
 
   final _router = GoRouter(
     routes: [
@@ -111,28 +135,4 @@ class MyApp extends StatelessWidget {
       return null;
     },
   );
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User?>.value(
-          value: FirebaseAuth.instance.authStateChanges(),
-          initialData: null,
-        ),
-      ],
-      child: MaterialApp.router(
-        title: 'Zor',
-        themeMode: MyTheme.themeMode,
-        theme: MyTheme.theme,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-
-        // For DevicePreview purpose
-        useInheritedMediaQuery: isOnDesktopWeb,
-        locale: isOnDesktopWeb ? DevicePreview.locale(context) : null,
-        builder: isOnDesktopWeb ? DevicePreview.appBuilder : null,
-      ),
-    );
-  }
 }
