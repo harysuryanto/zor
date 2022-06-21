@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -143,14 +145,16 @@ Future<void> initializeMobileAds() async {
   final List<String> testDeviceIds = [
     // My BlueStacks emulator
     '0CFD7285B3AC7B81A091D495F8C5F586',
+    // My Redmi Note 7
+    '7CBA92CE7C46B722EB64D3FA66AA3B73',
   ];
 
   MobileAds.instance.initialize();
 
-  // Remove in release mode. As Google said that:
-  // "Be sure to remove the code that sets these test devices before you release your app."
-  if (!kReleaseMode) {
+  if (kDebugMode) {
+    // Use test ads.
     MobileAds.instance.updateRequestConfiguration(
         RequestConfiguration(testDeviceIds: testDeviceIds));
+    log('Shows test ads.');
   }
 }
