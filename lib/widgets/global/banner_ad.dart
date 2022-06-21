@@ -88,8 +88,8 @@ class __AdBannerMobileState extends State<_AdBannerMobile> {
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => _isAdLoaded = true),
         onAdFailedToLoad: (ad, error) {
-          print('Ad failed to load: ${error.message}');
           _bannerAd.dispose();
+          print('Ad failed to load: ${error.message}');
         },
       ),
       request: const AdRequest(),
