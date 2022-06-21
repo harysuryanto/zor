@@ -1,16 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-enum AdPlacement {
-  homeScreen,
-  allPlansScreen,
-  detailPlanScreen,
-}
-
-class AdBanner extends StatefulWidget {
+class AdBanner extends StatelessWidget {
   const AdBanner({
     Key? key,
     this.adPlacement = AdPlacement.homeScreen,
@@ -19,10 +13,26 @@ class AdBanner extends StatefulWidget {
   final AdPlacement adPlacement;
 
   @override
-  State<AdBanner> createState() => _AdBannerState();
+  Widget build(BuildContext context) {
+    if (!_isDeviceSupported) return const SizedBox();
+
+    return _AdBannerMobile(adPlacement: adPlacement);
+  }
 }
 
-class _AdBannerState extends State<AdBanner> {
+class _AdBannerMobile extends StatefulWidget {
+  const _AdBannerMobile({
+    Key? key,
+    this.adPlacement = AdPlacement.homeScreen,
+  }) : super(key: key);
+
+  final AdPlacement adPlacement;
+
+  @override
+  State<_AdBannerMobile> createState() => __AdBannerMobileState();
+}
+
+class __AdBannerMobileState extends State<_AdBannerMobile> {
   late BannerAd _bannerAd;
   bool _isAdLoaded = false;
 
@@ -78,7 +88,7 @@ class _AdBannerState extends State<AdBanner> {
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => _isAdLoaded = true),
         onAdFailedToLoad: (ad, error) {
-          log('Ad failed to load: ${error.message}');
+          print('Ad failed to load: ${error.message}');
           _bannerAd.dispose();
         },
       ),
@@ -86,3 +96,13 @@ class _AdBannerState extends State<AdBanner> {
     );
   }
 }
+
+enum AdPlacement {
+  homeScreen,
+  allPlansScreen,
+  detailPlanScreen,
+}
+
+const List _supportedDevices = [TargetPlatform.android];
+final bool _isDeviceSupported =
+    _supportedDevices.contains(defaultTargetPlatform);
