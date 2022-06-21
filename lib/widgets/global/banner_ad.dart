@@ -52,31 +52,29 @@ class _AdBannerState extends State<AdBanner> {
     return const SizedBox();
   }
 
-  String _adUnitIdAndroid(AdPlacement adPlacement) {
-    switch (adPlacement) {
-      case AdPlacement.homeScreen:
-        return 'ca-app-pub-9675217052405779/4840390767';
-      case AdPlacement.allPlansScreen:
-        return 'ca-app-pub-9675217052405779/9697965774';
-      case AdPlacement.detailPlanScreen:
-        return 'ca-app-pub-9675217052405779/4717101834';
-      default:
-        return _adUnitIdAndroid(AdPlacement.homeScreen);
+  String _adUnitId({AdPlacement? adPlacement}) {
+    if (Platform.isAndroid) {
+      switch (adPlacement) {
+        case AdPlacement.homeScreen:
+          return 'ca-app-pub-9675217052405779/4840390767';
+        case AdPlacement.allPlansScreen:
+          return 'ca-app-pub-9675217052405779/9697965774';
+        case AdPlacement.detailPlanScreen:
+          return 'ca-app-pub-9675217052405779/4717101834';
+        default:
+          return _adUnitId(adPlacement: AdPlacement.homeScreen);
+      }
+    } else if (Platform.isIOS) {
+      throw UnsupportedError("Currently ads are not supported on iOS.");
+    } else {
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
-  String _adUnitIdIos(AdPlacement adPlacement) {
-    // Currently ads are not supported on iOS.
-    // So it returns adUnitId from AdPlacement.homeScreen for Android.
-    return _adUnitIdAndroid(AdPlacement.homeScreen);
-  }
-
-  _initializeAd() {
+  void _initializeAd() {
     _bannerAd = BannerAd(
       size: AdSize.banner,
-      adUnitId: Platform.isAndroid
-          ? _adUnitIdAndroid(widget.adPlacement)
-          : _adUnitIdIos(widget.adPlacement),
+      adUnitId: _adUnitId(adPlacement: widget.adPlacement),
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => _isAdLoaded = true),
         onAdFailedToLoad: (ad, error) {
