@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../widgets/global/banner_ad.dart';
 import '../widgets/plan/plan_list.dart';
 
 class AllPlansScreen extends StatelessWidget {
@@ -12,11 +13,12 @@ class AllPlansScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('📆 Rencana Olahragamu'),
       ),
+      body: const PlanList(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => GoRouter.of(context).push('/add-plan'),
       ),
-      body: const PlanList(),
+      bottomNavigationBar: const AdBanner(),
     );
   }
 }

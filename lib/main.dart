@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -26,6 +27,7 @@ bool isOnDesktopWeb = kIsWeb &&
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   /// Firebase configurations from FlutterFire CLI,
   /// visit https://firebase.flutter.dev/docs/cli
