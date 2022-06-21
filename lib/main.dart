@@ -18,16 +18,9 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
 
-bool isOnDesktopWeb = kIsWeb &&
-    [
-      TargetPlatform.linux,
-      TargetPlatform.macOS,
-      TargetPlatform.windows,
-    ].contains(defaultTargetPlatform);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
+  initializeMobileAds();
 
   /// Firebase configurations from FlutterFire CLI,
   /// visit https://firebase.flutter.dev/docs/cli
@@ -137,4 +130,24 @@ class MyApp extends StatelessWidget {
       return null;
     },
   );
+}
+
+final bool isOnDesktopWeb = kIsWeb &&
+    [
+      TargetPlatform.linux,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    ].contains(defaultTargetPlatform);
+
+Future<void> initializeMobileAds() async {
+  final List<String> testDeviceIds = ['0CFD7285B3AC7B81A091D495F8C5F586'];
+
+  MobileAds.instance.initialize();
+
+  // Remove in release mode. As Google said that:
+  // "Be sure to remove the code that sets these test devices before you release your app."
+  if (kReleaseMode) {
+    MobileAds.instance.updateRequestConfiguration(
+        RequestConfiguration(testDeviceIds: testDeviceIds));
+  }
 }
