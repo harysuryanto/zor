@@ -4,10 +4,11 @@
 [EN] An app to make exercise plans.  
 The UI design is [here](https://www.figma.com/file/IwcLtKSnTyDLRFML6qSfTx/Zor-v2?node-id=0%3A1).
 
+
 # Try it out!
 
 - APK file  
-  [Download](https://github.com/harysuryanto/zor/files/8905539/Zor.v0.6.0.zip)
+  [Download](https://github.com/harysuryanto/zor/files/8959644/Zor.v0.7.0.apk.zip)
 - Website  
   [Open](https://zor-workout.netlify.app)
 
