@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/exercise.dart';
 import '../../utils/colors.dart';
@@ -182,6 +183,7 @@ class _AddExerciseState extends State<AddExercise> {
                 if (formKeyExerciseName.currentState!.validate()) {
                   widget.onSubmit(
                     Exercise(
+                      id: const Uuid().v1(),
                       name: exerciseName,
                       repetitions: repetitionOptions[focusedRepetitionIndex],
                       sets: setOptions[focusedSetIndex],

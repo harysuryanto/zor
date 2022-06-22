@@ -8,21 +8,19 @@ class ArticleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: ScrollConfiguration(
-        behavior: CustomScrollBehavior().copyWith(scrollbars: false),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          child: Row(
-            children: const [
-              ArticleListTile(key: ValueKey('article1')),
-              ArticleListTile(key: ValueKey('article2')),
-              ArticleListTile(key: ValueKey('article3')),
-              ArticleListTile(key: ValueKey('article4')),
-            ],
-          ),
+    return ScrollConfiguration(
+      behavior: CustomScrollBehavior().copyWith(scrollbars: false),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: Row(
+          children: const [
+            ArticleListTile(key: ValueKey('article1')),
+            ArticleListTile(key: ValueKey('article2')),
+            ArticleListTile(key: ValueKey('article3')),
+            ArticleListTile(key: ValueKey('article4')),
+          ],
         ),
       ),
     );

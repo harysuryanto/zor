@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Plan {
-  final String? id;
+  final String id;
   final String name;
   final List schedules;
-  final List<Map<String, dynamic>> exercises;
 
   Plan({
-    this.id,
-    required this.name,
-    required this.schedules,
-    required this.exercises,
+    required this.id,
+    this.name = '',
+    this.schedules = const [],
   });
 
   factory Plan.fromFirestore(DocumentSnapshot doc) {
@@ -18,9 +16,8 @@ class Plan {
 
     return Plan(
       id: doc.id,
-      name: data['name'] != '' ? data['name'] : '-',
-      schedules: data['schedules'] ?? [],
-      exercises: data['exercises'] ?? [],
+      name: data['name'] as String,
+      schedules: data['schedules'] ?? [] as List<String>,
     );
   }
 }

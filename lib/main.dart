@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -17,15 +20,9 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
 
-bool isOnDesktopWeb = kIsWeb &&
-    [
-      TargetPlatform.linux,
-      TargetPlatform.macOS,
-      TargetPlatform.windows,
-    ].contains(defaultTargetPlatform);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initializeMobileAds();
 
   /// Firebase configurations from FlutterFire CLI,
   /// visit https://firebase.flutter.dev/docs/cli
@@ -39,14 +36,38 @@ void main() async {
       defaultDevice: Devices.android.samsungGalaxyS20,
       backgroundColor: Colors.black87,
       isToolbarVisible: false,
-      enabled: isOnDesktopWeb,
-      builder: (context) => MyApp(),
+      enabled: _isOnDesktopWeb,
+      builder: (context) => MultiProvider(
+        providers: [
+          StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(),
+            initialData: null,
+          ),
+        ],
+        child: MyApp(),
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Zor',
+      themeMode: MyTheme.themeMode,
+      theme: MyTheme.theme,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+
+      // For DevicePreview purpose
+      useInheritedMediaQuery: _isOnDesktopWeb,
+      locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
+      builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
+    );
+  }
 
   final _router = GoRouter(
     routes: [
@@ -111,28 +132,29 @@ class MyApp extends StatelessWidget {
       return null;
     },
   );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User?>.value(
-          value: FirebaseAuth.instance.authStateChanges(),
-          initialData: null,
-        ),
-      ],
-      child: MaterialApp.router(
-        title: 'Zor',
-        themeMode: MyTheme.themeMode,
-        theme: MyTheme.theme,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
+final bool _isOnDesktopWeb = kIsWeb &&
+    [
+      TargetPlatform.linux,
+      TargetPlatform.macOS,
+      TargetPlatform.windows,
+    ].contains(defaultTargetPlatform);
 
-        // For DevicePreview purpose
-        useInheritedMediaQuery: isOnDesktopWeb,
-        locale: isOnDesktopWeb ? DevicePreview.locale(context) : null,
-        builder: isOnDesktopWeb ? DevicePreview.appBuilder : null,
-      ),
-    );
+Future<void> initializeMobileAds() async {
+  final List<String> testDeviceIds = [
+    // My BlueStacks emulator
+    '0CFD7285B3AC7B81A091D495F8C5F586',
+    // My Redmi Note 7
+    '7CBA92CE7C46B722EB64D3FA66AA3B73',
+  ];
+
+  MobileAds.instance.initialize();
+
+  if (kDebugMode) {
+    // Use test ads.
+    MobileAds.instance.updateRequestConfiguration(
+        RequestConfiguration(testDeviceIds: testDeviceIds));
+    log('Shows test ads.');
   }
 }

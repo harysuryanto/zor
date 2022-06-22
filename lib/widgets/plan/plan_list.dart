@@ -38,7 +38,7 @@ class PlanList extends StatelessWidget {
                 padding: padding,
                 itemBuilder: (context, index) {
                   return StreamProvider<List<Exercise>>.value(
-                    value: db.streamExercises(user, plans[index].id!),
+                    value: db.streamExercises(user, plans[index].id),
                     initialData: const [],
                     builder: (BuildContext context, Widget? child) {
                       final exercisesProvider =
@@ -174,7 +174,7 @@ class PlanList extends StatelessWidget {
             TextButton(
               child: const Text('Hapus'),
               onPressed: () {
-                db.removePlan(user, plan.id!);
+                db.removePlan(user, plan.id);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Dihapus')),
                 );

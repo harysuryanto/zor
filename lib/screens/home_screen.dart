@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
+import '../widgets/global/banner_ad.dart';
 import '../widgets/global/custom_stack.dart';
 import '../widgets/plan/plan_list.dart';
 import '../widgets/reminder/plan_reminder_list.dart';
@@ -123,6 +124,14 @@ class HomeScreen extends StatelessWidget {
 
                           const SizedBox(height: 30),
 
+                          /// Banner Ad
+                          const Center(
+                            child:
+                                AdBanner(adPlacement: AdPlacement.homeScreen),
+                          ),
+
+                          const SizedBox(height: 30),
+
                           /// Plan List
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -179,7 +188,9 @@ class HomeScreen extends StatelessWidget {
                           const ArticleList(),
 
                           const SizedBox(height: 30),
-                          const Center(child: Text('v0.6.0')),
+
+                          /// App version
+                          const Center(child: Text('v0.7.0')),
                           const SizedBox(height: 20),
                         ],
                       ),

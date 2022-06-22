@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../databases/database.dart';
 import '../widgets/exercise/exercise_list.dart';
 import '../widgets/exercise/show_add_exercise_modal_bottom_sheet.dart';
+import '../widgets/global/banner_ad.dart';
 
 class DetailPlanScreen extends StatelessWidget {
   final String planId;
@@ -19,49 +20,6 @@ class DetailPlanScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
-        actions: [
-          IconButton(
-            tooltip: 'Tambah latihan',
-            onPressed: () => showAddExerciseModalBottomSheet(
-              context: context,
-              onSubmit: (exercise) async {
-                final db = DatabaseService();
-                final user = Provider.of<User?>(context, listen: false);
-
-                await db.addExercise(
-                  user!,
-                  planId,
-                  {
-                    'name': exercise.name.trim(),
-                    'repetitions': exercise.repetitions,
-                    'sets': exercise.sets,
-                  },
-                );
-              },
-            ),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showAddExerciseModalBottomSheet(
-          context: context,
-          onSubmit: (exercise) async {
-            final db = DatabaseService();
-            final user = Provider.of<User?>(context, listen: false);
-
-            await db.addExercise(
-              user!,
-              planId,
-              {
-                'name': exercise.name.trim(),
-                'repetitions': exercise.repetitions,
-                'sets': exercise.sets,
-              },
-            );
-          },
-        ),
-        child: const Icon(Icons.add),
       ),
       body: Stack(
         children: [
@@ -123,6 +81,28 @@ class DetailPlanScreen extends StatelessWidget {
           // ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showAddExerciseModalBottomSheet(
+          context: context,
+          onSubmit: (exercise) async {
+            final db = DatabaseService();
+            final user = Provider.of<User?>(context, listen: false);
+
+            await db.addExercise(
+              user!,
+              planId,
+              {
+                'name': exercise.name.trim(),
+                'repetitions': exercise.repetitions,
+                'sets': exercise.sets,
+              },
+            );
+          },
+        ),
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar:
+          const AdBanner(adPlacement: AdPlacement.detailPlanScreen),
     );
   }
 }

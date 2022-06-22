@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Exercise {
-  final String? id;
+  final String id;
   final String name;
   final int repetitions;
   final int sets;
 
   Exercise({
-    this.id,
-    required this.name,
-    required this.repetitions,
-    required this.sets,
+    required this.id,
+    this.name = '',
+    this.repetitions = 0,
+    this.sets = 0,
   });
 
   factory Exercise.fromFirestore(DocumentSnapshot doc) {
@@ -18,9 +18,9 @@ class Exercise {
 
     return Exercise(
       id: doc.id,
-      name: data['name'],
-      repetitions: data['repetitions'],
-      sets: data['sets'],
+      name: data['name'] as String,
+      repetitions: data['repetitions'] as int,
+      sets: data['sets'] as int,
     );
   }
 }
