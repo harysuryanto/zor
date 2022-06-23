@@ -34,15 +34,14 @@ class DatabaseService {
     String? whereScheduleIs,
   }) {
     Query<Map<String, dynamic>> ref;
+    ref = _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('plans')
+        .orderBy('name');
 
-    if (limit == null) {
-      ref = _db.collection('users').doc(user.uid).collection('plans');
-    } else {
-      ref = _db
-          .collection('users')
-          .doc(user.uid)
-          .collection('plans')
-          .limit(limit);
+    if (limit != null) {
+      ref = ref.limit(limit);
     }
 
     if (whereScheduleIs != null) {
