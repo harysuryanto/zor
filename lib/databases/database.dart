@@ -141,4 +141,18 @@ class DatabaseService {
         .then((_) => print("Exercise deleted"))
         .catchError((error) => print("Failed to delete exercise: $error"));
   }
+
+  /// Returns highest exercise index. Will return -1 if the exercise is empty.
+  Future<int> getHighestExerciseIndex(User user, String planId) async {
+    final snap = await _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('plans')
+        .doc(planId)
+        .collection('exercises')
+        .orderBy('index', descending: true)
+        .limit(1)
+        .get();
+    return snap.docs.isNotEmpty ? snap.docs.first.data()['index'] : -1;
+  }
 }
