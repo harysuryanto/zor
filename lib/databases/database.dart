@@ -108,7 +108,8 @@ class DatabaseService {
         .doc(user.uid)
         .collection('plans')
         .doc(planId)
-        .collection('exercises');
+        .collection('exercises')
+        .orderBy('index');
 
     return ref.snapshots().map((list) {
       return list.docs.map((doc) {
