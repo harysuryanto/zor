@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -347,12 +349,14 @@ class _AddPlanState extends State<AddPlan> {
           'name': planName.trim(),
           'schedules': schedules,
         },
-        then: (document) async {
+        then: (plan) async {
+          int exerciseIndex = 0;
           for (var exercise in tempExercises) {
             await db.addExercise(
               user,
-              document.id,
+              plan.id,
               {
+                'index': exerciseIndex++,
                 'name': exercise.name.trim(),
                 'repetitions': exercise.repetitions,
                 'sets': exercise.sets,

@@ -84,6 +84,7 @@ class DetailPlanScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddExerciseModalBottomSheet(
           context: context,
+          planId: planId,
           onSubmit: (exercise) async {
             final db = DatabaseService();
             final user = Provider.of<User?>(context, listen: false);
@@ -92,6 +93,7 @@ class DetailPlanScreen extends StatelessWidget {
               user!,
               planId,
               {
+                'index': exercise.index,
                 'name': exercise.name.trim(),
                 'repetitions': exercise.repetitions,
                 'sets': exercise.sets,
