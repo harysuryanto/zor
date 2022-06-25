@@ -31,8 +31,6 @@ class _AddExerciseListTileState extends State<AddExerciseListTile> {
     _repsTextEditingController!.dispose();
     _restTimeTextEditingController!.dispose();
 
-    print('data ${widget.index} disposed');
-
     super.dispose();
   }
 
@@ -50,7 +48,7 @@ class _AddExerciseListTileState extends State<AddExerciseListTile> {
         children: [
           InkWell(
             onTap: () {
-              print('Deleting item ${widget.index}');
+              debugPrint('Deleting item ${widget.index}');
 
               // newExercises.removeAt(index);
             },
