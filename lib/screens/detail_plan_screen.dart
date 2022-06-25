@@ -200,7 +200,6 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
             child: Text('${index + 1}'),
           ),
           title: Text(_exercises[index].name),
-          subtitle: Text(_exercises[index].id),
           trailing: const Icon(Icons.drag_indicator),
         );
       },
