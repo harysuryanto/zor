@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -127,6 +128,49 @@ class DatabaseService {
         .add(data)
         .then((_) => print("Exercise added"))
         .catchError((error) => print("Failed to add exercise: $error"));
+  }
+
+  Future<void> reorderExerciseIndexes(
+    User user,
+    String planId, {
+    required List<Exercise> oldList,
+    required List<Exercise> newList,
+  }) async {
+    log('--------------------------------------------------');
+
+    for (var i = 0; i < newList.length; i++) {
+      var oldExercise = oldList[i];
+      var newExercise = newList[i];
+
+      if (oldExercise.index != newExercise.index) {
+        await updateExercise(
+          user,
+          {'index': oldExercise.index},
+          planId,
+          newExercise.id,
+        );
+
+        log('* ${oldExercise.index} -> ${newExercise.index}');
+      }
+    }
+  }
+
+  Future<void> updateExercise(
+    User user,
+    dynamic data,
+    String planId,
+    String exerciseId,
+  ) async {
+    return _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('plans')
+        .doc(planId)
+        .collection('exercises')
+        .doc(exerciseId)
+        .update(data)
+        .then((_) => print("Exercise updated"))
+        .catchError((error) => print("Failed to update exercise: $error"));
   }
 
   Future<void> removeExercise(User user, String planId, String exerciseId) {
