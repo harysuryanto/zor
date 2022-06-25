@@ -39,11 +39,10 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
             IconButton(
               onPressed: () async {
                 if (newOrderExercises.isEmpty) {
-                  newOrderExercises = oldOrderExercises;
+                  newOrderExercises = [...oldOrderExercises];
                 }
 
                 // TODO: do not reorder if no changes, give condition here
-
                 await db.reorderExerciseIndexes(
                   user!,
                   widget.planId,
