@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -136,21 +135,20 @@ class DatabaseService {
     required List<Exercise> oldList,
     required List<Exercise> newList,
   }) async {
-    log('--------------------------------------------------');
+    oldList.sort((a, b) => a.id.compareTo(b.id));
+    newList.sort((a, b) => a.id.compareTo(b.id));
 
-    for (var i = 0; i < newList.length; i++) {
-      var oldExercise = oldList[i];
-      var newExercise = newList[i];
+    for (var i = 0; i < oldList.length; i++) {
+      final oldExercise = oldList[i];
+      final newExercise = newList[i];
 
       if (oldExercise.index != newExercise.index) {
         await updateExercise(
           user,
-          {'index': oldExercise.index},
+          {'index': newExercise.index},
           planId,
-          newExercise.id,
+          oldExercise.id,
         );
-
-        log('* ${oldExercise.index} -> ${newExercise.index}');
       }
     }
   }

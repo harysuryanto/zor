@@ -38,8 +38,6 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
           if (isReorderingList)
             IconButton(
               onPressed: () async {
-                // print(newOrderExercises.map((exercise) => exercise.name));
-
                 await db.reorderExerciseIndexes(
                   user!,
                   widget.planId,
@@ -208,15 +206,31 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
       },
       itemCount: _exercises.length,
       onReorder: (int oldIndex, int newIndex) {
+        /// 1. Update the UI
         setState(() {
           if (oldIndex < newIndex) {
             newIndex -= 1;
           }
           final Exercise item = _exercises.removeAt(oldIndex);
           _exercises.insert(newIndex, item);
-
-          widget.onReorder!(_exercises);
         });
+
+        /// 2. Update index in each exercise to be alphabetically ordered
+        for (var i = 0; i < _exercises.length; i++) {
+          final remove = _exercises.removeAt(i);
+          _exercises.insert(
+            i,
+            Exercise(
+              id: remove.id,
+              index: i,
+              name: remove.name,
+              repetitions: remove.repetitions,
+              sets: remove.sets,
+            ),
+          );
+        }
+
+        widget.onReorder!(_exercises);
       },
     );
   }
