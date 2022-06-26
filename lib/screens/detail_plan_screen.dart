@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../databases/database.dart';
@@ -97,10 +98,13 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
             Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 20),
-                  Text('Menyortir...'),
+                children: [
+                  Lottie.asset(
+                    'assets/illustrations/sorting.json',
+                    height: 120,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('Menyortir...'),
                 ],
               ),
             ),
