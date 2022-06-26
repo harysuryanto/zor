@@ -22,7 +22,7 @@ class DetailPlanScreen extends StatefulWidget {
 }
 
 class _DetailPlanScreenState extends State<DetailPlanScreen> {
-  bool isReorderingList = false;
+  _ReorderingMode _reorderingMode = _ReorderingMode.notStarted;
   List<Exercise> oldOrderExercises = [];
   List<Exercise> newOrderExercises = [];
 
@@ -35,9 +35,26 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
       appBar: AppBar(
         title: const Text('Pratinjau Olahraga'),
         actions: [
-          if (isReorderingList)
+          if (_reorderingMode == _ReorderingMode.notStarted)
+            IconButton(
+              onPressed: () {
+                setState(() => _reorderingMode = _ReorderingMode.reordering);
+
+                db
+                    .streamExercises(user!, widget.planId)
+                    .first
+                    .then((exercises) {
+                  setState(() => oldOrderExercises = exercises);
+                });
+              },
+              icon: const Icon(Icons.reorder),
+              tooltip: 'Sortir',
+            ),
+          if (_reorderingMode == _ReorderingMode.reordering)
             IconButton(
               onPressed: () async {
+                setState(() => _reorderingMode = _ReorderingMode.saving);
+
                 if (newOrderExercises.isEmpty) {
                   newOrderExercises = [...oldOrderExercises];
                 }
@@ -50,38 +67,17 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
                   newList: newOrderExercises,
                 );
 
-                setState(() => isReorderingList = false);
+                setState(() => _reorderingMode = _ReorderingMode.notStarted);
               },
               icon: const Icon(Icons.done),
               tooltip: 'Selesai menyortir',
-            ),
-          if (!isReorderingList)
-            IconButton(
-              onPressed: () {
-                setState(() => isReorderingList = true);
-
-                db
-                    .streamExercises(user!, widget.planId)
-                    .first
-                    .then((exercises) {
-                  setState(() => oldOrderExercises = exercises);
-                });
-              },
-              icon: const Icon(Icons.reorder),
-              tooltip: 'Sortir',
             ),
         ],
       ),
       body: Stack(
         children: [
           /// Body section
-          if (isReorderingList)
-            _ReorderingListView(
-              planId: widget.planId,
-              onReorder: (newExercises) =>
-                  setState(() => newOrderExercises = newExercises),
-            ),
-          if (!isReorderingList)
+          if (_reorderingMode == _ReorderingMode.notStarted)
             ExerciseList(
               planId: widget.planId,
               padding: const EdgeInsets.only(
@@ -89,6 +85,23 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
                 left: 30,
                 right: 30,
                 bottom: 90,
+              ),
+            ),
+          if (_reorderingMode == _ReorderingMode.reordering)
+            _ReorderingListView(
+              planId: widget.planId,
+              onReorder: (newExercises) =>
+                  setState(() => newOrderExercises = newExercises),
+            ),
+          if (_reorderingMode == _ReorderingMode.saving)
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text('Menyortir...'),
+                ],
               ),
             ),
 
@@ -238,4 +251,10 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
       },
     );
   }
+}
+
+enum _ReorderingMode {
+  notStarted,
+  reordering,
+  saving,
 }
