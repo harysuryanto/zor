@@ -214,6 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
       elevatedButtonTheme: Theme.of(context).elevatedButtonTheme,
       inputDecorationTheme: const InputDecorationTheme(
         labelStyle: TextStyle(color: darkColor),
+        errorStyle: TextStyle(color: darkColor),
         border: OutlineInputBorder(
           borderSide: BorderSide(),
           borderRadius: BorderRadius.all(Radius.circular(10)),
