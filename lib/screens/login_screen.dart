@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = UserAuth();
   final _formKey = GlobalKey<FormState>();
+  final bool _isAllowedToLoginAnonymously = false;
 
   String? _email;
   String? _password;
@@ -110,16 +111,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                       style: TextStyle(color: Colors.black87),
                                     ),
                             ),
-                            // const SizedBox(height: 10),
-                            // TextButton(
-                            //   onPressed: () => _loginAnonimously(),
-                            //   child: _isLoggingInAnonimously
-                            //       ? const CircularProgressIndicator()
-                            //       : const Text(
-                            //           'Lanjutkan secara anonim',
-                            //           style: TextStyle(color: Colors.black87),
-                            //         ),
-                            // ),
+                            if (_isAllowedToLoginAnonymously)
+                              TextButton(
+                                onPressed: () => _loginAnonimously(),
+                                child: _isLoggingInAnonimously
+                                    ? const CircularProgressIndicator()
+                                    : const Text(
+                                        'Login secara anonim',
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                              ),
                             TextButton(
                               onPressed: () =>
                                   GoRouter.of(context).push('/register'),
