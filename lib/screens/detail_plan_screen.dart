@@ -175,6 +175,7 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
             );
           },
         ),
+        tooltip: 'Tambah latihan',
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar:
