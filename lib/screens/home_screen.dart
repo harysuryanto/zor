@@ -11,7 +11,6 @@ import '../widgets/global/banner_ad.dart';
 import '../widgets/global/custom_stack.dart';
 import '../widgets/plan/plan_list.dart';
 import '../widgets/reminder/plan_reminder_list.dart';
-import 'loading_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,7 +23,7 @@ class HomeScreen extends StatelessWidget {
     final user = Provider.of<User?>(context);
 
     if (user == null) {
-      return const LoadingScreen();
+      return const Scaffold(body: Center(child: Text('Loading...')));
     }
 
     final displayName = user.displayName ?? user.email ?? 'anonim';
