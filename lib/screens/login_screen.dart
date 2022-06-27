@@ -62,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             TextFormField(
-                              autofocus: true,
                               onChanged: (value) =>
                                   setState(() => _email = value),
                               validator: (value) {
