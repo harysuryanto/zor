@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
@@ -54,77 +55,81 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Form(
                       key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TextFormField(
-                            onChanged: (value) =>
-                                setState(() => _email = value),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Mohon isi email yang valid.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
+                      child: Theme(
+                        data: _themeData(context),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TextFormField(
+                              autofocus: true,
+                              onChanged: (value) =>
+                                  setState(() => _email = value),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Mohon isi email yang valid.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Email',
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            onChanged: (value) =>
-                                setState(() => _password = value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mohon isi password yang valid.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              onChanged: (value) =>
+                                  setState(() => _password = value),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Mohon isi password yang valid.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              textInputAction: TextInputAction.done,
                             ),
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            textInputAction: TextInputAction.done,
-                          ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () => _login(),
-                            child: _isLoggingIn
-                                ? const CircularProgressIndicator()
-                                : const Text('Login'),
-                          ),
-                          const SizedBox(height: 20),
-                          TextButton(
-                            onPressed: () => _loginAsGuest(),
-                            child: _isLoggingInAsGuest
-                                ? const CircularProgressIndicator()
-                                : const Text(
-                                    'Login dengan akun demo',
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                          ),
-                          // const SizedBox(height: 10),
-                          // TextButton(
-                          //   onPressed: () => _loginAnonimously(),
-                          //   child: _isLoggingInAnonimously
-                          //       ? const CircularProgressIndicator()
-                          //       : const Text(
-                          //           'Lanjutkan secara anonim',
-                          //           style: TextStyle(color: Colors.black87),
-                          //         ),
-                          // ),
-                          TextButton(
-                            onPressed: () =>
-                                GoRouter.of(context).push('/register'),
-                            child: const Text(
-                              'Belum memiliki akun? Register di sini',
-                              style: TextStyle(color: Colors.black87),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () => _login(),
+                              child: _isLoggingIn
+                                  ? const CircularProgressIndicator()
+                                  : const Text('Login'),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 20),
+                            TextButton(
+                              onPressed: () => _loginAsGuest(),
+                              child: _isLoggingInAsGuest
+                                  ? const CircularProgressIndicator()
+                                  : const Text(
+                                      'Login dengan akun demo',
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                            ),
+                            // const SizedBox(height: 10),
+                            // TextButton(
+                            //   onPressed: () => _loginAnonimously(),
+                            //   child: _isLoggingInAnonimously
+                            //       ? const CircularProgressIndicator()
+                            //       : const Text(
+                            //           'Lanjutkan secara anonim',
+                            //           style: TextStyle(color: Colors.black87),
+                            //         ),
+                            // ),
+                            TextButton(
+                              onPressed: () =>
+                                  GoRouter.of(context).push('/register'),
+                              child: const Text(
+                                'Belum memiliki akun? Register di sini',
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -198,5 +203,25 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     setState(() => _isLoggingInAnonimously = false);
+  }
+
+  ThemeData _themeData(BuildContext context) {
+    return ThemeData(
+      primarySwatch: Colors.red,
+      textTheme: GoogleFonts.poppinsTextTheme(),
+      elevatedButtonTheme: Theme.of(context).elevatedButtonTheme,
+      inputDecorationTheme: const InputDecorationTheme(
+        labelStyle: TextStyle(color: darkColor),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: darkColor),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(cursorColor: blackColor),
+    );
   }
 }
