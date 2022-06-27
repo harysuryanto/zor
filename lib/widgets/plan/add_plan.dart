@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,8 +105,16 @@ class _AddPlanState extends State<AddPlan> {
                 }
                 return null;
               },
-              decoration:
-                  const InputDecoration(hintText: 'Contoh: Workout Senin'),
+              decoration: InputDecoration(
+                hintText: [
+                  // Highly recommended to use short text or it will overflows
+                  'Misal: Cardio',
+                  'Misal: Workout Senin',
+                  'Misal:Memperbesar tangan',
+                  'Misal:Menurunkan berat badan',
+                ][Random().nextInt(4)],
+                hintStyle: const TextStyle(overflow: TextOverflow.fade),
+              ),
             ),
           ),
         ),
@@ -347,12 +358,14 @@ class _AddPlanState extends State<AddPlan> {
           'name': planName.trim(),
           'schedules': schedules,
         },
-        then: (document) async {
+        then: (plan) async {
+          int exerciseIndex = 0;
           for (var exercise in tempExercises) {
             await db.addExercise(
               user,
-              document.id,
+              plan.id,
               {
+                'index': exerciseIndex++,
                 'name': exercise.name.trim(),
                 'repetitions': exercise.repetitions,
                 'sets': exercise.sets,

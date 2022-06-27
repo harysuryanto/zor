@@ -89,7 +89,7 @@ class __AdBannerMobileState extends State<_AdBannerMobile> {
         onAdLoaded: (ad) => setState(() => _isAdLoaded = true),
         onAdFailedToLoad: (ad, error) {
           _bannerAd.dispose();
-          print('Ad failed to load: ${error.message}');
+          debugPrint('Ad failed to load: ${error.message}');
         },
       ),
       request: const AdRequest(),

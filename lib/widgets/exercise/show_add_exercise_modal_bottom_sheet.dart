@@ -10,6 +10,7 @@ import 'add_exercise.dart';
 
 Future<dynamic> showAddExerciseModalBottomSheet({
   required BuildContext context,
+  String? planId,
   bool expand = false,
   required FutureOr<void> Function(Exercise exercise) onSubmit,
 }) {
@@ -40,6 +41,7 @@ Future<dynamic> showAddExerciseModalBottomSheet({
               behavior: CustomScrollBehavior().copyWith(scrollbars: false),
               child: SingleChildScrollView(
                 child: AddExercise(
+                  planId: planId,
                   onSubmit: (exercise) => onSubmit(exercise),
                 ),
               ),

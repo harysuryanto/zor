@@ -8,7 +8,7 @@ The UI design is [here](https://www.figma.com/file/IwcLtKSnTyDLRFML6qSfTx/Zor-v2
 # Try it out!
 
 - APK file  
-  [Download](https://github.com/harysuryanto/zor/files/8959644/Zor.v0.7.0.apk.zip)
+  [Download](https://github.com/harysuryanto/zor/files/8990071/Zor.v0.8.0.apk.zip)
 - Website  
   [Open](https://zor-workout.netlify.app)
 

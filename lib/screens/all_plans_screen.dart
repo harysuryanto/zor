@@ -15,8 +15,9 @@ class AllPlansScreen extends StatelessWidget {
       ),
       body: const PlanList(),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
         onPressed: () => GoRouter.of(context).push('/add-plan'),
+        tooltip: 'Tambah rencana',
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar:
           const AdBanner(adPlacement: AdPlacement.allPlansScreen),

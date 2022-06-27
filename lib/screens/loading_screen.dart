@@ -10,7 +10,7 @@ class LoadingScreen extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: Lottie.asset(
-            '../assets/illustrations/flying_rocket.json',
+            'assets/illustrations/flying_rocket.json',
             height: 200,
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../providers/user_auth.dart';
 import '../utils/colors.dart';
@@ -45,72 +46,76 @@ class _LoginScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Form(
                       key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TextFormField(
-                            onChanged: (value) => setState(() => _name = value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mohon isi nama.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Nama',
+                      child: Theme(
+                        data: _themeData(context),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TextFormField(
+                              onChanged: (value) =>
+                                  setState(() => _name = value),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Mohon isi nama.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Nama',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.next,
                             ),
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.next,
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            onChanged: (value) =>
-                                setState(() => _email = value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mohon isi email yang valid.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              onChanged: (value) =>
+                                  setState(() => _email = value),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Mohon isi email yang valid.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Email',
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            onChanged: (value) =>
-                                setState(() => _password = value),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Mohon isi password yang valid.';
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              onChanged: (value) =>
+                                  setState(() => _password = value),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Mohon isi password yang valid.';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              textInputAction: TextInputAction.done,
                             ),
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            textInputAction: TextInputAction.done,
-                          ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () => _register(),
-                            child: _isRegistering
-                                ? const CircularProgressIndicator()
-                                : const Text('Register'),
-                          ),
-                          const SizedBox(height: 20),
-                          TextButton(
-                            onPressed: () => GoRouter.of(context).pop(),
-                            child: const Text(
-                              'Sudah memiliki akun? Login.',
-                              style: TextStyle(color: Colors.black87),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () => _register(),
+                              child: _isRegistering
+                                  ? const CircularProgressIndicator()
+                                  : const Text('Register'),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 20),
+                            TextButton(
+                              onPressed: () => GoRouter.of(context).pop(),
+                              child: const Text(
+                                'Sudah memiliki akun? Login.',
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -157,5 +162,25 @@ class _LoginScreenState extends State<RegisterScreen> {
 
       setState(() => _isRegistering = false);
     }
+  }
+
+  ThemeData _themeData(BuildContext context) {
+    return ThemeData(
+      primarySwatch: Colors.red,
+      textTheme: GoogleFonts.poppinsTextTheme(),
+      elevatedButtonTheme: Theme.of(context).elevatedButtonTheme,
+      inputDecorationTheme: const InputDecorationTheme(
+        labelStyle: TextStyle(color: darkColor),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: darkColor),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(cursorColor: blackColor),
+    );
   }
 }

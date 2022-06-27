@@ -1,15 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../utils/colors.dart';
 
 class AddExercise extends StatefulWidget {
+  final String? planId;
   final void Function(Exercise) onSubmit;
 
   const AddExercise({
     Key? key,
+    required this.planId,
     required this.onSubmit,
   }) : super(key: key);
 
@@ -179,16 +184,26 @@ class _AddExerciseState extends State<AddExercise> {
           SizedBox(
             width: double.maxFinite,
             child: OutlinedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (formKeyExerciseName.currentState!.validate()) {
+                  final db = DatabaseService();
+                  final user = Provider.of<User?>(context, listen: false);
+                  final exerciseIndex = widget.planId != null
+                      ? await db.getHighestExerciseIndex(
+                              user!, widget.planId!) +
+                          1
+                      : -1;
+
                   widget.onSubmit(
                     Exercise(
                       id: const Uuid().v1(),
+                      index: exerciseIndex,
                       name: exerciseName,
                       repetitions: repetitionOptions[focusedRepetitionIndex],
                       sets: setOptions[focusedSetIndex],
                     ),
                   );
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 }
               },
