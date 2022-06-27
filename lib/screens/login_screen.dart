@@ -97,14 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ElevatedButton(
                               onPressed: () => _login(),
                               child: _isLoggingIn
-                                  ? const CircularProgressIndicator()
+                                  ? const _ProgressIndicator()
                                   : const Text('Login'),
                             ),
                             const SizedBox(height: 20),
                             TextButton(
                               onPressed: () => _loginAsGuest(),
                               child: _isLoggingInAsGuest
-                                  ? const CircularProgressIndicator()
+                                  ? const _ProgressIndicator()
                                   : const Text(
                                       'Login dengan akun demo',
                                       style: TextStyle(color: Colors.black87),
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextButton(
                                 onPressed: () => _loginAnonimously(),
                                 child: _isLoggingInAnonimously
-                                    ? const CircularProgressIndicator()
+                                    ? const _ProgressIndicator()
                                     : const Text(
                                         'Login secara anonim',
                                         style: TextStyle(color: Colors.black87),
@@ -222,6 +222,24 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       textSelectionTheme: const TextSelectionThemeData(cursorColor: blackColor),
+    );
+  }
+}
+
+class _ProgressIndicator extends StatelessWidget {
+  const _ProgressIndicator({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 21,
+      height: 21,
+      child: CircularProgressIndicator(
+        color: whiteColor,
+        strokeWidth: 3,
+      ),
     );
   }
 }
