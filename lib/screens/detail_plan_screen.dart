@@ -60,7 +60,6 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
                   newOrderExercises = [...oldOrderExercises];
                 }
 
-                // TODO: do not reorder if no changes, give condition here
                 await db.reorderExerciseIndexes(
                   user!,
                   widget.planId,
