@@ -105,4 +105,4 @@ enum AdPlacement {
 
 const List _supportedDevices = [TargetPlatform.android];
 final bool _isDeviceSupported =
-    _supportedDevices.contains(defaultTargetPlatform);
+    !kIsWeb && _supportedDevices.contains(defaultTargetPlatform);
