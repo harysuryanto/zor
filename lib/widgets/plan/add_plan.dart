@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -104,8 +105,16 @@ class _AddPlanState extends State<AddPlan> {
                 }
                 return null;
               },
-              decoration:
-                  const InputDecoration(hintText: 'Contoh: Workout Senin'),
+              decoration: InputDecoration(
+                hintText: [
+                  // Highly recommended to use short text or it will overflows
+                  'Misal: Cardio',
+                  'Misal: Workout Senin',
+                  'Misal:Memperbesar tangan',
+                  'Misal:Menurunkan berat badan',
+                ][Random().nextInt(4)],
+                hintStyle: const TextStyle(overflow: TextOverflow.fade),
+              ),
             ),
           ),
         ),
