@@ -20,8 +20,8 @@ class ExercisingScreen extends StatefulWidget {
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
   List<Exercise> _exercises = [];
-  int _currentExerciseIndex = 0; // Range of 0 to _exercises.length - 1
-  int _currentSetProgress = 0; // Range of 0 to Exercise.sets
+  int _currentExerciseIndex = 0; // Range of 0 to [_exercises.length] - 1
+  int _currentSetProgress = 0; // Range of 0 to [Exercise.sets]
 
   @override
   void initState() {
