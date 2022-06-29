@@ -182,7 +182,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                     ),
                     child: Row(
                       children: [
-                        if (_currentExerciseIndex > 0)
+                        if (_currentExerciseIndex > 0) ...[
                           OutlinedButton(
                             child: const Icon(
                               Icons.skip_previous_rounded,
@@ -190,7 +190,8 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
                             ),
                             onPressed: () => _handlePrevious(),
                           ),
-                        const SizedBox(width: 20),
+                          const SizedBox(width: 20),
+                        ],
                         Expanded(
                           child: _currentExerciseIndex <
                                       _exercises.length - 1 ||
