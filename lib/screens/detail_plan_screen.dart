@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -108,27 +109,27 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
               ),
             ),
 
-          /// Exercising Screen is still in development, so we disable the access to it
           /// Bottom section
-          // Positioned(
-          //   left: 0,
-          //   right: 0,
-          //   bottom: 1,
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          //     child: ElevatedButton(
-          //       onPressed: () =>
-          //           GoRouter.of(context).push('/exercising?planId=$planId'),
-          //       style: ButtonStyle(
-          //           backgroundColor:
-          //               MaterialStateProperty.all<Color>(primaryColor)),
-          //       child: const Text('Mulai sekarang (WIP 🚧)'),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              // TODO: hide this button if there is no exercise
+              child: ElevatedButton(
+                onPressed: () => GoRouter.of(context)
+                    .push('/exercising?planId=${widget.planId}'),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(primaryColor)),
+                child: const Text('Olahraga sekarang'),
+              ),
+            ),
+          ),
 
           /// Error: Operand of null-aware operation '!' has type 'WidgetsBinding' which excludes null.
-          /// TODO: Look for alternatives.
+          /// TODO: Look for alternatives
           // Container(
           //   color: primaryColor,
           //   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
