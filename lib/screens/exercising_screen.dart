@@ -265,7 +265,9 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
     }
   }
 
-  /// This method gives animation to the CircularStepProgressIndicator
+  /// This method gives animation to the CircularStepProgressIndicator.
+  ///
+  /// BUT this method is currently not working properly. So there is no animation.
   void setCurrentSetProgressTo(int newValue) async {
     int startValue = _currentSetProgress;
     int finishValue = newValue;
