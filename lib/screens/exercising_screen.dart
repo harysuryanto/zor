@@ -1,8 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
+import '../databases/database.dart';
+import '../models/exercise.dart';
 import '../utils/colors.dart';
 
 class ExercisingScreen extends StatefulWidget {
@@ -10,15 +15,258 @@ class ExercisingScreen extends StatefulWidget {
   const ExercisingScreen({required this.planId, Key? key}) : super(key: key);
 
   @override
-  _ExercisingScreenState createState() => _ExercisingScreenState();
+  State<ExercisingScreen> createState() => _ExercisingScreenState();
 }
 
 class _ExercisingScreenState extends State<ExercisingScreen> {
-  int _currentSetProgress = 33; // Range of 0 to 100
+  List<Exercise> _exercises = [];
+  int _currentExerciseIndex = 0; // Range of 0 to _exercises.length - 1
+  int _currentSetProgress = 0; // Range of 0 to Exercise.sets
 
+  @override
+  void initState() {
+    super.initState();
+
+    final db = DatabaseService();
+    final user = Provider.of<User?>(context, listen: false);
+
+    db.streamExercises(user!, widget.planId).first.then((exercises) {
+      setState(() => _exercises = exercises);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: _exercises.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Tidak ada latihan'),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => GoRouter.of(context).pop(),
+                      child: const Text('Tambah latihan'),
+                    ),
+                  ],
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  /// Body section
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        /// Illustration
+                        Lottie.asset(
+                          'assets/illustrations/seated_dumble_bicep_curl.json',
+                          height: 200,
+                          key: const ValueKey('Exercising illustration'),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// Texts
+                        Text(
+                          _exercises[_currentExerciseIndex].name,
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        if (_currentExerciseIndex < _exercises.length - 1)
+                          Text(
+                            'Selanjutnya: ${_exercises[_currentExerciseIndex + 1].name}',
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.black54),
+                          ),
+
+                        const SizedBox(height: 50),
+
+                        /// Numbers
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            /// Repetitions
+                            Container(
+                              width: 120,
+                              height: 120,
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                color: lightColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(80)),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '${_exercises[_currentExerciseIndex].repetitions}',
+                                    style: const TextStyle(
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const AutoSizeText(
+                                    'rep',
+                                    style: TextStyle(
+                                        fontSize: 18, color: darkColor),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            /// Sets
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: const BoxDecoration(
+                                color: lightColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(80)),
+                              ),
+                              child: CircularStepProgressIndicator(
+                                key: const ValueKey('Set progress indicator'),
+                                totalSteps:
+                                    _exercises[_currentExerciseIndex].sets,
+                                currentStep: _currentSetProgress,
+                                selectedColor: primaryColor,
+                                unselectedColor: Colors.transparent,
+                                roundedCap: (_, __) => true,
+                                stepSize: 7,
+                                padding: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  alignment: Alignment.center,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AutoSizeText(
+                                          '$_currentSetProgress/${_exercises[_currentExerciseIndex].sets}',
+                                          style: const TextStyle(
+                                            fontSize: 36,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                        const Text(
+                                          'set',
+                                          style: TextStyle(
+                                              fontSize: 18, color: darkColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// Bottom section
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      right: 30,
+                      bottom: 30,
+                      left: 30,
+                    ),
+                    child: Row(
+                      children: [
+                        if (_currentExerciseIndex > 0)
+                          OutlinedButton(
+                            child: const Icon(
+                              Icons.skip_previous_rounded,
+                              color: primaryColor,
+                            ),
+                            onPressed: () => _handlePrevious(),
+                          ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: _currentExerciseIndex <
+                                      _exercises.length - 1 ||
+                                  _currentSetProgress <
+                                      _exercises[_currentExerciseIndex].sets
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    _handleNext();
+                                    setCurrentSetProgressTo(
+                                        _currentSetProgress + 1);
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            primaryColor),
+                                  ),
+                                  child: const Text(
+                                    'Selanjutnya',
+                                    style: TextStyle(
+                                      color: whiteColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () => GoRouter.of(context).go('/'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            primaryColor),
+                                  ),
+                                  child: const Text(
+                                    'Selesai',
+                                    style: TextStyle(
+                                      color: whiteColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+
+  void _handleNext() {
+    // Move to next set
+    if (_currentSetProgress < _exercises[_currentExerciseIndex].sets) {
+      setState(() => _currentSetProgress++);
+      return;
+    }
+
+    // Move to next exercise
+    if (_currentExerciseIndex < _exercises.length - 1) {
+      setState(() => _currentExerciseIndex++);
+      setState(() => _currentSetProgress = 0);
+      return;
+    }
+  }
+
+  void _handlePrevious() {
+    if (_currentExerciseIndex > 0) {
+      setState(() => _currentExerciseIndex--);
+      setState(() => _currentSetProgress = 0);
+      return;
+    }
+  }
+
+  /// This method gives animation to the CircularStepProgressIndicator
   void setCurrentSetProgressTo(int newValue) async {
-    /// This method gives animation to the CircularStepProgressIndicator
-
     int startValue = _currentSetProgress;
     int finishValue = newValue;
     List<int> progress;
@@ -41,174 +289,5 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
       });
       await Future.delayed(const Duration(milliseconds: 1));
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            /// Body section
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    child: const Text(
-                      'This page is still work in progress 🚧',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: (() => GoRouter.of(context).go('/')),
-                    child: const Text('Click here to go back to home page'),
-                  ),
-                  const SizedBox(height: 20),
-
-                  /// Illustration
-                  Lottie.asset(
-                    'assets/illustrations/seated_dumble_bicep_curl.json',
-                    height: 200,
-                    key: const ValueKey('Exercising illustration'),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// Texts
-                  const Text(
-                    'Russian Push Up',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Selanjutnya: Dumble Curl',
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
-
-                  const SizedBox(height: 50),
-
-                  /// Numbers
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      /// Repetitions
-                      Container(
-                        width: 120,
-                        height: 120,
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          color: lightColor,
-                          borderRadius: BorderRadius.all(Radius.circular(80)),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Text(
-                              '12',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'rep',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      /// Sets
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: const BoxDecoration(
-                          color: lightColor,
-                          borderRadius: BorderRadius.all(Radius.circular(80)),
-                        ),
-                        child: CircularStepProgressIndicator(
-                          key: const ValueKey('Set progress indicator'),
-                          totalSteps: 100,
-                          currentStep: _currentSetProgress,
-                          selectedColor: primaryColor,
-                          unselectedColor: Colors.transparent,
-                          roundedCap: (_, __) => true,
-                          stepSize: 7,
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text(
-                                  '1/3',
-                                  style: TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'set',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            /// Bottom section
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 20,
-                right: 30,
-                bottom: 30,
-                left: 30,
-              ),
-              child: Row(
-                children: [
-                  OutlinedButton(
-                    child: const Icon(
-                      Icons.skip_previous_rounded,
-                      color: primaryColor,
-                    ),
-                    onPressed: () {},
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setCurrentSetProgressTo(66);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(primaryColor),
-                      ),
-                      child: const Text(
-                        'Selanjutnya',
-                        style: TextStyle(
-                          color: whiteColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
