@@ -284,9 +284,7 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
 
     /// Progressively change value of [_currentSetProgress]
     for (var value = 0; value < progress.length; value++) {
-      setState(() {
-        _currentSetProgress = progress[value];
-      });
+      setState(() => _currentSetProgress = progress[value]);
       await Future.delayed(const Duration(milliseconds: 1));
     }
   }
