@@ -37,15 +37,7 @@ void main() async {
       backgroundColor: Colors.black87,
       isToolbarVisible: false,
       enabled: _isOnDesktopWeb,
-      builder: (context) => MultiProvider(
-        providers: [
-          StreamProvider<User?>.value(
-            value: UserAuth().streamAuthStatus,
-            initialData: null,
-          ),
-        ],
-        child: MyApp(),
-      ),
+      builder: (context) => MyApp(),
     ),
   );
 }
@@ -55,17 +47,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Zor',
-      themeMode: MyTheme.themeMode,
-      theme: MyTheme.theme,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(
+          value: UserAuth().streamAuthStatus,
+          initialData: null,
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Zor',
+        themeMode: MyTheme.themeMode,
+        theme: MyTheme.theme,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
 
-      // For DevicePreview purpose
-      useInheritedMediaQuery: _isOnDesktopWeb,
-      locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
-      builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
+        // For DevicePreview purpose
+        useInheritedMediaQuery: _isOnDesktopWeb,
+        locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
+        builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
+      ),
     );
   }
 
@@ -108,6 +108,29 @@ class MyApp extends StatelessWidget {
         },
       ),
     ],
+    redirect: (state) {
+      final auth = UserAuth();
+
+      /// Check wheter the user has logged in or not
+      final loggedIn = auth.instance.currentUser != null;
+
+      /// Check wheter the user in in login screen or register screen
+      final loggingIn = state.subloc == '/login' || state.subloc == '/register';
+
+      /// Will redirect to login screen if the user is not logged in
+      /// and is not in login screen or register screen
+      if (!loggedIn && !loggingIn) {
+        return '/login';
+      }
+
+      /// Will redirect to home screen if the user has logged in
+      /// and is in login screen or register screen
+      if (loggedIn && loggingIn) {
+        return '/';
+      }
+
+      return null;
+    },
   );
 }
 
