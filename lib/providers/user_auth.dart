@@ -7,10 +7,6 @@ class UserAuth {
     return instance.authStateChanges();
   }
 
-  bool get isLoggedIn {
-    return instance.currentUser != null;
-  }
-
   Future<void> loginAnonymously() async {
     await instance.signInAnonymously();
   }
