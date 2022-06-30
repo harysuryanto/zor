@@ -19,6 +19,7 @@ import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'utils/theme.dart';
+import 'widgets/global/custom_scroll_behavior.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        scrollBehavior: CustomScrollBehavior().copyWith(scrollbars: false),
         title: 'Zor',
         themeMode: MyTheme.themeMode,
         theme: MyTheme.theme,

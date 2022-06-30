@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
-import '../global/custom_scroll_behavior.dart';
 import 'plan_reminder_list_tile.dart';
 
 class PlanReminderList extends StatelessWidget {
@@ -31,42 +30,39 @@ class PlanReminderList extends StatelessWidget {
             ? const Center(child: Text('Tidak ada jadwal hari ini.'))
             : LimitedBox(
                 maxHeight: 82,
-                child: ScrollConfiguration(
-                  behavior: CustomScrollBehavior().copyWith(scrollbars: false),
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemBuilder: (context, index) {
-                      return StreamProvider<List<Exercise>>.value(
-                        value: db.streamExercises(user, plans[index].id),
-                        initialData: const [],
-                        builder: (BuildContext context, Widget? child) {
-                          final exercisesProvider =
-                              Provider.of<List<Exercise>>(context);
-                          final exercisesCount = exercisesProvider.length;
-                          final totalReps = exercisesProvider.isNotEmpty
-                              ? exercisesProvider
-                                  .map((exercise) =>
-                                      exercise.repetitions * exercise.sets)
-                                  .reduce((a, b) => a + b)
-                              : 0;
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  itemBuilder: (context, index) {
+                    return StreamProvider<List<Exercise>>.value(
+                      value: db.streamExercises(user, plans[index].id),
+                      initialData: const [],
+                      builder: (BuildContext context, Widget? child) {
+                        final exercisesProvider =
+                            Provider.of<List<Exercise>>(context);
+                        final exercisesCount = exercisesProvider.length;
+                        final totalReps = exercisesProvider.isNotEmpty
+                            ? exercisesProvider
+                                .map((exercise) =>
+                                    exercise.repetitions * exercise.sets)
+                                .reduce((a, b) => a + b)
+                            : 0;
 
-                          return PlanReminderListTile(
-                            key: ValueKey(
-                                'plan reminder list item ${plans[index].id}'),
-                            title: plans[index].name,
-                            subTitle:
-                                '$exercisesCount latihan | $totalReps rep total',
-                            onTap: () => GoRouter.of(context)
-                                .push('/detail-plan?planId=${plans[index].id}'),
-                          );
-                        },
-                      );
-                    },
-                    separatorBuilder: (_, __) => const SizedBox(width: 0),
-                    itemCount: plans.length,
-                  ),
+                        return PlanReminderListTile(
+                          key: ValueKey(
+                              'plan reminder list item ${plans[index].id}'),
+                          title: plans[index].name,
+                          subTitle:
+                              '$exercisesCount latihan | $totalReps rep total',
+                          onTap: () => GoRouter.of(context)
+                              .push('/detail-plan?planId=${plans[index].id}'),
+                        );
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const SizedBox(width: 0),
+                  itemCount: plans.length,
                 ),
               );
       },
