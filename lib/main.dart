@@ -40,7 +40,7 @@ void main() async {
       builder: (context) => MultiProvider(
         providers: [
           StreamProvider<User?>.value(
-            value: FirebaseAuth.instance.authStateChanges(),
+            value: UserAuth().streamAuthStatus,
             initialData: null,
           ),
         ],
@@ -108,29 +108,6 @@ class MyApp extends StatelessWidget {
         },
       ),
     ],
-    redirect: (state) {
-      final auth = UserAuth();
-
-      /// Check wheter the user has logged in or not
-      final loggedIn = auth.isLoggedIn;
-
-      /// Check wheter the user in in login screen or register screen
-      final loggingIn = state.subloc == '/login' || state.subloc == '/register';
-
-      /// Will redirect to login screen if the user is not logged in
-      /// and is not in login screen or register screen
-      if (!loggedIn && !loggingIn) {
-        return '/login';
-      }
-
-      /// Will redirect to home screen if the user has logged in
-      /// and is in login screen or register screen
-      if (loggedIn && loggingIn) {
-        return '/';
-      }
-
-      return null;
-    },
   );
 }
 
