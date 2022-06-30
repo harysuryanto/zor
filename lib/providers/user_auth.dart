@@ -11,25 +11,33 @@ class UserAuth {
     await instance.signInAnonymously();
   }
 
-  Future<void> login({required String email, required String password}) async {
-    await instance.signInWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
-  }
-
-  Future<void> register({
+  Future<UserCredential> login({
     required String email,
     required String password,
-    required String name,
   }) async {
-    await instance.createUserWithEmailAndPassword(
+    return await instance.signInWithEmailAndPassword(
       email: email.trim(),
       password: password,
     );
   }
 
-  Future<void> logout() async {
+  Future<UserCredential> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String displayName,
+  }) async {
+    UserCredential userCredential =
+        await instance.createUserWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
+
+    await userCredential.user!.updateDisplayName(displayName);
+
+    return userCredential;
+  }
+
+  Future<void> signOut() async {
     await instance.signOut();
   }
 }

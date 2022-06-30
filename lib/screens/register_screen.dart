@@ -139,14 +139,11 @@ class _LoginScreenState extends State<RegisterScreen> {
       setState(() => _isRegistering = true);
 
       try {
-        UserCredential userCredential =
-            await _auth.instance.createUserWithEmailAndPassword(
-          email: _email.trim(),
+        await _auth.createUserWithEmailAndPassword(
+          email: _email,
           password: _password,
+          displayName: _name,
         );
-
-        /// Update user's name
-        await userCredential.user!.updateDisplayName(_name);
 
         // ignore: use_build_context_synchronously
         GoRouter.of(context).go('/');

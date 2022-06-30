@@ -19,8 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final bool _isAllowedToLoginAnonymously = false;
 
-  String? _email;
-  String? _password;
+  String _email = '';
+  String _password = '';
   bool _isLoggingIn = false;
   bool _isLoggingInAsGuest = false;
   bool _isLoggingInAnonimously = false;
@@ -150,13 +150,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login({String? email, String? password}) async {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoggingIn = true);
 
       try {
-        await _auth.login(
-            email: _email ?? email!, password: _password ?? password!);
+        await _auth.login(email: _email, password: _password);
         // ignore: use_build_context_synchronously
         GoRouter.of(context).go('/');
       } on FirebaseAuthException catch (e) {

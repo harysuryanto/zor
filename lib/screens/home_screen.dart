@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                           message: 'Logout',
                           child: InkWell(
                             onTap: () async {
-                              await auth.logout();
+                              await auth.signOut();
                               // ignore: use_build_context_synchronously
                               GoRouter.of(context).go('/login');
                             },
