@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../databases/database.dart';
 import '../../models/exercise.dart';
+import '../../services/firestore_service.dart';
 import '../../utils/colors.dart';
 import '../global/dismissible_background.dart';
 import '../plan/plan_list_tile.dart';
@@ -21,11 +20,10 @@ class ExerciseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
     return StreamProvider<List<Exercise>>.value(
-      value: db.streamExercises(user!, planId),
+      value: db.streamExercises(planId),
       initialData: const [],
       builder: (BuildContext context, Widget? child) {
         final exercises = Provider.of<List<Exercise>>(context);
@@ -33,14 +31,13 @@ class ExerciseList extends StatelessWidget {
         return exercises.isEmpty
             ? const Center(
                 child: Text('Tidak ada data. Tekan ➕ untuk menambahkan.'))
-            : _buildTimeline(db, user, exercises);
+            : _buildTimeline(db, exercises);
       },
     );
   }
 
   Widget _buildTimeline(
-    DatabaseService db,
-    User user,
+    FirestoreService db,
     List<Exercise> exercises,
   ) {
     return Timeline.tileBuilder(
@@ -69,7 +66,7 @@ class ExerciseList extends StatelessWidget {
             direction: DismissDirection.endToStart,
             background: const DismissibleBackground(),
             onDismissed: (dismissDirection) {
-              db.removeExercise(user, planId, exercises[index].id);
+              db.removeExercise(planId, exercises[index].id);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Dihapus')),
               );

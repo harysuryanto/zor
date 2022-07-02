@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
+import '../../services/firestore_service.dart';
 import 'plan_reminder_list_tile.dart';
 
 class PlanReminderList extends StatelessWidget {
@@ -14,15 +13,13 @@ class PlanReminderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
     final String todayInWeekday = DateFormat('EEEE').format(DateTime.now());
 
     // return _showTemplate();
     return StreamProvider<List<Plan>>.value(
-      value:
-          db.streamPlans(user!, whereScheduleIs: todayInWeekday.toLowerCase()),
+      value: db.streamPlans(whereScheduleIs: todayInWeekday.toLowerCase()),
       initialData: const [],
       builder: (BuildContext context, Widget? child) {
         final plans = Provider.of<List<Plan>>(context);
@@ -36,7 +33,7 @@ class PlanReminderList extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (context, index) {
                     return StreamProvider<List<Exercise>>.value(
-                      value: db.streamExercises(user, plans[index].id),
+                      value: db.streamExercises(plans[index].id),
                       initialData: const [],
                       builder: (BuildContext context, Widget? child) {
                         final exercisesProvider =

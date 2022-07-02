@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-import '../providers/user_auth.dart';
+import '../services/firebase_auth_service.dart';
 import '../utils/colors.dart';
 import '../widgets/global/navigator_wrapper.dart';
 
@@ -15,7 +16,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<RegisterScreen> {
-  final _auth = UserAuth();
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
@@ -35,10 +35,18 @@ class _LoginScreenState extends State<RegisterScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Center(
-                    child: Text(
-                      'Zor',
-                      style: TextStyle(fontSize: 96),
+                  Center(
+                    child: Column(
+                      children: const [
+                        Text(
+                          'Zor',
+                          style: TextStyle(fontSize: 96),
+                        ),
+                        Text(
+                          'Rencanakan olahragamu',
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 80),
@@ -108,7 +116,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 20),
                             TextButton(
-                              onPressed: () => GoRouter.of(context).pop(),
+                              onPressed: () => Navigator.pop(context),
                               child: const Text(
                                 'Sudah memiliki akun? Login.',
                                 style: TextStyle(color: Colors.black87),
@@ -139,7 +147,9 @@ class _LoginScreenState extends State<RegisterScreen> {
       setState(() => _isRegistering = true);
 
       try {
-        await _auth.createUserWithEmailAndPassword(
+        final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+
+        await auth.createUserWithEmailAndPassword(
           email: _email,
           password: _password,
           displayName: _name,

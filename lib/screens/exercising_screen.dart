@@ -1,13 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-import '../databases/database.dart';
 import '../models/exercise.dart';
+import '../services/firestore_service.dart';
 import '../utils/colors.dart';
 
 class ExercisingScreen extends StatefulWidget {
@@ -27,10 +26,9 @@ class _ExercisingScreenState extends State<ExercisingScreen> {
   void initState() {
     super.initState();
 
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
-    db.streamExercises(user!, widget.planId).first.then((exercises) {
+    db.streamExercises(widget.planId).first.then((exercises) {
       setState(() => _exercises = exercises);
     });
   }

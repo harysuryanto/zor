@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +9,15 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-import 'providers/user_auth.dart';
 import 'screens/add_plan_screen.dart';
 import 'screens/all_plans_screen.dart';
 import 'screens/detail_plan_screen.dart';
 import 'screens/exercising_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
+import 'services/firebase_auth_service.dart';
 import 'utils/theme.dart';
+import 'widgets/global/auth_wrapper.dart';
 import 'widgets/global/custom_scroll_behavior.dart';
 
 void main() async {
@@ -50,37 +49,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<User?>.value(
-          value: UserAuth().streamAuthStatus,
-          initialData: null,
-        ),
+        Provider<FirebaseAuthService?>(
+          create: (_) => FirebaseAuthService(),
+        )
       ],
-      child: MaterialApp.router(
-        scrollBehavior: CustomScrollBehavior().copyWith(scrollbars: false),
-        title: 'Zor',
-        themeMode: MyTheme.themeMode,
-        theme: MyTheme.theme,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
+      child: AuthWrapper(
+        signedInScreen: MaterialApp.router(
+          scrollBehavior: CustomScrollBehavior().copyWith(scrollbars: false),
+          title: 'Zor',
+          themeMode: MyTheme.themeMode,
+          theme: MyTheme.theme,
+          routeInformationParser: _router.routeInformationParser,
+          routerDelegate: _router.routerDelegate,
 
-        // For DevicePreview purpose
-        useInheritedMediaQuery: _isOnDesktopWeb,
-        locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
-        builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
+          // For DevicePreview purpose
+          useInheritedMediaQuery: _isOnDesktopWeb,
+          locale: _isOnDesktopWeb ? DevicePreview.locale(context) : null,
+          builder: _isOnDesktopWeb ? DevicePreview.appBuilder : null,
+        ),
+        notSignedInScreen: MaterialApp(
+          title: 'Zor - Authentication',
+          themeMode: MyTheme.themeMode,
+          theme: MyTheme.theme,
+          home: const LoginScreen(),
+        ),
       ),
     );
   }
 
   final _router = GoRouter(
     routes: [
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: '/register',
-        builder: (context, state) => const RegisterScreen(),
-      ),
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
@@ -110,29 +108,6 @@ class MyApp extends StatelessWidget {
         },
       ),
     ],
-    redirect: (state) {
-      final auth = UserAuth();
-
-      /// Check wheter the user has logged in or not
-      final loggedIn = auth.instance.currentUser != null;
-
-      /// Check wheter the user in in login screen or register screen
-      final loggingIn = state.subloc == '/login' || state.subloc == '/register';
-
-      /// Will redirect to login screen if the user is not logged in
-      /// and is not in login screen or register screen
-      if (!loggedIn && !loggingIn) {
-        return '/login';
-      }
-
-      /// Will redirect to home screen if the user has logged in
-      /// and is in login screen or register screen
-      if (loggedIn && loggingIn) {
-        return '/';
-      }
-
-      return null;
-    },
   );
 }
 

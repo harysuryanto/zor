@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-import '../providers/user_auth.dart';
+import '../services/firebase_auth_service.dart';
 import '../utils/colors.dart';
 import '../widgets/global/navigator_wrapper.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,7 +16,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _auth = UserAuth();
   final _formKey = GlobalKey<FormState>();
   final bool _isAllowedToLoginAnonymously = false;
 
@@ -123,8 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                               ),
                             TextButton(
-                              onPressed: () =>
-                                  GoRouter.of(context).push('/register'),
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen(),
+                                ),
+                              ),
                               child: const Text(
                                 'Belum memiliki akun? Register di sini',
                                 style: TextStyle(color: Colors.black87),
@@ -155,9 +159,11 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _isLoggingIn = true);
 
       try {
-        await _auth.login(email: _email, password: _password);
-        // ignore: use_build_context_synchronously
-        GoRouter.of(context).go('/');
+        final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+        await auth.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           _showSnackbar('Tidak tersedia akun dengan email tersebut.');
@@ -176,9 +182,11 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoggingInAsGuest = true);
 
     try {
-      await _auth.login(email: 'demo@email.com', password: '123456');
-      // ignore: use_build_context_synchronously
-      GoRouter.of(context).go('/');
+      final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+      await auth.signInWithEmailAndPassword(
+        email: 'demo@email.com',
+        password: '123456',
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _showSnackbar('Tidak tersedia akun dengan email tersebut.');
@@ -196,9 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoggingInAnonimously = true);
 
     try {
-      await _auth.loginAnonymously();
-      // ignore: use_build_context_synchronously
-      GoRouter.of(context).go('/');
+      final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+      await auth.loginAnonymously();
     } catch (e) {
       _showSnackbar('Terjadi kesalahan:\n$e');
     }

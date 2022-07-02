@@ -1,44 +1,26 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/exercise.dart';
-import '../models/my_profile.dart';
 import '../models/plan.dart';
 
-class DatabaseService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+class FirestoreService {
+  FirestoreService({required this.uid});
 
-  /// User
-  Future<MyProfile> getMyProfile(String id) async {
-    final snap = await _db.collection('users').doc(id).get().catchError(
-        (error) =>
-            debugPrint("Failed to get current profile document: $error"));
-
-    return MyProfile.fromMap(snap.data as Map<String, dynamic>);
-  }
-
-  Stream<MyProfile> streamMyProfile(String uid) {
-    final ref = _db.collection('users').doc(uid);
-
-    return ref.snapshots().map((snap) {
-      var data = snap.data() as Map<String, dynamic>;
-      return MyProfile.fromMap(data);
-    });
-  }
+  final String uid;
+  final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
   /// Plan
-  Stream<List<Plan>> streamPlans(
-    User user, {
+  Stream<List<Plan>> streamPlans({
     int? limit,
     String? whereScheduleIs,
   }) {
     Query<Map<String, dynamic>> ref;
-    ref = _db
+    ref = _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .orderBy('name');
 
@@ -58,15 +40,14 @@ class DatabaseService {
   }
 
   Future<void> addPlan(
-    User user,
     dynamic data, {
     FutureOr<void> Function(
             DocumentReference<Map<String, dynamic>> documentReference)?
         then,
   }) async {
-    return _db
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .add(data)
         .then(then ?? (_) {})
@@ -75,14 +56,13 @@ class DatabaseService {
   }
 
   Future<void> updatePlan(
-    User user,
     dynamic data,
     String planId, {
     FutureOr<void> Function(void)? then,
   }) async {
-    return _db
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .update(data)
@@ -91,10 +71,10 @@ class DatabaseService {
         .catchError((error) => debugPrint("Failed to update plan: $error"));
   }
 
-  Future<void> removePlan(User user, String planId) {
-    return _db
+  Future<void> removePlan(String planId) {
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .delete()
@@ -103,10 +83,10 @@ class DatabaseService {
   }
 
   /// Exercise
-  Stream<List<Exercise>> streamExercises(User user, String planId) {
-    final ref = _db
+  Stream<List<Exercise>> streamExercises(String planId) {
+    final ref = _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .collection('exercises')
@@ -119,10 +99,10 @@ class DatabaseService {
     });
   }
 
-  Future<void> addExercise(User user, String planId, dynamic data) {
-    return _db
+  Future<void> addExercise(String planId, dynamic data) {
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .collection('exercises')
@@ -132,7 +112,6 @@ class DatabaseService {
   }
 
   Future<void> reorderExerciseIndexes(
-    User user,
     String planId, {
     required List<Exercise> oldList,
     required List<Exercise> newList,
@@ -146,7 +125,6 @@ class DatabaseService {
 
       if (oldExercise.index != newExercise.index) {
         await updateExercise(
-          user,
           {'index': newExercise.index},
           planId,
           oldExercise.id,
@@ -156,14 +134,13 @@ class DatabaseService {
   }
 
   Future<void> updateExercise(
-    User user,
     dynamic data,
     String planId,
     String exerciseId,
   ) async {
-    return _db
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .collection('exercises')
@@ -173,10 +150,10 @@ class DatabaseService {
         .catchError((error) => debugPrint("Failed to update exercise: $error"));
   }
 
-  Future<void> removeExercise(User user, String planId, String exerciseId) {
-    return _db
+  Future<void> removeExercise(String planId, String exerciseId) {
+    return _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .collection('exercises')
@@ -187,10 +164,10 @@ class DatabaseService {
   }
 
   /// Returns highest exercise index. Will return -1 if the exercise is empty.
-  Future<int> getHighestExerciseIndex(User user, String planId) async {
-    final snap = await _db
+  Future<int> getHighestExerciseIndex(String planId) async {
+    final snap = await _instance
         .collection('users')
-        .doc(user.uid)
+        .doc(uid)
         .collection('plans')
         .doc(planId)
         .collection('exercises')
