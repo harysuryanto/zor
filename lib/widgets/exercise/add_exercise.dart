@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../databases/database.dart';
 import '../../models/exercise.dart';
+import '../../services/firestore_service.dart';
 import '../../utils/colors.dart';
 
 class AddExercise extends StatefulWidget {
@@ -186,12 +185,10 @@ class _AddExerciseState extends State<AddExercise> {
             child: OutlinedButton(
               onPressed: () async {
                 if (formKeyExerciseName.currentState!.validate()) {
-                  final db = DatabaseService();
-                  final user = Provider.of<User?>(context, listen: false);
+                  final db =
+                      Provider.of<FirestoreService>(context, listen: false);
                   final exerciseIndex = widget.planId != null
-                      ? await db.getHighestExerciseIndex(
-                              user!, widget.planId!) +
-                          1
+                      ? await db.getHighestExerciseIndex(widget.planId!) + 1
                       : -1;
 
                   widget.onSubmit(

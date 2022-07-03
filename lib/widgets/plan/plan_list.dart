@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
+import '../../services/firestore_service.dart';
 import 'add_plan.dart';
 import 'plan_list_tile.dart';
 
@@ -23,44 +22,48 @@ class PlanList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
-    return StreamProvider<List<Plan>>.value(
-      value: db.streamPlans(user!, limit: limit),
-      initialData: const [],
+    return StreamProvider<List<Plan>?>.value(
+      value: db.streamPlans(limit: limit),
+      initialData: null,
       builder: (BuildContext context, Widget? child) {
-        final plans = Provider.of<List<Plan>>(context);
+        final plans = Provider.of<List<Plan>?>(context);
+
+        if (plans == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
         return plans.isEmpty
-            ? const Center(child: Text('Tidak ada data.'))
+            ? const Center(child: Text('Tidak ada rencana.'))
             : ListView.separated(
                 padding: padding,
                 itemBuilder: (context, index) {
                   return StreamProvider<List<Exercise>>.value(
-                    value: db.streamExercises(user, plans[index].id),
+                    value: db.streamExercises(plans[index].id),
                     initialData: const [],
                     builder: (BuildContext context, Widget? child) {
                       final exercisesProvider =
                           Provider.of<List<Exercise>>(context);
-                      final exercisesName = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) => exercise.name)
-                              .join(', ')
-                          : null;
-                      final totalReps = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) =>
-                                  exercise.repetitions * exercise.sets)
-                              .reduce((a, b) => a + b)
-                          : null;
-                      final totalSets = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) => exercise.sets)
-                              .reduce((a, b) => a + b)
-                          : null;
+                      String? exercisesName;
+                      int? totalReps;
+                      int? totalSets;
+                      List<String>? schedules;
 
-                      final schedules = plans[index].schedules.isNotEmpty
+                      if (exercisesProvider.isNotEmpty) {
+                        exercisesName = exercisesProvider
+                            .map((exercise) => exercise.name)
+                            .join(', ');
+                        totalReps = exercisesProvider
+                            .map((exercise) =>
+                                exercise.repetitions * exercise.sets)
+                            .reduce((a, b) => a + b);
+                        totalSets = exercisesProvider
+                            .map((exercise) => exercise.sets)
+                            .reduce((a, b) => a + b);
+                      }
+
+                      schedules = plans[index].schedules.isNotEmpty
                           ? plans[index]
                               .schedules
                               .map((schedule) => (schedule[0].toUpperCase() +
@@ -81,7 +84,6 @@ class PlanList extends StatelessWidget {
                         onLongPress: () => onLongPress(
                           context,
                           db: db,
-                          user: user,
                           plan: plans[index],
                         ),
                       );
@@ -106,8 +108,7 @@ class PlanList extends StatelessWidget {
 
   onLongPress(
     BuildContext context, {
-    required DatabaseService db,
-    required User user,
+    required FirestoreService db,
     required Plan plan,
   }) {
     return showDialog(
@@ -130,7 +131,7 @@ class PlanList extends StatelessWidget {
                 child: const Text('Hapus'),
                 onPressed: () {
                   Navigator.pop(context);
-                  showDeletePlanDialog(context, db, user, plan);
+                  showDeletePlanDialog(context, db, plan);
                 },
               ),
             ],
@@ -161,8 +162,7 @@ class PlanList extends StatelessWidget {
 
   Future<void> showDeletePlanDialog(
     BuildContext context,
-    DatabaseService db,
-    User user,
+    FirestoreService db,
     Plan plan,
   ) {
     return showDialog(
@@ -174,7 +174,7 @@ class PlanList extends StatelessWidget {
             TextButton(
               child: const Text('Hapus'),
               onPressed: () {
-                db.removePlan(user, plan.id);
+                db.removePlan(plan.id);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Dihapus')),
                 );

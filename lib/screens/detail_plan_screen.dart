@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../databases/database.dart';
 import '../models/exercise.dart';
+import '../services/firestore_service.dart';
 import '../utils/colors.dart';
 import '../widgets/exercise/exercise_list.dart';
 import '../widgets/exercise/show_add_exercise_modal_bottom_sheet.dart';
@@ -30,8 +29,7 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,10 +40,7 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
               onPressed: () {
                 setState(() => _reorderingMode = _ReorderingMode.reordering);
 
-                db
-                    .streamExercises(user!, widget.planId)
-                    .first
-                    .then((exercises) {
+                db.streamExercises(widget.planId).first.then((exercises) {
                   setState(() => oldOrderExercises = exercises);
                 });
               },
@@ -62,7 +57,6 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
                 }
 
                 await db.reorderExerciseIndexes(
-                  user!,
                   widget.planId,
                   oldList: oldOrderExercises,
                   newList: newOrderExercises,
@@ -161,11 +155,9 @@ class _DetailPlanScreenState extends State<DetailPlanScreen> {
           context: context,
           planId: widget.planId,
           onSubmit: (exercise) async {
-            final db = DatabaseService();
-            final user = Provider.of<User?>(context, listen: false);
+            final db = Provider.of<FirestoreService>(context, listen: false);
 
             await db.addExercise(
-              user!,
               widget.planId,
               {
                 'index': exercise.index,
@@ -205,9 +197,8 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
   @override
   void initState() {
     super.initState();
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
-    db.streamExercises(user!, widget.planId).first.then((exercises) {
+    final db = Provider.of<FirestoreService>(context, listen: false);
+    db.streamExercises(widget.planId).first.then((exercises) {
       setState(() => _exercises = exercises);
     });
   }
@@ -254,6 +245,7 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
 
         widget.onReorder!(_exercises);
       },
+      padding: const EdgeInsets.symmetric(vertical: 30),
     );
   }
 }

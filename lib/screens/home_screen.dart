@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/user_auth.dart';
+import '../models/user.dart';
+import '../services/firebase_auth_service.dart';
 import '../utils/colors.dart';
 import '../widgets/article/article_list.dart';
 import '../widgets/global/banner_ad.dart';
@@ -19,12 +19,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final topSafeArea = MediaQuery.of(context).padding.top;
 
-    final auth = UserAuth();
-    final user = Provider.of<User?>(context);
-
-    if (user == null) {
-      return const Scaffold(body: Center(child: Text('Loading...')));
-    }
+    final auth = Provider.of<FirebaseAuthService>(context, listen: false);
+    final user = Provider.of<User>(context, listen: false);
 
     final displayName = user.displayName ?? user.email ?? 'anonim';
 
@@ -62,9 +58,7 @@ class HomeScreen extends StatelessWidget {
                           message: 'Logout',
                           child: InkWell(
                             onTap: () async {
-                              await auth.logout();
-                              // ignore: use_build_context_synchronously
-                              GoRouter.of(context).go('/login');
+                              await auth.signOut();
                             },
                             child: const Icon(Icons.logout),
                           ),
@@ -102,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                           width: 50,
                           height: 5,
                           decoration: const BoxDecoration(
-                            color: lightColor,
+                            color: Colors.black12,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                         ),
@@ -189,7 +183,12 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           /// App version
-                          const Center(child: Text('v0.9.1')),
+                          const Center(
+                            child: Text(
+                              'v0.9.6',
+                              style: TextStyle(color: darkColor),
+                            ),
+                          ),
                           const SizedBox(height: 20),
                         ],
                       ),

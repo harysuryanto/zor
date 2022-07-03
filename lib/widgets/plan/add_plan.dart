@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../databases/database.dart';
 import '../../models/exercise.dart';
 import '../../models/plan.dart';
+import '../../services/firestore_service.dart';
 import '../../utils/colors.dart';
 import '../exercise/show_add_exercise_modal_bottom_sheet.dart';
 import '../global/dismissible_background.dart';
@@ -211,8 +210,7 @@ class _AddPlanState extends State<AddPlan> {
   }
 
   Widget _buildStepper({required List<Step> steps}) {
-    final db = DatabaseService();
-    final user = Provider.of<User?>(context, listen: false);
+    final db = Provider.of<FirestoreService>(context, listen: false);
 
     return Stepper(
       controlsBuilder: (context, details) => Padding(
@@ -244,7 +242,7 @@ class _AddPlanState extends State<AddPlan> {
               child: ElevatedButton(
                 onPressed: details.currentStep == steps.length - 1
                     ? () async {
-                        await onSubmit(db, user!);
+                        await onSubmit(db);
                         if (widget.onFinish != null) {
                           widget.onFinish!();
                         }
@@ -334,7 +332,7 @@ class _AddPlanState extends State<AddPlan> {
     );
   }
 
-  Future<void> onSubmit(DatabaseService db, User? user) async {
+  Future<void> onSubmit(FirestoreService db) async {
     List<String> schedules = [];
     for (var scheduleOption in scheduleOptions) {
       if (scheduleOption['isSelected'].toString() == 'true') {
@@ -344,7 +342,6 @@ class _AddPlanState extends State<AddPlan> {
 
     if (editMode) {
       await db.updatePlan(
-        user!,
         {
           'name': planName.trim(),
           'schedules': schedules,
@@ -353,7 +350,6 @@ class _AddPlanState extends State<AddPlan> {
       );
     } else {
       await db.addPlan(
-        user!,
         {
           'name': planName.trim(),
           'schedules': schedules,
@@ -362,7 +358,6 @@ class _AddPlanState extends State<AddPlan> {
           int exerciseIndex = 0;
           for (var exercise in tempExercises) {
             await db.addExercise(
-              user,
               plan.id,
               {
                 'index': exerciseIndex++,

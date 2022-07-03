@@ -5,7 +5,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../models/exercise.dart';
 import '../../utils/colors.dart';
-import '../global/custom_scroll_behavior.dart';
 import 'add_exercise.dart';
 
 Future<dynamic> showAddExerciseModalBottomSheet({
@@ -37,13 +36,10 @@ Future<dynamic> showAddExerciseModalBottomSheet({
 
           /// Body
           Expanded(
-            child: ScrollConfiguration(
-              behavior: CustomScrollBehavior().copyWith(scrollbars: false),
-              child: SingleChildScrollView(
-                child: AddExercise(
-                  planId: planId,
-                  onSubmit: (exercise) => onSubmit(exercise),
-                ),
+            child: SingleChildScrollView(
+              child: AddExercise(
+                planId: planId,
+                onSubmit: (exercise) => onSubmit(exercise),
               ),
             ),
           ),
