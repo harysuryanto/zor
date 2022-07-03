@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                           width: 50,
                           height: 5,
                           decoration: const BoxDecoration(
-                            color: lightColor,
+                            color: Colors.black12,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                         ),
@@ -183,7 +183,12 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           /// App version
-                          const Center(child: Text('v0.9.1')),
+                          const Center(
+                            child: Text(
+                              'v0.9.6',
+                              style: TextStyle(color: darkColor),
+                            ),
+                          ),
                           const SizedBox(height: 20),
                         ],
                       ),
