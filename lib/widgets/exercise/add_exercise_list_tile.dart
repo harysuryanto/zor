@@ -20,9 +20,7 @@ class AddExerciseListTile extends StatefulWidget {
 
 class _AddExerciseListTileState extends State<AddExerciseListTile> {
   TextEditingController? _nameTextEditingController;
-
   TextEditingController? _repsTextEditingController;
-
   TextEditingController? _restTimeTextEditingController;
 
   @override
