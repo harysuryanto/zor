@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../services/firebase_auth_service.dart';
 import '../utils/colors.dart';
-import '../widgets/global/navigator_wrapper.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -25,110 +24,107 @@ class _LoginScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigatorWrapper(
-      child: Scaffold(
-        backgroundColor: primaryColor,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 80, bottom: 30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: Column(
-                      children: const [
-                        Text(
-                          'Zor',
-                          style: TextStyle(fontSize: 96),
-                        ),
-                        Text(
-                          'Rencanakan olahragamu',
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 80, bottom: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Column(
+                    children: const [
+                      Text(
+                        'Zor',
+                        style: TextStyle(fontSize: 96),
+                      ),
+                      Text(
+                        'Rencanakan olahragamu',
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 80),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Form(
-                      key: _formKey,
-                      child: Theme(
-                        data: _themeData(context),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TextFormField(
-                              onChanged: (value) =>
-                                  setState(() => _name = value),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Mohon isi nama.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Nama',
-                              ),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 80),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Form(
+                    key: _formKey,
+                    child: Theme(
+                      data: _themeData(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            onChanged: (value) => setState(() => _name = value),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mohon isi nama.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Nama',
                             ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                              onChanged: (value) =>
-                                  setState(() => _email = value),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Mohon isi email yang valid.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            onChanged: (value) =>
+                                setState(() => _email = value),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mohon isi email yang valid.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
                             ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                              onChanged: (value) =>
-                                  setState(() => _password = value),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Mohon isi password yang valid.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
-                              ),
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: true,
-                              textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            onChanged: (value) =>
+                                setState(() => _password = value),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mohon isi password yang valid.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Password',
                             ),
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: () => _register(),
-                              child: _isRegistering
-                                  ? const CircularProgressIndicator()
-                                  : const Text('Register'),
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: true,
+                            textInputAction: TextInputAction.done,
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () => _register(),
+                            child: _isRegistering
+                                ? const CircularProgressIndicator()
+                                : const Text('Register'),
+                          ),
+                          const SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text(
+                              'Sudah memiliki akun? Login',
+                              style: TextStyle(color: Colors.black87),
                             ),
-                            const SizedBox(height: 20),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text(
-                                'Sudah memiliki akun? Login.',
-                                style: TextStyle(color: Colors.black87),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

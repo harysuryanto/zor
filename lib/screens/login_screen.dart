@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../services/firebase_auth_service.dart';
 import '../utils/colors.dart';
-import '../widgets/global/navigator_wrapper.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,120 +26,118 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigatorWrapper(
-      child: Scaffold(
-        backgroundColor: primaryColor,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 80, bottom: 30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: Column(
-                      children: const [
-                        Text(
-                          'Zor',
-                          style: TextStyle(fontSize: 96),
-                        ),
-                        Text(
-                          'Rencanakan olahragamu',
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 80, bottom: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Column(
+                    children: const [
+                      Text(
+                        'Zor',
+                        style: TextStyle(fontSize: 96),
+                      ),
+                      Text(
+                        'Rencanakan olahragamu',
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 80),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Form(
-                      key: _formKey,
-                      child: Theme(
-                        data: _themeData(context),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TextFormField(
-                              onChanged: (value) =>
-                                  setState(() => _email = value),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.trim().isEmpty ||
-                                    !value.contains('@')) {
-                                  return 'Mohon isi email yang valid.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 80),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Form(
+                    key: _formKey,
+                    child: Theme(
+                      data: _themeData(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            onChanged: (value) =>
+                                setState(() => _email = value),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  !value.contains('@')) {
+                                return 'Mohon isi email yang valid.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
                             ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                              onChanged: (value) =>
-                                  setState(() => _password = value),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Mohon isi password yang valid.';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
-                              ),
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: true,
-                              textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            onChanged: (value) =>
+                                setState(() => _password = value),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Mohon isi password yang valid.';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Password',
                             ),
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: () => _login(),
-                              child: _isLoggingIn
-                                  ? const _ProgressIndicator()
-                                  : const Text('Login'),
-                            ),
-                            const SizedBox(height: 20),
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: true,
+                            textInputAction: TextInputAction.done,
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () => _login(),
+                            child: _isLoggingIn
+                                ? const _ProgressIndicator()
+                                : const Text('Login'),
+                          ),
+                          const SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () => _loginAsGuest(),
+                            child: _isLoggingInAsGuest
+                                ? const _ProgressIndicator()
+                                : const Text(
+                                    'Login dengan akun demo',
+                                    style: TextStyle(color: Colors.black87),
+                                  ),
+                          ),
+                          if (_isAllowedToLoginAnonymously)
                             TextButton(
-                              onPressed: () => _loginAsGuest(),
-                              child: _isLoggingInAsGuest
+                              onPressed: () => _loginAnonimously(),
+                              child: _isLoggingInAnonimously
                                   ? const _ProgressIndicator()
                                   : const Text(
-                                      'Login dengan akun demo',
+                                      'Login secara anonim',
                                       style: TextStyle(color: Colors.black87),
                                     ),
                             ),
-                            if (_isAllowedToLoginAnonymously)
-                              TextButton(
-                                onPressed: () => _loginAnonimously(),
-                                child: _isLoggingInAnonimously
-                                    ? const _ProgressIndicator()
-                                    : const Text(
-                                        'Login secara anonim',
-                                        style: TextStyle(color: Colors.black87),
-                                      ),
-                              ),
-                            TextButton(
-                              onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
-                                ),
-                              ),
-                              child: const Text(
-                                'Belum memiliki akun? Register di sini',
-                                style: TextStyle(color: Colors.black87),
+                          TextButton(
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterScreen(),
                               ),
                             ),
-                          ],
-                        ),
+                            child: const Text(
+                              'Belum memiliki akun? Register di sini',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
