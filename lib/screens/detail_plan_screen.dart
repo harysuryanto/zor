@@ -245,6 +245,7 @@ class _ReorderingListViewState extends State<_ReorderingListView> {
 
         widget.onReorder!(_exercises);
       },
+      padding: const EdgeInsets.symmetric(vertical: 30),
     );
   }
 }
