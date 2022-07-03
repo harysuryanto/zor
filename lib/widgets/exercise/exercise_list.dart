@@ -22,11 +22,15 @@ class ExerciseList extends StatelessWidget {
   Widget build(BuildContext context) {
     final db = Provider.of<FirestoreService>(context, listen: false);
 
-    return StreamProvider<List<Exercise>>.value(
+    return StreamProvider<List<Exercise>?>.value(
       value: db.streamExercises(planId),
-      initialData: const [],
+      initialData: null,
       builder: (BuildContext context, Widget? child) {
-        final exercises = Provider.of<List<Exercise>>(context);
+        final exercises = Provider.of<List<Exercise>?>(context);
+
+        if (exercises == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
         return exercises.isEmpty
             ? const Center(
