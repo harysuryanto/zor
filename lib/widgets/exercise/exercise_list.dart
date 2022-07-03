@@ -34,7 +34,7 @@ class ExerciseList extends StatelessWidget {
 
         return exercises.isEmpty
             ? const Center(
-                child: Text('Tidak ada data. Tekan ➕ untuk menambahkan.'))
+                child: Text('Tidak ada latihan. Tekan ➕ untuk menambahkan.'))
             : _buildTimeline(db, exercises);
       },
     );

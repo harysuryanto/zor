@@ -35,7 +35,7 @@ class PlanList extends StatelessWidget {
         }
 
         return plans.isEmpty
-            ? const Center(child: Text('Tidak ada data.'))
+            ? const Center(child: Text('Tidak ada rencana.'))
             : ListView.separated(
                 padding: padding,
                 itemBuilder: (context, index) {
@@ -45,24 +45,25 @@ class PlanList extends StatelessWidget {
                     builder: (BuildContext context, Widget? child) {
                       final exercisesProvider =
                           Provider.of<List<Exercise>>(context);
-                      final exercisesName = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) => exercise.name)
-                              .join(', ')
-                          : null;
-                      final totalReps = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) =>
-                                  exercise.repetitions * exercise.sets)
-                              .reduce((a, b) => a + b)
-                          : null;
-                      final totalSets = exercisesProvider.isNotEmpty
-                          ? exercisesProvider
-                              .map((exercise) => exercise.sets)
-                              .reduce((a, b) => a + b)
-                          : null;
+                      String? exercisesName;
+                      int? totalReps;
+                      int? totalSets;
+                      List<String>? schedules;
 
-                      final schedules = plans[index].schedules.isNotEmpty
+                      if (exercisesProvider.isNotEmpty) {
+                        exercisesName = exercisesProvider
+                            .map((exercise) => exercise.name)
+                            .join(', ');
+                        totalReps = exercisesProvider
+                            .map((exercise) =>
+                                exercise.repetitions * exercise.sets)
+                            .reduce((a, b) => a + b);
+                        totalSets = exercisesProvider
+                            .map((exercise) => exercise.sets)
+                            .reduce((a, b) => a + b);
+                      }
+
+                      schedules = plans[index].schedules.isNotEmpty
                           ? plans[index]
                               .schedules
                               .map((schedule) => (schedule[0].toUpperCase() +
