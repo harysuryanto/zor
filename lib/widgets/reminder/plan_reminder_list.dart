@@ -18,11 +18,16 @@ class PlanReminderList extends StatelessWidget {
     final String todayInWeekday = DateFormat('EEEE').format(DateTime.now());
 
     // return _showTemplate();
-    return StreamProvider<List<Plan>>.value(
+    return StreamProvider<List<Plan>?>.value(
       value: db.streamPlans(whereScheduleIs: todayInWeekday.toLowerCase()),
-      initialData: const [],
+      initialData: null,
       builder: (BuildContext context, Widget? child) {
-        final plans = Provider.of<List<Plan>>(context);
+        final plans = Provider.of<List<Plan>?>(context);
+
+        if (plans == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
         return plans.isEmpty
             ? const Center(child: Text('Tidak ada jadwal hari ini.'))
             : LimitedBox(
