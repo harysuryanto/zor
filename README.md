@@ -1,3 +1,5 @@
+[![Codemagic build status](https://api.codemagic.io/apps/62c13e8a81f4008d9d35fa3d/62c13e8a81f4008d9d35fa3c/status_badge.svg)](https://codemagic.io/apps/62c13e8a81f4008d9d35fa3d/62c13e8a81f4008d9d35fa3c/latest_build)
+
 # Zor
 
 [ID] Aplikasi untuk membuat rencana olahraga.  
