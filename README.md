@@ -10,7 +10,7 @@ The UI design is [here](https://www.figma.com/file/IwcLtKSnTyDLRFML6qSfTx/Zor-v2
 - APK file  
   [Download](https://github.com/harysuryanto/zor/files/9034192/Zor.v0.9.6.apk.zip)
 - Website  
-  [Open](https://zor-workout.netlify.app)
+  [Open](https://zor.codemagic.app)
 
 # App Flow
 
